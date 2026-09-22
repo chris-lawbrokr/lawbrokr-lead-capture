@@ -123,9 +123,10 @@ export function useChatFlow() {
   );
 
   const answerQuestion = useCallback(
-    (index: number, value: string) => {
-      answersRef.current[QUESTION_STEPS[index].id] = value;
-      say('user', value);
+    (index: number, value: string | readonly string[]) => {
+      const values = typeof value === 'string' ? [value] : value;
+      answersRef.current[QUESTION_STEPS[index].id] = values.join(';');
+      say('user', values.join(', '));
       setStage(
         index + 1 < QUESTION_STEPS.length
           ? { name: 'question', index: index + 1 }

@@ -15,7 +15,7 @@ export const QUESTION_STEPS: readonly QuestionStep[] = [
   },
   {
     id: 'practice_area',
-    prompt: 'Good to know. What’s your primary practice area?',
+    prompt: 'Good to know. Which practice areas does your firm focus on? Pick all that apply.',
     options: [
       'Personal injury',
       'Family law',
@@ -29,6 +29,7 @@ export const QUESTION_STEPS: readonly QuestionStep[] = [
       'Other',
     ],
     freeTextOnOther: true,
+    multiSelect: true,
   },
   {
     id: 'primary_pain_point',

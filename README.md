@@ -26,15 +26,15 @@ block in `src/index.css`, exactly as the porting note in the spec prescribes —
 type step and duration in this app resolves to a token, and no component contains a literal hex or
 font name.
 
-| | |
-| --- | --- |
-| Colour | One brand colour, Lawbrokr Purple `#250D53` = `--primary`. Page `--background` (#FAFAFD), panels `--card`. |
-| Type | Instrument Sans for UI, Host Grotesk 600 for the display hero and the stat (`--font-serif`). |
-| Radius | 6 buttons/inputs/selects · 8 cards and bubbles · full for the progress track. No pills. |
-| Interaction | Hover on the dark primary goes **lighter** (primary-800), press one step further (primary-700). |
-| Focus | 2px `--ring` outline at offset 2 on every control; inputs additionally take a 3px primary-200 halo. |
-| Icons | lucide-react only, never emoji or unicode glyphs. |
-| Motion | 120ms colour, 180ms layout, 300ms progress, ease-out; `prefers-reduced-motion` disables all. |
+|             |                                                                                                            |
+| ----------- | ---------------------------------------------------------------------------------------------------------- |
+| Colour      | One brand colour, Lawbrokr Purple `#250D53` = `--primary`. Page `--background` (#FAFAFD), panels `--card`. |
+| Type        | Instrument Sans for UI, Host Grotesk 600 for the display hero and the stat (`--font-serif`).               |
+| Radius      | 6 buttons/inputs/selects · 8 cards and bubbles · full for the progress track. No pills.                    |
+| Interaction | Hover on the dark primary goes **lighter** (primary-800), press one step further (primary-700).            |
+| Focus       | 2px `--ring` outline at offset 2 on every control; inputs additionally take a 3px primary-200 halo.        |
+| Icons       | lucide-react only, never emoji or unicode glyphs.                                                          |
+| Motion      | 120ms colour, 180ms layout, 300ms progress, ease-out; `prefers-reduced-motion` disables all.               |
 
 Copy follows the design system's content rules: sentence case throughout, verb-first buttons that name
 their object, typographic apostrophes, and no exclamation marks or emoji.
@@ -49,13 +49,13 @@ same two families load from a `<link>` in `index.html`.
 
 Everything external is driven by env vars (see `.env.example`) and read in `src/config.ts`:
 
-| Variable | Purpose |
-| --- | --- |
-| `VITE_HUBSPOT_PORTAL_ID` | HubSpot account ID — Settings > Account Setup > Account Defaults |
-| `VITE_HUBSPOT_FORM_GUID` | GUID of the form receiving submissions |
-| `VITE_HUBSPOT_MEETING_LINK` | Scheduler embedded on the final step |
-| `VITE_HUBSPOT_ENGAGEMENT_EVENT` | Internal name of the custom behavioural event |
-| `VITE_LEAD_STARTED_ENDPOINT` | Serverless relay that posts the Slack "lead started" alert |
+| Variable                        | Purpose                                                          |
+| ------------------------------- | ---------------------------------------------------------------- |
+| `VITE_HUBSPOT_PORTAL_ID`        | HubSpot account ID — Settings > Account Setup > Account Defaults |
+| `VITE_HUBSPOT_FORM_GUID`        | GUID of the form receiving submissions                           |
+| `VITE_HUBSPOT_MEETING_LINK`     | Scheduler embedded on the final step                             |
+| `VITE_HUBSPOT_ENGAGEMENT_EVENT` | Internal name of the custom behavioural event                    |
+| `VITE_LEAD_STARTED_ENDPOINT`    | Serverless relay that posts the Slack "lead started" alert       |
 
 Until a real portal ID and form GUID are set, submissions are logged to the console in dev
 instead of being sent — the flow still runs end to end.

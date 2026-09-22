@@ -128,6 +128,48 @@
   }
 }
 
+/*
+ * Sheet — the design system's pattern below lg. A native <dialog> gives the
+ * dialog semantics it calls for (top layer, focus trap, Esc) for free; this
+ * adds the slide. `allow-discrete` keeps it on screen long enough to animate
+ * out, since display and overlay are otherwise discrete properties.
+ */
+@layer components {
+  .sheet {
+    translate: 100% 0;
+    transition:
+      translate var(--duration-base) var(--ease-out),
+      display var(--duration-base) allow-discrete,
+      overlay var(--duration-base) allow-discrete;
+  }
+
+  .sheet[open] {
+    translate: 0 0;
+  }
+
+  .sheet::backdrop {
+    background-color: transparent;
+    transition:
+      background-color var(--duration-base) var(--ease-out),
+      display var(--duration-base) allow-discrete,
+      overlay var(--duration-base) allow-discrete;
+  }
+
+  .sheet[open]::backdrop {
+    background-color: var(--overlay);
+  }
+
+  @starting-style {
+    .sheet[open] {
+      translate: 100% 0;
+    }
+
+    .sheet[open]::backdrop {
+      background-color: transparent;
+    }
+  }
+}
+
 @layer base {
   /* Design system §1.8 — prefers-reduced-motion disables all motion. */
   @media (prefers-reduced-motion: reduce) {

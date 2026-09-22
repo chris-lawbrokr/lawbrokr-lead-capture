@@ -6,9 +6,15 @@ export interface QuestionStep {
   options: readonly string[];
   /** When true, picking "Other" swaps the chips for a free-text input. */
   freeTextOnOther?: boolean;
+  /** When true, several options can be chosen before continuing. */
+  multiSelect?: boolean;
 }
 
-/** Answers collected from the qualifying questions, keyed by step id. */
+/**
+ * Answers collected from the qualifying questions, keyed by step id. Multi-select
+ * answers are stored semicolon-joined, the format HubSpot expects for
+ * multiple-checkbox properties.
+ */
 export type Answers = Partial<Record<QuestionStep['id'], string>>;
 
 /** Contact details gathered on the final form. */

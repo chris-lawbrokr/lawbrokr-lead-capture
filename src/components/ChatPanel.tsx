@@ -10,6 +10,7 @@ import { ContactDetailsForm } from './chat/ContactDetailsForm';
 import { EmailCaptureForm } from './chat/EmailCaptureForm';
 import { MessageBubble } from './chat/MessageBubble';
 import { TypingIndicator } from './chat/TypingIndicator';
+import { MobileBrandBar } from './MobileBrandBar';
 import { Progress } from './ui/Progress';
 
 /**
@@ -94,8 +95,8 @@ export function ChatPanel() {
   const intro = phase !== 'chat';
 
   return (
-    <main className="flex flex-col bg-card pb-8 lg:sticky lg:top-0 lg:h-screen lg:pb-12">
-      <header className="sticky top-0 z-10 flex flex-col gap-2 bg-card px-4 pt-8 pb-8 sm:px-8 lg:px-14 lg:pt-12 lg:pb-12">
+    <main className="flex flex-col bg-card lg:sticky lg:top-0 lg:h-screen lg:pb-12">
+      <header className="sticky top-0 z-10 flex flex-col gap-2 bg-card px-4 pt-4 pb-5 sm:px-8 sm:pt-8 sm:pb-8 lg:px-14 lg:pt-12 lg:pb-12">
         <div className="flex items-baseline justify-between gap-4">
           <h2 className="text-xl font-semibold">Talk to an AI expert</h2>
           <p className="text-sm tabular-nums text-muted-foreground" aria-live="polite">
@@ -106,6 +107,7 @@ export function ChatPanel() {
           value={Math.min(step, totalSteps)}
           max={totalSteps}
           label="Progress through the questions"
+          className="max-w-40"
         />
       </header>
 
@@ -119,7 +121,10 @@ export function ChatPanel() {
           intro && 'justify-center',
         )}
       >
-        <div ref={listRef}>
+        {/* Breathing room at both ends of the transcript below lg. The bottom is
+            shorter because the sticky footer carries part of that gap as its
+            own white padding; with the last form's mb-5 the two ends match. */}
+        <div ref={listRef} className="pt-6 pb-2 sm:pt-8 sm:pb-5 lg:py-0">
           <div aria-live="polite">
             {messages.map((message) => (
               <MessageBubble key={message.id} message={message} />
@@ -144,6 +149,7 @@ export function ChatPanel() {
               key={stage.index}
               options={QUESTION_STEPS[stage.index].options}
               freeTextOnOther={QUESTION_STEPS[stage.index].freeTextOnOther}
+              multiSelect={QUESTION_STEPS[stage.index].multiSelect}
               onPick={(value) => answerQuestion(stage.index, value)}
             />
           )}
@@ -155,6 +161,8 @@ export function ChatPanel() {
           {!intro && promptReady && stage.name === 'booking' && <BookingPanel />}
         </div>
       </div>
+
+      <MobileBrandBar />
     </main>
   );
 }

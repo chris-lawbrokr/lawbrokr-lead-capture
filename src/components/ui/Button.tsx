@@ -2,7 +2,7 @@ import type { ButtonHTMLAttributes } from 'react';
 import { cn } from '../../lib/cn';
 
 type Variant = 'default' | 'secondary' | 'outline' | 'ghost' | 'link' | 'destructive';
-type Size = 'sm' | 'default' | 'lg';
+type Size = 'sm' | 'default' | 'lg' | 'icon';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: Variant;
@@ -43,6 +43,9 @@ const sizes: Record<Size, string> = {
   sm: 'h-8 px-3 text-xs gap-1.5',
   default: 'h-9 px-4 text-sm',
   lg: 'h-10 px-6 text-base',
+  // 44px touch target below lg, 36px from lg up — the design system asks for
+  // both (§1.9: targets >= 32px desktop / 44px at 414).
+  icon: 'size-11 p-0 lg:size-9',
 };
 
 export function Button({
