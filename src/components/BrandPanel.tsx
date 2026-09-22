@@ -21,7 +21,16 @@ export function BrandPanel() {
   return (
     <aside className="flex flex-col justify-center bg-primary px-4 py-10 text-primary-foreground sm:px-8 lg:px-14 lg:py-16">
       <div className="space-y-10">
-        <img src="/brand/lb-wordmark-white.svg" alt="Lawbrokr" className="h-5 w-auto" />
+        {/*
+          * The two marks are placed side by side rather than using the packaged
+          * lockup, whose icon is drawn taller than the word. Matching heights and
+          * opening the gap is only possible with them separate. The icon is
+          * decorative; the wordmark carries the name.
+          */}
+        <div className="flex items-center gap-3">
+          <img src="/brand/lb-icon-white.svg" alt="" className="h-6 w-auto" />
+          <img src="/brand/lb-wordmark-white.svg" alt="Lawbrokr" className="h-6 w-auto" />
+        </div>
 
         <div>
           <h1 className="max-w-[12ch] font-display text-5xl font-semibold tracking-tight">
