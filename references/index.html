@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Request a Demo | Lawbrokr</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --purple-deep: #250D53;
+    --purple-mid: #3B1B78;
+    --purple-line: rgba(255,255,255,0.14);
+    --terracotta: #B5502E;
+    --terracotta-dark: #953F22;
+    --ink: #1A1330;
+    --paper: #FFFFFF;
+    --panel: #F6F4FA;
+    --border: #E4E0EC;
+    --muted: #6E6480;
+    --radius: 4px;
+    font-size: 16px;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    color: var(--ink);
+    background: var(--panel);
+    line-height: 1.5;
+  }
+
+  h1, h2, h3, .display {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-weight: 600;
+    margin: 0;
+  }
+
+  .wrap {
+    max-width: 1180px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 0.85fr 1fr;
+    min-height: 100vh;
+  }
+
+  /* ---------- Left: brand panel ---------- */
+  .intro {
+    background: var(--purple-deep);
+    color: #F3F0FA;
+    padding: 64px 56px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .intro-top h1 {
+    font-size: 2.5rem;
+    line-height: 1.15;
+    color: #FFFFFF;
+    max-width: 11ch;
+  }
+
+  .intro-top p {
+    margin-top: 18px;
+    font-size: 1.05rem;
+    color: #D6CCEA;
+    max-width: 38ch;
+  }
+
+  .pillars {
+    margin-top: 44px;
+  }
+
+  .pillar-row {
+    display: flex;
+    gap: 14px;
+    padding: 14px 0;
+    border-top: 1px solid var(--purple-line);
+  }
+
+  .pillar-row:last-child { border-bottom: 1px solid var(--purple-line); }
+
+  .pillar-name {
+    font-size: 0.95rem;
+    color: #FFFFFF;
+    min-width: 15ch;
+  }
+
+  .pillar-desc {
+    font-size: 0.9rem;
+    color: #B9ADD4;
+  }
+
+  .proof {
+    margin-top: 40px;
+    padding-top: 22px;
+    border-top: 1px solid var(--purple-line);
+  }
+
+  .proof-stat {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-weight: 700;
+    font-size: 2.1rem;
+    color: var(--terracotta);
+    line-height: 1;
+  }
+
+  .proof-copy {
+    margin-top: 8px;
+    font-size: 0.88rem;
+    color: #B9ADD4;
+    max-width: 30ch;
+  }
+
+  .intro-foot {
+    font-size: 0.85rem;
+    color: #9C8FC2;
+    margin-top: 40px;
+  }
+
+  /* ---------- Right: chat panel ---------- */
+  .chat-side {
+    background: var(--paper);
+    display: flex;
+    flex-direction: column;
+    padding: 40px 56px 32px;
+  }
+
+  .chat-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 20px;
+  }
+
+  .chat-head-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+  }
+
+  .chat-progress {
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+
+  .chat-scroll {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 4px;
+    min-height: 400px;
+  }
+
+  .msg {
+    display: flex;
+    margin-bottom: 16px;
+    opacity: 0;
+    transform: translateY(6px);
+    animation: rise 0.35s ease forwards;
+  }
+
+  @keyframes rise {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .msg.from-lb { justify-content: flex-start; }
+  .msg.from-user { justify-content: flex-end; }
+
+  .bubble {
+    max-width: 78%;
+    padding: 12px 16px;
+    border-radius: var(--radius);
+    font-size: 0.98rem;
+  }
+
+  .from-lb .bubble {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    color: var(--ink);
+    border-top-left-radius: 0;
+  }
+
+  .from-user .bubble {
+    background: var(--purple-deep);
+    color: #fff;
+    border-top-right-radius: 0;
+  }
+
+  .typing {
+    display: inline-flex;
+    gap: 4px;
+    padding: 14px 16px;
+  }
+
+  .typing span {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--muted);
+    animation: blink 1.1s infinite ease-in-out;
+  }
+
+  .typing span:nth-child(2) { animation-delay: 0.18s; }
+  .typing span:nth-child(3) { animation-delay: 0.36s; }
+
+  @keyframes blink {
+    0%, 80%, 100% { opacity: 0.25; }
+    40% { opacity: 1; }
+  }
+
+  .options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 4px 0 20px;
+  }
+
+  .opt-btn {
+    font-family: inherit;
+    font-size: 0.92rem;
+    padding: 10px 16px;
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--ink);
+    cursor: pointer;
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+
+  .opt-btn:hover { border-color: var(--purple-deep); }
+  .opt-btn:focus-visible { outline: 2px solid var(--terracotta); outline-offset: 2px; }
+
+  .opt-btn.chosen {
+    background: var(--purple-deep);
+    color: #fff;
+    border-color: var(--purple-deep);
+  }
+
+  .inline-other {
+    display: flex;
+    gap: 8px;
+    margin: 4px 0 20px;
+  }
+
+  .inline-other input {
+    flex: 1;
+    font-family: inherit;
+    font-size: 0.95rem;
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+  }
+
+  .inline-other input:focus-visible {
+    outline: 2px solid var(--terracotta);
+    outline-offset: 1px;
+  }
+
+  .inline-other button {
+    font-family: inherit;
+    font-size: 0.92rem;
+    font-weight: 700;
+    padding: 10px 16px;
+    background: var(--purple-deep);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+  }
+
+  /* Lead capture / contact form */
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 4px 0 16px;
+  }
+
+  .form-grid .full { grid-column: 1 / -1; }
+
+  .field label {
+    display: block;
+    font-size: 0.82rem;
+    color: var(--muted);
+    margin-bottom: 5px;
+  }
+
+  .field input,
+  .field select {
+    width: 100%;
+    font-family: inherit;
+    font-size: 0.95rem;
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--paper);
+    color: var(--ink);
+  }
+
+  .field input:focus-visible,
+  .field select:focus-visible {
+    outline: 2px solid var(--terracotta);
+    outline-offset: 1px;
+  }
+
+  .primary-btn {
+    font-family: inherit;
+    font-size: 0.98rem;
+    font-weight: 700;
+    padding: 13px 22px;
+    background: var(--terracotta);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: background 0.15s ease;
+  }
+
+  .primary-btn:hover { background: var(--terracotta-dark); }
+  .primary-btn:disabled { background: #D8CFE8; cursor: not-allowed; }
+  .primary-btn:focus-visible { outline: 2px solid var(--purple-deep); outline-offset: 2px; }
+
+  .form-note {
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-top: 10px;
+  }
+
+  /* Booking step */
+  .booking {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--panel);
+  }
+
+  .booking-head {
+    padding: 16px 18px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .booking-head strong { display: block; font-size: 1rem; }
+  .booking-head span { font-size: 0.85rem; color: var(--muted); }
+
+  .booking iframe {
+    width: 100%;
+    height: 560px;
+    border: none;
+    display: block;
+  }
+
+  .booking-fallback {
+    padding: 10px 18px 16px;
+    font-size: 0.85rem;
+  }
+
+  .booking-fallback a {
+    color: var(--terracotta-dark);
+    font-weight: 700;
+    text-decoration: none;
+    border-bottom: 1px solid var(--terracotta-dark);
+    padding-bottom: 1px;
+  }
+
+  @media (max-width: 880px) {
+    .wrap { grid-template-columns: 1fr; }
+    .intro { padding: 40px 28px; }
+    .chat-side { padding: 28px 22px; }
+    .form-grid { grid-template-columns: 1fr; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .msg { animation: none; opacity: 1; transform: none; }
+    .typing span { animation: none; opacity: 0.7; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <!-- LEFT: brand context -->
+  <aside class="intro">
+    <div class="intro-top">
+      <h1>Speak with an AI Expert.</h1>
+      <p>Tell us a bit about your firm. We'll ask a few quick questions, then get you on the calendar with our team.</p>
+
+      <div class="pillars">
+        <div class="pillar-row">
+          <div class="pillar-name">Digital Front Door</div>
+          <div class="pillar-desc">Every inquiry gets captured and routed, day or night.</div>
+        </div>
+        <div class="pillar-row">
+          <div class="pillar-name">AI Assisted Campaigns</div>
+          <div class="pillar-desc">See which marketing spend actually turns into clients.</div>
+        </div>
+        <div class="pillar-row">
+          <div class="pillar-name">AI Optimized Conversion</div>
+          <div class="pillar-desc">Consistent follow up on every lead that comes in.</div>
+        </div>
+      </div>
+
+      <div class="proof">
+        <div class="proof-stat">100,000+</div>
+        <div class="proof-copy">tracked client conversions across 340+ law firms, five years of data behind every recommendation.</div>
+      </div>
+    </div>
+
+    <div class="intro-foot">Lawbrokr &mdash; Conversion Intelligence for Law</div>
+  </aside>
+
+  <!-- RIGHT: chat experience -->
+  <main class="chat-side">
+    <div class="chat-head">
+      <div class="chat-head-title">Talk to an AI Expert</div>
+      <div class="chat-progress" id="progressLabel">Step 1 of 6</div>
+    </div>
+    <div class="chat-scroll" id="chatScroll"></div>
+  </main>
+
+</div>
+
+<script>
+/* =========================================================================
+   CONFIG
+   ========================================================================= */
+const CONFIG = {
+  // Your HubSpot account ID. Found in Settings > Account Setup > Account Defaults.
+  hubspotPortalId: 'YOUR_HUBSPOT_PORTAL_ID',
+
+  // The GUID of a HubSpot form built to receive this widget's fields.
+  // Create custom properties for: firm_website, firm_size, role,
+  // practice_area, primary_pain_point, lead_heat.
+  hubspotFormGuid: 'YOUR_HUBSPOT_FORM_GUID',
+
+  // Discovery call scheduler.
+  hubspotMeetingLink: 'https://meetings.hubspot.com/jgutmann/discovery-call-website?uuid=c4373772-c271-4e0d-b28c-8020dbac4b26',
+
+  // Internal name of a custom behavioral event, created once in HubSpot
+  // under Reports > Events > Custom Events (e.g. "Demo Widget Engaged").
+  // HubSpot gives you the internal name (looks like "pe1234567_demo_widget_engaged")
+  // after you create it — paste it here.
+  engagementEventName: 'YOUR_CUSTOM_EVENT_INTERNAL_NAME'
+};
+
+/* -------------------------------------------------------------------------
+   Auto-filling HubSpot data:
+   Every submission below sends a "context" object with the visitor's
+   hubspotutk cookie plus the current page URL and title. This is what lets
+   HubSpot attribute the submission to the right contact and page — original
+   source, first page seen, campaign, and so on fill in on their own,
+   nothing extra to type or map by hand. If this widget sits on a page that
+   doesn't already have the HubSpot tracking code, this file loads it, so
+   the cookie exists before anyone submits anything.
+------------------------------------------------------------------------- */
+
+/* -------------------------------------------------------------------------
+   Wiring the Slack alerts — three moments, three triggers:
+     1. Someone starts the experience. This fires a custom behavioral event
+        (see engagementEventName above) the moment the widget loads, before
+        they've typed anything. Build the workflow under Automation >
+        Workflows > Contact-based > "Custom behavioral event" trigger,
+        scoped to that event > action "Send Slack notification." This is
+        your live "someone's in the room" signal.
+     2. They submit their email — the first Forms API submission below.
+        Same "Form submitted" workflow as before catches this.
+     3. They finish the flow — the second Forms API submission, with full
+        details and lead_heat. Same workflow, same trigger, since it's the
+        same form.
+   All three land in the same Slack channel; the message content (a custom
+   event vs. a form submission) tells your rep which stage the visitor is
+   at.
+------------------------------------------------------------------------- */
+
+function getHubspotCookie() {
+  const match = document.cookie.match(/(?:^|;\s*)hubspotutk=([^;]+)/);
+  return match ? match[1] : undefined;
+}
+
+function loadHubspotTrackingIfNeeded() {
+  if (window._hsq) return;
+  window._hsq = window._hsq || [];
+  const script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.id = 'hs-script-loader';
+  script.async = true;
+  script.defer = true;
+  script.src = `//js.hs-scripts.com/${CONFIG.hubspotPortalId}.js`;
+  document.head.appendChild(script);
+}
+
+function trackEngagement() {
+  // Fires the Slack "someone just started" alert via a small serverless
+  // relay (see /api/lead-started.js). This is independent of HubSpot's
+  // Marketing Hub tier, since custom-behavioral-event workflow triggers
+  // are an Enterprise-only feature.
+  notifySlackLeadStarted();
+
+  // Still logs the visit as a HubSpot behavioral event for reporting/
+  // segmentation purposes, if you've set one up. On Professional this
+  // won't drive a workflow, but it's still useful history on the contact.
+  loadHubspotTrackingIfNeeded();
+  if (!CONFIG.engagementEventName || CONFIG.engagementEventName.indexOf('YOUR_') === 0) return;
+  window._hsq.push(['trackCustomBehavioralEvent', {
+    name: CONFIG.engagementEventName,
+    properties: { source: 'request-a-demo-widget' }
+  }]);
+}
+
+let _leadStartedNotified = false;
+
+function notifySlackLeadStarted() {
+  if (_leadStartedNotified) return; // only once per page load
+  _leadStartedNotified = true;
+
+  fetch('/api/lead-started', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      page: window.location.href,
+      referrer: document.referrer || undefined
+    })
+  }).catch(err => {
+    console.error('Slack "lead started" notification failed:', err);
+    // Never blocks the widget itself.
+  });
+}
+
+const steps = [
+  {
+    id: 'role',
+    prompt: "Thanks! What's your role at the firm?",
+    options: ['Managing partner / owner', 'Marketing director', 'Operations lead', 'Attorney', 'Other'],
+    freeTextOnOther: true
+  },
+  {
+    id: 'practice_area',
+    prompt: "Good to know. What's your primary practice area?",
+    options: [
+      'Personal injury', 'Family law', 'Estates & probate', 'Criminal defense',
+      'Immigration', 'Employment law', 'Business & corporate', 'Real estate',
+      "Workers' compensation", 'Other'
+    ],
+    freeTextOnOther: true
+  },
+  {
+    id: 'primary_pain_point',
+    prompt: "Last one. What's pulling you to look at Lawbrokr right now?",
+    options: [
+      "We're missing calls and leads without knowing it",
+      "We can't tell which marketing spend actually converts",
+      "Our follow up on new leads is inconsistent",
+      "Just exploring for now"
+    ]
+  }
+];
+
+const answers = {};
+const scrollEl = document.getElementById('chatScroll');
+const progressEl = document.getElementById('progressLabel');
+const totalSteps = steps.length + 3; // email + questions + contact details + booking
+
+function setProgress(n) {
+  progressEl.textContent = `Step ${Math.min(n, totalSteps)} of ${totalSteps}`;
+}
+
+function scrollToBottom() {
+  scrollEl.scrollTop = scrollEl.scrollHeight;
+}
+
+function addLBMessage(html, cb) {
+  const typing = document.createElement('div');
+  typing.className = 'msg from-lb';
+  typing.innerHTML = '<div class="bubble typing"><span></span><span></span><span></span></div>';
+  scrollEl.appendChild(typing);
+  scrollToBottom();
+
+  setTimeout(() => {
+    typing.remove();
+    const msg = document.createElement('div');
+    msg.className = 'msg from-lb';
+    msg.innerHTML = `<div class="bubble">${html}</div>`;
+    scrollEl.appendChild(msg);
+    scrollToBottom();
+    if (cb) cb();
+  }, 650);
+}
+
+function addUserMessage(text) {
+  const msg = document.createElement('div');
+  msg.className = 'msg from-user';
+  msg.innerHTML = `<div class="bubble">${text}</div>`;
+  scrollEl.appendChild(msg);
+  scrollToBottom();
+}
+
+function renderOptions(options, onPick, freeTextOnOther) {
+  const wrap = document.createElement('div');
+  wrap.className = 'options';
+  options.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'opt-btn';
+    btn.type = 'button';
+    btn.textContent = opt;
+    btn.addEventListener('click', () => {
+      if (opt === 'Other' && freeTextOnOther) {
+        wrap.remove();
+        renderInlineOther(onPick);
+        return;
+      }
+      wrap.querySelectorAll('.opt-btn').forEach(b => b.disabled = true);
+      btn.classList.add('chosen');
+      onPick(opt);
+      setTimeout(() => wrap.remove(), 250);
+    });
+    wrap.appendChild(btn);
+  });
+  scrollEl.appendChild(wrap);
+  scrollToBottom();
+}
+
+function renderInlineOther(onPick) {
+  const wrap = document.createElement('div');
+  wrap.className = 'inline-other';
+  wrap.innerHTML = `<input type="text" placeholder="Type your answer" /><button type="button">Continue</button>`;
+  const input = wrap.querySelector('input');
+  const btn = wrap.querySelector('button');
+  const submit = () => {
+    const val = input.value.trim();
+    if (!val) return;
+    wrap.remove();
+    onPick(val);
+  };
+  btn.addEventListener('click', submit);
+  input.addEventListener('keydown', (e) => { if (e.key === 'Enter') submit(); });
+  scrollEl.appendChild(wrap);
+  scrollToBottom();
+  input.focus();
+}
+
+function runStep(index) {
+  if (index >= steps.length) {
+    renderContactDetailsForm();
+    return;
+  }
+  setProgress(index + 2); // +1 for email already captured, +1 for 1-indexing
+  const step = steps[index];
+  addLBMessage(step.prompt, () => {
+    renderOptions(step.options, (choice) => {
+      answers[step.id] = choice;
+      addUserMessage(choice);
+      runStep(index + 1);
+    }, step.freeTextOnOther);
+  });
+}
+
+function computeLeadHeat() {
+  return answers.primary_pain_point === 'Just exploring for now' ? 'cool' : 'hot';
+}
+
+/* ---------------------- Email capture (runs first) ---------------------- */
+
+const lead = {};
+
+function startFlow() {
+  trackEngagement();
+  setProgress(1);
+  addLBMessage("Hi there, I'm one of Lawbrokr's AI Experts. What's your work email?", () => {
+    renderEmailCaptureForm();
+  });
+}
+
+function renderEmailCaptureForm() {
+  const wrap = document.createElement('div');
+  wrap.innerHTML = `
+    <div class="form-grid">
+      <div class="field full"><label for="f_email">Work email</label><input id="f_email" type="email" autocomplete="email" required></div>
+    </div>
+    <button class="primary-btn" id="emailSubmitBtn" type="button">Continue</button>
+    <div class="form-note">We'll follow up either way, even if you don't finish this.</div>
+  `;
+  scrollEl.appendChild(wrap);
+  scrollToBottom();
+
+  document.getElementById('emailSubmitBtn').addEventListener('click', () => handleEmailSubmit(wrap));
+}
+
+async function handleEmailSubmit(formWrap) {
+  const email = document.getElementById('f_email').value.trim();
+  const btn = document.getElementById('emailSubmitBtn');
+
+  if (!email) {
+    btn.textContent = 'Enter your email to continue';
+    setTimeout(() => { btn.textContent = 'Continue'; }, 2200);
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Sending...';
+
+  lead.email = email;
+
+  await submitToHubSpot([
+    { name: 'email', value: email }
+  ]);
+
+  addUserMessage(email);
+  formWrap.remove();
+  runStep(0);
+}
+
+/* ------------- Contact details (runs after the questions) -------------- */
+
+function renderContactDetailsForm() {
+  setProgress(steps.length + 2);
+  addLBMessage("Great, that's really helpful. Just need a few details and I'll get you booked in with our team.", () => {
+    const wrap = document.createElement('div');
+    wrap.innerHTML = `
+      <div class="form-grid">
+        <div class="field"><label for="f_name">Name</label><input id="f_name" type="text" autocomplete="name" required></div>
+        <div class="field"><label for="f_phone">Phone</label><input id="f_phone" type="tel" autocomplete="tel" required></div>
+        <div class="field"><label for="f_firm">Firm name</label><input id="f_firm" type="text" autocomplete="organization" required></div>
+        <div class="field"><label for="f_site">Firm website</label><input id="f_site" type="url" placeholder="https://" required></div>
+        <div class="field full">
+          <label for="f_size">Firm size</label>
+          <select id="f_size" required>
+            <option value="" disabled selected>Select one</option>
+            <option value="1-5 attorneys">1&ndash;5 attorneys</option>
+            <option value="6-15 attorneys">6&ndash;15 attorneys</option>
+            <option value="16-50 attorneys">16&ndash;50 attorneys</option>
+            <option value="50+ attorneys">50+ attorneys</option>
+          </select>
+        </div>
+      </div>
+      <button class="primary-btn" id="contactSubmitBtn" type="button">Get on the calendar</button>
+    `;
+    scrollEl.appendChild(wrap);
+    scrollToBottom();
+
+    document.getElementById('contactSubmitBtn').addEventListener('click', () => handleContactSubmit(wrap));
+  });
+}
+
+async function handleContactSubmit(formWrap) {
+  const name = document.getElementById('f_name').value.trim();
+  const phone = document.getElementById('f_phone').value.trim();
+  const firm = document.getElementById('f_firm').value.trim();
+  const site = document.getElementById('f_site').value.trim();
+  const size = document.getElementById('f_size').value;
+  const btn = document.getElementById('contactSubmitBtn');
+
+  if (!name || !phone || !firm || !site || !size) {
+    btn.textContent = 'Please fill in every field';
+    setTimeout(() => { btn.textContent = 'Get on the calendar'; }, 2200);
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Sending...';
+
+  Object.assign(lead, { name, phone, firm, site, size });
+
+  await submitToHubSpot([
+    { name: 'email', value: lead.email },
+    { name: 'firstname', value: name },
+    { name: 'phone', value: phone },
+    { name: 'company', value: firm },
+    { name: 'firm_website', value: site },
+    { name: 'firm_size', value: size },
+    { name: 'role', value: answers.role || '' },
+    { name: 'practice_area', value: answers.practice_area || '' },
+    { name: 'primary_pain_point', value: answers.primary_pain_point || '' },
+    { name: 'lead_heat', value: computeLeadHeat() }
+  ]);
+
+  addUserMessage(`${name} &middot; ${firm}`);
+  formWrap.remove();
+  showBooking();
+}
+
+async function submitToHubSpot(fields) {
+  try {
+    const endpoint = `https://api.hsforms.com/submissions/v3/integration/submit/${CONFIG.hubspotPortalId}/${CONFIG.hubspotFormGuid}`;
+    const context = {
+      hutk: getHubspotCookie(),
+      pageUri: window.location.href,
+      pageName: document.title
+    };
+    await fetch(endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ fields, context })
+    });
+  } catch (err) {
+    console.error('HubSpot form submission failed:', err);
+    // The flow keeps moving even if this call fails, so a config issue
+    // never blocks someone trying to get on the calendar.
+  }
+}
+
+function showBooking() {
+  setProgress(totalSteps);
+  const wrap = document.createElement('div');
+  wrap.className = 'booking';
+  wrap.innerHTML = `
+    <div class="booking-head">
+      <strong>Pick a time that works</strong>
+      <span>20-minute call with our team</span>
+    </div>
+    <iframe src="${CONFIG.hubspotMeetingLink}" title="Book a discovery call"></iframe>
+    <div class="booking-fallback">
+      Calendar not loading? <a href="${CONFIG.hubspotMeetingLink}" target="_blank" rel="noopener">Open it in a new tab</a>.
+    </div>
+  `;
+  scrollEl.appendChild(wrap);
+  scrollToBottom();
+}
+
+// Kick off
+startFlow();
+</script>
+
+</body>
+</html>

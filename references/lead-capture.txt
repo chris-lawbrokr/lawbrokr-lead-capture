@@ -1,0 +1,14 @@
+lead capture
+
+lead capture saved always regardless of if a demo is booked.
+hubspot api - slack api
+
+hubspot is used for calendar bookings
+
+---
+
+owner.com ai scraper reports
+
+load speed
+bounce rate
+seo
