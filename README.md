@@ -1,7 +1,8 @@
 # Lawbrokr — Lead Capture
 
-A guided "Request a Demo" experience: a brand panel on the left, a short chat-style
-qualifying flow on the right. Built with React 19, TypeScript, Vite and Tailwind CSS v4.
+A guided "Request a demo" experience: a brand panel on the left, a short chat-style
+qualifying flow on the right. Built with React 19, TypeScript, Vite and Tailwind CSS v4
+on the Lawbrokr 2.0 Design System.
 
 The flow is six steps — work email, three qualifying questions, contact details, then
 an embedded HubSpot scheduler. The email is submitted to HubSpot on its own before the
@@ -16,6 +17,33 @@ pnpm dev
 ```
 
 `pnpm build` type-checks and builds; `pnpm lint` runs Oxlint; `pnpm preview` serves the build.
+
+## Design system
+
+The UI is built on the **Lawbrokr 2.0 Design System** (`lawbrokr-design/design-system`). Three token
+files are vendored verbatim under `src/styles/` and wired into Tailwind v4 by the `@theme inline`
+block in `src/index.css`, exactly as the porting note in the spec prescribes — every colour, radius,
+type step and duration in this app resolves to a token, and no component contains a literal hex or
+font name.
+
+| | |
+| --- | --- |
+| Colour | One brand colour, Lawbrokr Purple `#250D53` = `--primary`. Page `--background` (#FAFAFD), panels `--card`. |
+| Type | Instrument Sans for UI, Host Grotesk 600 for the display hero and the stat (`--font-serif`). |
+| Radius | 6 buttons/inputs/selects · 8 cards and bubbles · full for the progress track. No pills. |
+| Interaction | Hover on the dark primary goes **lighter** (primary-800), press one step further (primary-700). |
+| Focus | 2px `--ring` outline at offset 2 on every control; inputs additionally take a 3px primary-200 halo. |
+| Icons | lucide-react only, never emoji or unicode glyphs. |
+| Motion | 120ms colour, 180ms layout, 300ms progress, ease-out; `prefers-reduced-motion` disables all. |
+
+Copy follows the design system's content rules: sentence case throughout, verb-first buttons that name
+their object, typographic apostrophes, and no exclamation marks or emoji.
+
+**Re-syncing.** `src/styles/{tokens,typography,spacing}.css` are copies, not edits. When a new Claude
+Design export lands, re-copy all three. The one deliberate deviation is documented in the header of
+`typography.css`: the export's leading Google Fonts `@import` is dropped, because once the file is
+inlined after `tokens.css` an `@import` is no longer the first statement and the CSS is invalid. The
+same two families load from a `<link>` in `index.html`.
 
 ## Configuration
 
@@ -55,6 +83,7 @@ payload tells the rep which stage the visitor reached.
 src/
   config.ts              env-driven configuration
   types.ts               shared domain types
+  styles/                design-system tokens, vendored verbatim
   data/                  question steps, firm sizes, brand copy
   lib/hubspot.ts         Forms API, tracking cookie, Slack relay
   hooks/useChatFlow.ts   the conversation state machine
@@ -62,7 +91,7 @@ src/
     BrandPanel.tsx       left column
     ChatPanel.tsx        right column — renders transcript + current control
     chat/                bubbles, typing indicator, choices, forms, booking
-    ui/                  Button, TextField, SelectField, FormGrid
+    ui/                  Button, Field (TextField/SelectField/FormGrid), Progress
 ```
 
 `useChatFlow` holds an append-only transcript plus a single `stage` describing what is being

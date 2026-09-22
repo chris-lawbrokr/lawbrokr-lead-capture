@@ -1,0 +1,34 @@
+/* Vendored verbatim from lawbrokr-design/design-system/tokens/spacing.css.
+   Do not edit here — re-copy from a new Claude Design export instead. */
+/* Lawbrokr 2.0 — spacing (4px base, Tailwind scale: n = n × 0.25rem), layout grid, icon sizes, motion. */
+:root {
+  --space-0: 0; --space-px: 1px; --space-0_5: 0.125rem; --space-1: 0.25rem; --space-1_5: 0.375rem; --space-2: 0.5rem;
+  --space-2_5: 0.625rem; --space-3: 0.75rem; --space-3_5: 0.875rem; --space-4: 1rem; --space-5: 1.25rem; --space-6: 1.5rem;
+  --space-7: 1.75rem; --space-8: 2rem; --space-9: 2.25rem; --space-10: 2.5rem; --space-12: 3rem; --space-14: 3.5rem;
+  --space-16: 4rem; --space-20: 5rem; --space-24: 6rem;
+  /* Layout grid */
+  --sidebar-width: 13.5rem;            /* 216px expanded */
+  --sidebar-width-collapsed: 4rem;     /* 64px */
+  --topbar-height: 3.5rem;             /* 56px */
+  --content-max-width: 90rem;          /* 1440px — content column caps here at 1920 */
+  --content-gutter: 2rem;              /* 32px desktop */
+  --content-gutter-mobile: 1rem;       /* 16px at 414 */
+  --card-padding: 1.25rem;             /* 20px */
+  --breakpoint-sm: 640px; --breakpoint-md: 768px; --breakpoint-lg: 1024px; --breakpoint-xl: 1280px; --breakpoint-2xl: 1536px;
+  /* Iconography (lucide-react) */
+  --icon-xs: 0.875rem; /* 14 — inside badges */
+  --icon-sm: 1rem;     /* 16 — buttons, inputs, table cells */
+  --icon-md: 1.25rem;  /* 20 — sidebar nav, page header actions */
+  --icon-lg: 1.5rem;   /* 24 — empty states, dialogs */
+  --icon-stroke: 2;    /* lucide default; 1.5 at --icon-lg and above */
+  /* Density */
+  --control-height-sm: 2rem;      /* 32 */
+  --control-height: 2.25rem;      /* 36 */
+  --control-height-lg: 2.5rem;    /* 40 */
+  --row-height-compact: 2.5rem;   /* 40 — data grid compact */
+  --row-height: 3rem;             /* 48 — data grid default, simple table */
+  --row-height-comfortable: 3.5rem; /* 56 */
+  /* Motion */
+  --duration-fast: 120ms; /* @kind other */ --duration-base: 180ms; /* @kind other */ --duration-slow: 300ms; /* @kind other */
+  --ease-out: cubic-bezier(0.2, 0, 0, 1); /* @kind other */ --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1); /* @kind other */
+}

@@ -3,7 +3,7 @@ import type { QuestionStep } from '../types';
 export const QUESTION_STEPS: readonly QuestionStep[] = [
   {
     id: 'role',
-    prompt: "Thanks! What's your role at the firm?",
+    prompt: 'Thanks. What’s your role at the firm?',
     options: [
       'Managing partner / owner',
       'Marketing director',
@@ -15,7 +15,7 @@ export const QUESTION_STEPS: readonly QuestionStep[] = [
   },
   {
     id: 'practice_area',
-    prompt: "Good to know. What's your primary practice area?",
+    prompt: 'Good to know. What’s your primary practice area?',
     options: [
       'Personal injury',
       'Family law',
@@ -25,17 +25,17 @@ export const QUESTION_STEPS: readonly QuestionStep[] = [
       'Employment law',
       'Business & corporate',
       'Real estate',
-      "Workers' compensation",
+      'Workers’ compensation',
       'Other',
     ],
     freeTextOnOther: true,
   },
   {
     id: 'primary_pain_point',
-    prompt: "Last one. What's pulling you to look at Lawbrokr right now?",
+    prompt: 'Last one. What’s pulling you to look at Lawbrokr right now?',
     options: [
-      "We're missing calls and leads without knowing it",
-      "We can't tell which marketing spend actually converts",
+      'We’re missing calls and leads without knowing it',
+      'We’re not sure which marketing spend actually converts',
       'Our follow up on new leads is inconsistent',
       'Just exploring for now',
     ],

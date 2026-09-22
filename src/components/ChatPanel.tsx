@@ -7,6 +7,7 @@ import { ContactDetailsForm } from './chat/ContactDetailsForm';
 import { EmailCaptureForm } from './chat/EmailCaptureForm';
 import { MessageBubble } from './chat/MessageBubble';
 import { TypingIndicator } from './chat/TypingIndicator';
+import { Progress } from './ui/Progress';
 
 /** Right-hand column: the guided conversation itself. */
 export function ChatPanel() {
@@ -31,16 +32,19 @@ export function ChatPanel() {
   }, [messages, isTyping, promptReady, stage]);
 
   return (
-    <main className="flex flex-col bg-white px-[22px] pt-7 pb-8 lg:px-14 lg:pt-10">
-      <header className="mb-5 flex items-baseline justify-between">
-        <h2 className="text-[1.05rem] font-bold">Talk to an AI Expert</h2>
-        <p className="text-[0.85rem] text-muted" aria-live="polite">
-          Step {Math.min(step, totalSteps)} of {totalSteps}
-        </p>
+    <main className="flex flex-col bg-card px-4 pt-8 pb-10 sm:px-8 lg:px-14 lg:pt-16">
+      <header className="mb-5 flex flex-col gap-2">
+        <div className="flex items-baseline justify-between gap-4">
+          <h2 className="text-xl font-semibold">Talk to an AI expert</h2>
+          <p className="text-sm tabular-nums text-muted-foreground" aria-live="polite">
+            Step {Math.min(step, totalSteps)} of {totalSteps}
+          </p>
+        </div>
+        <Progress value={Math.min(step, totalSteps)} max={totalSteps} label="Progress through the questions" />
       </header>
 
-      <div ref={scrollRef} className="min-h-[400px] flex-1 overflow-y-auto pr-1">
-        <div aria-live="polite" aria-atomic="false">
+      <div ref={scrollRef} className="min-h-100 flex-1 overflow-y-auto pr-1">
+        <div aria-live="polite">
           {messages.map((message) => (
             <MessageBubble key={message.id} message={message} />
           ))}

@@ -1,0 +1,187 @@
+/* Vendored verbatim from lawbrokr-design/design-system/tokens/tokens.css.
+   Do not edit here — re-copy from a new Claude Design export instead. */
+/* Lawbrokr 2.0 Design System — tokens.css
+   SHIPPED palette: the 2026 hue chart (team decision, 2026-09-17) — Brand purple, Indigo accent,
+   Red / Green / Yellow status — on the purple-tinted neutral scale, which is unchanged.
+   Token step numbers are OURS, not the chart's: #250D53 stays --primary-900 (the chart prints it
+   as Brand 800), so every chart step sits one notch below its token name from 300 down.
+   Family names are unchanged too: --violet-* now carries the chart's Indigo values and --amber-*
+   its Yellow values. The chart palette is five LIGHT fills (2026-09-18): brand purple, sky, yellow,
+   pink and a pale lavender, labelled in brand ink. Teal is gone.
+   Light theme only. Plain CSS custom properties: usable from Tailwind v4 `@theme inline`,
+   Astro, and Lit shadow DOM alike. All colours oklch(); hex equivalents in comments.
+   Semantic roles reference primitives. No dark block. */
+:root {
+  color-scheme: only light;
+
+  /* ───────── PRIMITIVES ───────── */
+  /* Primary (brand purple) — the 2026 chart's Brand column. Step 900 is Lawbrokr purple #250D53
+     exactly (the chart's Brand 800); 300–800 are the chart's 200–700, one notch up, and 950 is the
+     chart's 900. The chart's Brand 50 #BDAEDC, 100 #B2A1D1 and 950 #070043 are not shipped.
+     50 / 100 / 200 are the existing very-light purples, deliberately kept: they are the selected
+     and hover surfaces the whole UI is built on and sit outside the chart. */
+  --primary-50:  oklch(0.977 0.010 291.1); /* #F7F6FE — unchanged */
+  --primary-100: oklch(0.950 0.024 291.1); /* #EEECFE — unchanged */
+  --primary-200: oklch(0.900 0.052 291.1); /* #DDD9FF — unchanged */
+  --primary-300: oklch(0.679 0.074 303.1); /* #A18DBE */
+  --primary-400: oklch(0.616 0.078 305.2); /* #9079AB */
+  --primary-500: oklch(0.546 0.081 305.9); /* #7C6496 */
+  --primary-600: oklch(0.472 0.078 304.1); /* #65507F */
+  --primary-700: oklch(0.397 0.079 305.1); /* #513B69 */
+  --primary-800: oklch(0.319 0.091 300.9); /* #3B2559 */
+  --primary-900: oklch(0.249 0.116 291.1); /* #250D53  ← Lawbrokr Purple */
+  --primary-950: oklch(0.210 0.128 279.4); /* #140050 */
+
+  /* Neutral — tinted toward the purple hue (used by this variant). */
+  --neutral-50:  oklch(0.985 0.004 291.1); /* #FAFAFD */
+  --neutral-100: oklch(0.968 0.007 291.1); /* #F4F4F9 */
+  --neutral-200: oklch(0.928 0.012 291.1); /* #E7E6EF */
+  --neutral-300: oklch(0.870 0.018 291.1); /* #D4D2E0 */
+  --neutral-400: oklch(0.660 0.026 291.1); /* #9290A1 — tuned to 3.12:1 on white so input borders meet non-text contrast */
+  --neutral-500: oklch(0.556 0.028 291.1); /* #737183 */
+  --neutral-600: oklch(0.440 0.028 291.1); /* #525061 */
+  --neutral-700: oklch(0.370 0.028 291.1); /* #403D4E */
+  --neutral-800: oklch(0.270 0.026 291.1); /* #262432 */
+  --neutral-900: oklch(0.205 0.022 291.1); /* #171521 */
+  --neutral-950: oklch(0.145 0.018 291.1); /* #0A0911 */
+
+  /* Accent — the 2026 chart's INDIGO column, carried on the existing --violet-* names (no rename).
+     Step 600 is the source's #6C35FF exactly, no longer chroma-normalised. Assistant / AI moments,
+     accent badges and callouts. NEVER a chart series and never a second primary. */
+  --violet-50:  oklch(0.939 0.035 302.1); /* #EFE6FF */
+  --violet-100: oklch(0.898 0.057 297.5); /* #E1D6FF */
+  --violet-200: oklch(0.813 0.106 296.2); /* #C8B4FF */
+  --violet-300: oklch(0.729 0.157 294.8); /* #AF91FF */
+  --violet-400: oklch(0.648 0.208 293.0); /* #976DFF */
+  --violet-500: oklch(0.581 0.248 289.7); /* #804CFF */
+  --violet-600: oklch(0.538 0.270 285.3); /* #6C35FF  ← the accent */
+  --violet-700: oklch(0.480 0.249 279.5); /* #4F2FE3 */
+  --violet-800: oklch(0.421 0.227 274.4); /* #3527C5 */
+  --violet-900: oklch(0.367 0.203 269.1); /* #1C22A7 */
+  --violet-950: oklch(0.337 0.193 264.6); /* #041F98 */
+
+  /* Status — the 2026 chart's Red, Green and Yellow columns, 1:1 on the existing step numbers.
+     --amber-* keeps its name and carries the chart's YELLOW values (no rename). */
+  --red-50:  oklch(0.912 0.050 49.4); /* #FFD9C5 */
+  --red-100: oklch(0.888 0.052 50.0); /* #F8D1BC */
+  --red-200: oklch(0.843 0.064 45.4); /* #F0BFA9 */
+  --red-300: oklch(0.776 0.093 39.9); /* #EAA289 ← --destructive (red-900 ink on it 4.53:1) */
+  --red-400: oklch(0.704 0.125 33.7); /* #E2816B */
+  --red-500: oklch(0.645 0.138 32.1); /* #D46A56 */
+  --red-600: oklch(0.583 0.147 30.3); /* #C35343 — large text and icon fills only (4.53:1 with white) */
+  --red-700: oklch(0.522 0.154 28.0); /* #B13C33 */
+  --red-800: oklch(0.466 0.157 26.1); /* #9F2726 */
+  --red-900: oklch(0.412 0.158 23.2); /* #8D0E1D — ink on red tints */
+  --red-950: oklch(0.377 0.152 21.7); /* #7F0019 */
+  --green-50:  oklch(0.981 0.035 107.0); /* #FBFBE0 */
+  --green-100: oklch(0.936 0.050 107.3); /* #EDEDC7 */
+  --green-200: oklch(0.857 0.051 107.4); /* #D3D3AD — success surface, under green-900 ink (7.59:1) */
+  --green-300: oklch(0.785 0.053 107.6); /* #BCBC95 ← --success (green-900 ink on it 5.97:1) */
+  --green-400: oklch(0.714 0.055 108.9); /* #A5A67E */
+  --green-500: oklch(0.641 0.055 110.3); /* #8E9069 — 3.31:1 boundary on white */
+  --green-600: oklch(0.568 0.052 110.6); /* #787A56 */
+  --green-700: oklch(0.493 0.047 111.1); /* #626445 */
+  --green-800: oklch(0.418 0.044 111.6); /* #4D4F33 */
+  --green-900: oklch(0.341 0.037 110.3); /* #393A23 — ink on green tints */
+  --green-950: oklch(0.293 0.041 110.7); /* #2D2E15 */
+  --amber-50:  oklch(0.964 0.049 91.8); /* #FFF3CF */
+  --amber-100: oklch(0.928 0.058 81.5); /* #FBE4BC */
+  --amber-200: oklch(0.845 0.084 75.8); /* #ECC58E — warning surface */
+  --amber-300: oklch(0.776 0.090 72.0); /* #DAAD75 ← --warning (amber-900 ink on it 5.56:1) */
+  --amber-400: oklch(0.708 0.095 66.8); /* #C9955E — chart series 3 */
+  --amber-500: oklch(0.641 0.100 61.9); /* #B87E49 — 3.43:1 boundary on white */
+  --amber-600: oklch(0.572 0.102 56.6); /* #A56737 */
+  --amber-700: oklch(0.503 0.102 51.5); /* #915127 */
+  --amber-800: oklch(0.433 0.099 44.7); /* #7C3C1D */
+  --amber-900: oklch(0.358 0.097 38.3); /* #652611 — ink on warning tints */
+  --amber-950: oklch(0.303 0.098 38.5); /* #551600 */
+
+  /* Chart-only primitives — light categorical fills; see guidelines/palette-variants.md.
+     Kept names, new values (2026-09-18): --sky-500 carries the chart's Sky 300 and --rose-500 its
+     Pink 300, so both names sit well lighter than their step number suggests. --plum-200 is the chart's
+     Purple 200 and is chart series 5 only. Every fill takes brand-ink labels, never white. */
+  --rose-500: oklch(0.768 0.063 18.6);  /* #D9A4A4 — chart series 4 (chart Pink 300; lightened 2026-09-18) */
+  --sky-500:  oklch(0.786 0.027 239.2); /* #AABCC9 — chart series 2 (chart Sky 300; lightened 2026-09-18) */
+  --plum-200: oklch(0.851 0.032 289.7); /* #CDCBE2 — chart series 5 */
+
+  /* ───────── SEMANTIC ROLES (shadcn names) ───────── */
+  --background: var(--neutral-50);
+  --foreground: var(--primary-900);
+  --card: oklch(1 0 0);                 /* #FFFFFF */
+  --card-foreground: var(--primary-900);
+  --popover: oklch(1 0 0);
+  --popover-foreground: var(--primary-900);
+  --primary: var(--primary-900);        /* #250D53 */
+  --primary-foreground: oklch(1 0 0);
+  --secondary: var(--primary-100);
+  --secondary-foreground: var(--primary-900);
+  --muted: var(--neutral-100);
+  --muted-foreground: var(--neutral-600);
+  --accent: var(--primary-100);         /* hover / selected surface */
+  --accent-foreground: var(--primary-900);
+  /* Status roles come in TWO pairs per family. A step number is never synonymous with a role: the
+     primitive scale is the available values, the role is how a value is used.
+       STRONG  --<role> / --<role>-foreground   the 300 fill under same-family 900 ink — buttons
+       SUBTLE  --<role>-subtle / --<role>-subtle-foreground   the 100 tint under that same 900 ink — badges
+     Revised 2026-09-21: both pairs are light tints of one family and differ ONLY in fill depth,
+     300 against 100. No status colour uses white text, and none uses brand purple as a label — at 300
+     the ink is the family's own 900, so no two hues compete. Interaction goes LIGHTER, like the primary
+     (destructive hover red-200, pressed red-100); darker breaks the ink (red-400 under red-900 is 3.43).
+     KNOWN LIMIT, accepted 2026-09-21: these fills are too light to act as boundaries. Progress at 100%,
+     success icon fills, the alert borders and the invalid input border land at 1.78–2.09 against the 3:1
+     non-text floor and are accepted as decorative — see contrast-report.md § Documented deviations. */
+  --destructive: var(--red-300);        /* #EAA289 — STRONG fill: destructive button (red-900 ink 4.53:1); hover red-200, pressed red-100 */
+  --destructive-foreground: var(--red-900); /* #8D0E1D */
+  --destructive-subtle: var(--red-100); /* #F8D1BC — SUBTLE surface: destructive badge */
+  --destructive-subtle-foreground: var(--red-900); /* #8D0E1D — ink on --destructive-subtle (6.71:1); destructive TEXT on a neutral ground: error messages, destructive menu items (9.49:1 on white) */
+  --success: var(--green-300);          /* #BCBC95 — STRONG fill: solid success, bars, icon fills (green-900 ink 5.97:1) */
+  --success-foreground: var(--green-900); /* #393A23 */
+  --success-subtle: var(--green-100);   /* #EDEDC7 — SUBTLE surface: success badge, positive stat badge */
+  --success-subtle-foreground: var(--green-900); /* #393A23 — ink on --success-subtle (9.73:1); success text on a neutral ground (11.65:1 on white) */
+  --warning: var(--amber-300);          /* #DAAD75 — STRONG fill (amber-900 ink 5.56:1) */
+  --warning-foreground: var(--amber-900); /* #652611 */
+  --warning-subtle: var(--amber-100);   /* #FBE4BC — SUBTLE surface: warning badge */
+  --warning-subtle-foreground: var(--amber-900); /* #652611 — ink on --warning-subtle (9.20:1); warning text on a neutral ground (10.79:1 on white) */
+  --border: var(--neutral-200);
+  --input: var(--neutral-400);          /* 3.12:1 on card — WCAG 1.4.11 boundary */
+  --ring: var(--primary-600);           /* #65507F — 6.98:1 on white */
+  --overlay: oklch(0.249 0.116 291.1 / 0.45); /* Lawbrokr Purple at 45% — dialog and sheet backdrop */
+  /* Categorical chart series — light fills, separated by hue and always labelled.
+     Labels on a fill are --primary-900 brand ink (4.81:1 at the worst, on chart-4), never white. */
+  --chart-1: var(--primary-300); /* #A18DBE — light brand purple */
+  --chart-2: var(--sky-500);     /* #AABCC9 */
+  --chart-3: var(--amber-300);   /* #DAAD75 */
+  --chart-4: var(--rose-500);    /* #D9A4A4 */
+  --chart-5: var(--plum-200);    /* #CDCBE2 */
+  --sidebar: oklch(1 0 0);
+  --sidebar-foreground: var(--neutral-700);
+  --sidebar-primary: var(--primary-900);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: var(--primary-100);
+  --sidebar-accent-foreground: var(--primary-900);
+  --sidebar-border: var(--neutral-200);
+  --sidebar-ring: var(--primary-600);
+
+  /* Interaction steps for the dark primary: lighter, never darker. */
+  --primary-hover: var(--primary-800);      /* #3B2559 */
+  --primary-active: var(--primary-700);     /* #513B69 */
+  --primary-subtle: var(--primary-50);      /* #F7F6FE */
+  --primary-disabled: var(--primary-300);   /* #A18DBE */
+
+  /* Shape */
+  --radius: 0.5rem; /* 8px. Code derives sm = radius-4px, md = radius-2px, lg = radius, xl = radius+4px */
+  --radius-sm: calc(var(--radius) - 4px); /* 4px  chips, checkbox, tag */
+  --radius-md: calc(var(--radius) - 2px); /* 6px  buttons, inputs, selects, badges, menu items */
+  --radius-lg: var(--radius);             /* 8px  cards, table container, popovers, callouts */
+  --radius-xl: calc(var(--radius) + 4px); /* 12px dialogs, phone-flow surfaces */
+  --radius-full: 9999px;                  /* avatar, switch, progress track only */
+
+  /* Elevation — purple-tinted, two steps only. */
+  --shadow-sm: 0 1px 3px 0 oklch(0.249 0.116 291.1 / 0.10);
+  --shadow-md: 0 4px 32px 0 oklch(0.249 0.116 291.1 / 0.10);
+
+  /* Type families */
+  --font-sans: "Instrument Sans", "Helvetica Neue", Helvetica, Arial, system-ui, sans-serif;
+  --font-serif: "Host Grotesk", "Instrument Sans", "Helvetica Neue", Helvetica, Arial, sans-serif; /* display headings + stat values — Host Grotesk 600 replaced Playfair Display 2026-09-17; the token name is kept to avoid a breaking rename */
+  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+}

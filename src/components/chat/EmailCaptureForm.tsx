@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import type { FormEvent } from 'react';
 import { Button } from '../ui/Button';
-import { FormGrid } from '../ui/FormGrid';
-import { TextField } from '../ui/TextField';
+import { FormGrid, TextField } from '../ui/Field';
 
 interface EmailCaptureFormProps {
   onSubmit: (email: string) => Promise<void>;
@@ -28,17 +27,18 @@ export function EmailCaptureForm({ onSubmit }: EmailCaptureFormProps) {
           label="Work email"
           type="email"
           autoComplete="email"
+          placeholder="you@yourfirm.com"
           required
           full
           value={email}
           onChange={(event) => setEmail(event.target.value)}
         />
       </FormGrid>
-      <Button type="submit" disabled={pending}>
-        {pending ? 'Sending…' : 'Continue'}
+      <Button type="submit" size="lg" loading={pending}>
+        Continue
       </Button>
-      <p className="mt-[10px] text-[0.8rem] text-muted">
-        We'll follow up either way, even if you don't finish this.
+      <p className="mt-2.5 text-xs text-muted-foreground">
+        We&rsquo;ll follow up either way, even if you don&rsquo;t finish this.
       </p>
     </form>
   );

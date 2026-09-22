@@ -4,9 +4,9 @@ import { EXPLORING_ANSWER, QUESTION_STEPS, TOTAL_STEPS } from '../data/steps';
 import { submitToHubSpot, trackEngagement } from '../lib/hubspot';
 import type { Answers, ChatMessage, ContactDetails, Lead, LeadHeat, Stage } from '../types';
 
-const GREETING = "Hi there, I'm one of Lawbrokr's AI Experts. What's your work email?";
+const GREETING = 'Hi there, I’m one of Lawbrokr’s AI experts. What’s your work email?';
 const CONTACT_PROMPT =
-  "Great, that's really helpful. Just need a few details and I'll get you booked in with our team.";
+  'Great, that’s really helpful. Just a few details and I’ll get you booked in with our team.';
 
 /** Stable identity for a stage, used to tell whether its prompt has landed. */
 function stageKey(stage: Stage): string {

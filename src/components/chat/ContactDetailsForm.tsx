@@ -3,9 +3,7 @@ import type { FormEvent } from 'react';
 import { FIRM_SIZES } from '../../data/steps';
 import type { ContactDetails } from '../../types';
 import { Button } from '../ui/Button';
-import { FormGrid } from '../ui/FormGrid';
-import { SelectField } from '../ui/SelectField';
-import { TextField } from '../ui/TextField';
+import { FormGrid, SelectField, TextField } from '../ui/Field';
 
 interface ContactDetailsFormProps {
   onSubmit: (details: ContactDetails) => Promise<void>;
@@ -41,6 +39,7 @@ export function ContactDetailsForm({ onSubmit }: ContactDetailsFormProps) {
           label="Name"
           type="text"
           autoComplete="name"
+          placeholder="Dana Whitfield"
           required
           value={details.name}
           onChange={(event) => set('name')(event.target.value)}
@@ -49,6 +48,7 @@ export function ContactDetailsForm({ onSubmit }: ContactDetailsFormProps) {
           label="Phone"
           type="tel"
           autoComplete="tel"
+          placeholder="(415) 555 0132"
           required
           value={details.phone}
           onChange={(event) => set('phone')(event.target.value)}
@@ -57,6 +57,7 @@ export function ContactDetailsForm({ onSubmit }: ContactDetailsFormProps) {
           label="Firm name"
           type="text"
           autoComplete="organization"
+          placeholder="Harbor Law Group"
           required
           value={details.firm}
           onChange={(event) => set('firm')(event.target.value)}
@@ -64,7 +65,7 @@ export function ContactDetailsForm({ onSubmit }: ContactDetailsFormProps) {
         <TextField
           label="Firm website"
           type="url"
-          placeholder="https://"
+          placeholder="https://harborlaw.com"
           required
           value={details.site}
           onChange={(event) => set('site')(event.target.value)}
@@ -79,8 +80,8 @@ export function ContactDetailsForm({ onSubmit }: ContactDetailsFormProps) {
           onChange={(event) => set('size')(event.target.value)}
         />
       </FormGrid>
-      <Button type="submit" disabled={pending}>
-        {pending ? 'Sending…' : 'Get on the calendar'}
+      <Button type="submit" size="lg" loading={pending}>
+        Get on the calendar
       </Button>
     </form>
   );

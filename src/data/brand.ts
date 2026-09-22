@@ -1,14 +1,14 @@
 export const PILLARS = [
   {
-    name: 'Digital Front Door',
+    name: 'Digital front door',
     description: 'Every inquiry gets captured and routed, day or night.',
   },
   {
-    name: 'AI Assisted Campaigns',
+    name: 'AI assisted campaigns',
     description: 'See which marketing spend actually turns into clients.',
   },
   {
-    name: 'AI Optimized Conversion',
+    name: 'AI optimized conversion',
     description: 'Consistent follow up on every lead that comes in.',
   },
 ] as const;

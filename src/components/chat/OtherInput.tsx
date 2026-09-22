@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
+import type { FormEvent } from 'react';
 import { Button } from '../ui/Button';
-import { inputClasses } from '../ui/TextField';
+import { TextField } from '../ui/Field';
 
 /** Free-text fallback shown when someone picks "Other". */
 export function OtherInput({ onSubmit }: { onSubmit: (value: string) => void }) {
@@ -11,32 +12,29 @@ export function OtherInput({ onSubmit }: { onSubmit: (value: string) => void }) 
     inputRef.current?.focus();
   }, []);
 
-  const submit = () => {
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     const trimmed = value.trim();
     if (!trimmed) return;
     onSubmit(trimmed);
   };
 
   return (
-    <div className="mb-5 flex gap-2 animate-rise">
-      <input
-        ref={inputRef}
-        type="text"
-        className={`${inputClasses} flex-1`}
-        placeholder="Type your answer"
-        aria-label="Your answer"
-        value={value}
-        onChange={(event) => setValue(event.target.value)}
-        onKeyDown={(event) => {
-          if (event.key === 'Enter') {
-            event.preventDefault();
-            submit();
-          }
-        }}
-      />
-      <Button variant="brand" onClick={submit} disabled={!value.trim()}>
+    <form className="mb-5 flex animate-rise items-end gap-2" onSubmit={handleSubmit}>
+      <div className="flex-1">
+        <TextField
+          ref={inputRef}
+          label="Your answer"
+          type="text"
+          placeholder="Head of intake"
+          required
+          value={value}
+          onChange={(event) => setValue(event.target.value)}
+        />
+      </div>
+      <Button type="submit" disabled={!value.trim()}>
         Continue
       </Button>
-    </div>
+    </form>
   );
 }

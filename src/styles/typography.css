@@ -1,0 +1,28 @@
+/* Vendored from lawbrokr-design/design-system/tokens/typography.css.
+   Do not edit here — re-copy from a new Claude Design export instead.
+
+   One deliberate change from the export: its leading
+   `@import url(https://fonts.googleapis.com/...)` is dropped. Once this file is
+   inlined after tokens.css an @import is no longer the first statement, which is
+   invalid CSS. The same two families are loaded from a <link> in index.html,
+   which also avoids the import waterfall. */
+/* Lawbrokr 2.0 — typography tokens. Type scale in rem, line-heights unitless-equivalent rem, weights. */
+:root {
+  --text-xs: 0.75rem;   --leading-xs: 1rem;      /* 12/16  captions, table headers, overlines */
+  --text-sm: 0.875rem;  --leading-sm: 1.25rem;   /* 14/20  UI default: buttons, inputs, table cells */
+  --text-base: 1rem;    --leading-base: 1.5rem;  /* 16/24  body copy, dialogs */
+  --text-lg: 1.125rem;  --leading-lg: 1.75rem;   /* 18/28  card titles */
+  --text-xl: 1.25rem;   --leading-xl: 1.75rem;   /* 20/28  section headings */
+  --text-2xl: 1.5rem;   --leading-2xl: 2rem;     /* 24/32  dialog titles, small stat values */
+  --text-3xl: 1.875rem; --leading-3xl: 2.25rem;  /* 30/36  page titles (display) */
+  --text-4xl: 2.25rem;  --leading-4xl: 2.5rem;   /* 36/40  stat values (display), auth headline */
+  --text-5xl: 3rem;     --leading-5xl: 1;        /* 48/48  onboarding / visitor hero (display) */
+  --font-normal: 400; --font-medium: 500; --font-semibold: 600; --font-bold: 700;
+  --tracking-tight: -0.015em;  /* display (--font-serif, Host Grotesk 600) */
+  --tracking-normal: 0;
+  --tracking-wide: 0.08em;     /* uppercase overlines and table headers */
+}
+html { font-family: var(--font-sans); font-size: 16px; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+body { margin: 0; color: var(--foreground); background: var(--background); font-size: var(--text-sm); line-height: var(--leading-sm); }
+a { color: var(--primary); text-decoration: underline; text-underline-offset: 2px; }
+a:hover { color: var(--primary-hover); }
