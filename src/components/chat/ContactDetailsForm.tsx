@@ -1,0 +1,87 @@
+import { useState } from 'react';
+import type { FormEvent } from 'react';
+import { FIRM_SIZES } from '../../data/steps';
+import type { ContactDetails } from '../../types';
+import { Button } from '../ui/Button';
+import { FormGrid } from '../ui/FormGrid';
+import { SelectField } from '../ui/SelectField';
+import { TextField } from '../ui/TextField';
+
+interface ContactDetailsFormProps {
+  onSubmit: (details: ContactDetails) => Promise<void>;
+}
+
+const EMPTY: ContactDetails = { name: '', phone: '', firm: '', site: '', size: '' };
+
+export function ContactDetailsForm({ onSubmit }: ContactDetailsFormProps) {
+  const [details, setDetails] = useState<ContactDetails>(EMPTY);
+  const [pending, setPending] = useState(false);
+
+  const set = (key: keyof ContactDetails) => (value: string) =>
+    setDetails((current) => ({ ...current, [key]: value }));
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (pending) return;
+
+    setPending(true);
+    await onSubmit({
+      name: details.name.trim(),
+      phone: details.phone.trim(),
+      firm: details.firm.trim(),
+      site: details.site.trim(),
+      size: details.size,
+    });
+  };
+
+  return (
+    <form className="mb-5 animate-rise" onSubmit={handleSubmit}>
+      <FormGrid className="mb-4">
+        <TextField
+          label="Name"
+          type="text"
+          autoComplete="name"
+          required
+          value={details.name}
+          onChange={(event) => set('name')(event.target.value)}
+        />
+        <TextField
+          label="Phone"
+          type="tel"
+          autoComplete="tel"
+          required
+          value={details.phone}
+          onChange={(event) => set('phone')(event.target.value)}
+        />
+        <TextField
+          label="Firm name"
+          type="text"
+          autoComplete="organization"
+          required
+          value={details.firm}
+          onChange={(event) => set('firm')(event.target.value)}
+        />
+        <TextField
+          label="Firm website"
+          type="url"
+          placeholder="https://"
+          required
+          value={details.site}
+          onChange={(event) => set('site')(event.target.value)}
+        />
+        <SelectField
+          label="Firm size"
+          placeholder="Select one"
+          options={FIRM_SIZES}
+          required
+          full
+          value={details.size}
+          onChange={(event) => set('size')(event.target.value)}
+        />
+      </FormGrid>
+      <Button type="submit" disabled={pending}>
+        {pending ? 'Sending…' : 'Get on the calendar'}
+      </Button>
+    </form>
+  );
+}
