@@ -5,20 +5,35 @@ import { PILLARS, PROOF } from '../data/brand';
  * design system allows, so everything on it is white: the wordmark, the display
  * hero (Host Grotesk 600 at 5xl, the visitor-hero step) and the copy. No rules,
  * no tints — spacing carries the structure.
+ *
+ * The block is centred in the column. Where the column is taller than the copy
+ * the slack splits evenly above and below; where the copy is taller (a phone,
+ * stacked) the grid row grows to fit it and centring is a no-op, so nothing can
+ * be pushed out of reach.
+ *
+ * One rhythm holds the column together: `space-y-10` sets an identical 40px
+ * between the five blocks below, and the only tighter gaps are inside a pair
+ * that reads as one thing — a heading and its deck, a stat and its caption, the
+ * pillar rows. Per-child margins are deliberately avoided here; they are what
+ * let the spacing drift out of step.
  */
 export function BrandPanel() {
   return (
-    <aside className="flex flex-col justify-between gap-12 bg-primary px-4 py-10 text-primary-foreground sm:px-8 lg:px-14 lg:py-16">
-      <div>
+    <aside className="flex flex-col justify-center bg-primary px-4 py-10 text-primary-foreground sm:px-8 lg:px-14 lg:py-16">
+      <div className="space-y-10">
         <img src="/brand/lb-wordmark-white.svg" alt="Lawbrokr" className="h-5 w-auto" />
 
-        <h1 className="mt-10 max-w-[12ch] font-display text-5xl font-semibold tracking-tight">Speak with an AI expert.</h1>
-        <p className="mt-4 max-w-[40ch] text-base text-primary-foreground/80">
-          Tell us a bit about your firm. We&rsquo;ll ask a few quick questions, then get you on the
-          calendar with our team.
-        </p>
+        <div>
+          <h1 className="max-w-[12ch] font-display text-5xl font-semibold tracking-tight">
+            Speak with an AI expert.
+          </h1>
+          <p className="mt-4 max-w-[40ch] text-base text-primary-foreground/80">
+            Tell us a bit about your firm. We&rsquo;ll ask a few quick questions, then get you on the
+            calendar with our team.
+          </p>
+        </div>
 
-        <dl className="mt-10 space-y-5">
+        <dl className="space-y-5">
           {PILLARS.map((pillar) => (
             <div key={pillar.name} className="flex flex-col gap-1 sm:flex-row sm:gap-4">
               <dt className="text-sm font-medium sm:w-[17ch] sm:shrink-0">{pillar.name}</dt>
@@ -27,13 +42,15 @@ export function BrandPanel() {
           ))}
         </dl>
 
-        <div className="mt-10">
-          <p className="font-display text-4xl font-semibold tracking-tight tabular-nums">{PROOF.stat}</p>
+        <div>
+          <p className="font-display text-4xl font-semibold tracking-tight tabular-nums">
+            {PROOF.stat}
+          </p>
           <p className="mt-2 max-w-[34ch] text-sm text-primary-foreground/80">{PROOF.copy}</p>
         </div>
-      </div>
 
-      <p className="text-xs text-primary-foreground/70">Conversion intelligence for law</p>
+        <p className="text-xs text-primary-foreground/70">Conversion intelligence for law</p>
+      </div>
     </aside>
   );
 }

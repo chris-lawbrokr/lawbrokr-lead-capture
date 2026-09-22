@@ -37,9 +37,6 @@ export function EmailCaptureForm({ onSubmit }: EmailCaptureFormProps) {
       <Button type="submit" size="lg" loading={pending}>
         Continue
       </Button>
-      <p className="mt-2.5 text-xs text-muted-foreground">
-        We&rsquo;ll follow up either way, even if you don&rsquo;t finish this.
-      </p>
     </form>
   );
 }
