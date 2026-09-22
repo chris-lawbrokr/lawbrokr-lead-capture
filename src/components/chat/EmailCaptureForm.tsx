@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import type { FormEvent } from 'react';
 import { Button } from '../ui/Button';
-import { FormGrid, TextField } from '../ui/Field';
+import { TextField } from '../ui/Field';
 
 interface EmailCaptureFormProps {
   onSubmit: (email: string) => Promise<void>;
 }
 
+/** The opening step's field. Sits under the greeting while it is still centred. */
 export function EmailCaptureForm({ onSubmit }: EmailCaptureFormProps) {
   const [email, setEmail] = useState('');
   const [pending, setPending] = useState(false);
@@ -21,20 +22,18 @@ export function EmailCaptureForm({ onSubmit }: EmailCaptureFormProps) {
   };
 
   return (
-    <form className="mb-5 animate-rise" onSubmit={handleSubmit}>
-      <FormGrid className="mb-4">
-        <TextField
-          label="Work email"
-          type="email"
-          autoComplete="email"
-          placeholder="you@yourfirm.com"
-          required
-          full
-          value={email}
-          onChange={(event) => setEmail(event.target.value)}
-        />
-      </FormGrid>
-      <Button type="submit" size="lg" loading={pending}>
+    <form className="animate-fade-in" onSubmit={handleSubmit}>
+      <TextField
+        label="Work email"
+        type="email"
+        size="lg"
+        autoComplete="email"
+        placeholder="you@yourfirm.com"
+        required
+        value={email}
+        onChange={(event) => setEmail(event.target.value)}
+      />
+      <Button type="submit" size="lg" loading={pending} className="mt-4">
         Continue
       </Button>
     </form>

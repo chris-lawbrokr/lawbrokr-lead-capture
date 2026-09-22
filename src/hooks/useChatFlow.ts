@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { TYPING_DELAY_MS } from '../config';
+import { INTRO_EXIT_MS, TYPING_DELAY_MS } from '../config';
 import { EXPLORING_ANSWER, QUESTION_STEPS, TOTAL_STEPS } from '../data/steps';
 import { submitToHubSpot, trackEngagement } from '../lib/hubspot';
+import { prefersReducedMotion } from '../lib/motion';
 import type { Answers, ChatMessage, ContactDetails, Lead, LeadHeat, Stage } from '../types';
 
 const GREETING = 'Hi there, I’m one of Lawbrokr’s AI experts. What’s your work email?';
@@ -41,6 +42,13 @@ function stepNumber(stage: Stage): number {
   }
 }
 
+/**
+ * How the panel is presenting itself. The email step stands on its own as a
+ * centred prompt; `leaving` is the beat where it fades before the transcript
+ * takes over.
+ */
+export type Phase = 'intro' | 'leaving' | 'chat';
+
 let nextMessageId = 0;
 
 /**
@@ -56,6 +64,7 @@ export function useChatFlow() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [stage, setStage] = useState<Stage>({ name: 'email' });
   const [spokenKey, setSpokenKey] = useState<string | null>(null);
+  const [phase, setPhase] = useState<Phase>('intro');
 
   const answersRef = useRef<Answers>({});
   const leadRef = useRef<Lead>({});
@@ -94,8 +103,20 @@ export function useChatFlow() {
   const submitEmail = useCallback(
     async (email: string) => {
       leadRef.current.email = email;
-      await submitToHubSpot([{ name: 'email', value: email }]);
+      setPhase('leaving');
+
+      // Fade the intro out while the submission is in flight, so the wait costs
+      // nothing. Honouring reduced motion here as well as in CSS keeps the
+      // transition from becoming a plain delay for anyone who has asked for less.
+      await Promise.all([
+        submitToHubSpot([{ name: 'email', value: email }]),
+        new Promise((resolve) => setTimeout(resolve, prefersReducedMotion() ? 0 : INTRO_EXIT_MS)),
+      ]);
+
+      // The greeting is already the first line of the transcript, spoken by the
+      // stage effect — the intro was only ever showing it in a different frame.
       say('user', email);
+      setPhase('chat');
       setStage({ name: 'question', index: 0 });
     },
     [say],
@@ -140,6 +161,7 @@ export function useChatFlow() {
 
   return {
     messages,
+    phase,
     stage,
     isTyping: !promptReady,
     promptReady,

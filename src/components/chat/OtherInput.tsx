@@ -20,7 +20,7 @@ export function OtherInput({ onSubmit }: { onSubmit: (value: string) => void }) 
   };
 
   return (
-    <form className="mb-5 flex animate-rise items-end gap-2" onSubmit={handleSubmit}>
+    <form className="mb-5 flex animate-fade-in items-end gap-2" onSubmit={handleSubmit}>
       <div className="flex-1">
         <TextField
           ref={inputRef}

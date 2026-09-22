@@ -33,7 +33,7 @@ export function ContactDetailsForm({ onSubmit }: ContactDetailsFormProps) {
   };
 
   return (
-    <form className="mb-5 animate-rise" onSubmit={handleSubmit}>
+    <form className="mb-5 animate-fade-in" onSubmit={handleSubmit}>
       <FormGrid className="mb-4">
         <TextField
           label="Name"

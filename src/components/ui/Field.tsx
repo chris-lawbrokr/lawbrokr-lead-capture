@@ -10,11 +10,19 @@ import { cn } from '../../lib/cn';
  */
 
 const control =
-  'w-full h-9 px-3 rounded-md border border-input bg-card text-foreground text-sm ' +
+  'w-full px-3 rounded-md border border-input bg-card text-foreground ' +
   'transition-[color,border-color,box-shadow] duration-[120ms] ease-out ' +
   'placeholder:text-neutral-500 hover:not-disabled:border-neutral-500 ' +
   'focus-visible:outline-none focus-visible:border-ring focus-visible:shadow-[0_0_0_3px_var(--primary-200)] ' +
   'aria-invalid:border-destructive disabled:bg-muted disabled:text-muted-foreground disabled:cursor-not-allowed';
+
+/* Design system: Input sizes sm 32 / default 36 / lg 40. */
+const controlSizes = {
+  default: 'h-9 text-sm',
+  lg: 'h-10 text-base',
+} as const;
+
+type ControlSize = keyof typeof controlSizes;
 
 const labelClass = 'text-sm font-medium text-foreground';
 
@@ -53,20 +61,29 @@ function FieldShell({
   );
 }
 
-interface TextFieldProps extends Omit<ComponentPropsWithRef<'input'>, 'id'> {
+interface TextFieldProps extends Omit<ComponentPropsWithRef<'input'>, 'id' | 'size'> {
   label: string;
   hint?: string;
   error?: string;
   full?: boolean;
+  size?: ControlSize;
 }
 
-export function TextField({ label, hint, error, full, className, ...props }: TextFieldProps) {
+export function TextField({
+  label,
+  hint,
+  error,
+  full,
+  size = 'default',
+  className,
+  ...props
+}: TextFieldProps) {
   const id = useId();
   return (
     <FieldShell id={id} label={label} hint={hint} error={error} full={full}>
       <input
         id={id}
-        className={cn(control, className)}
+        className={cn(control, controlSizes[size], className)}
         aria-invalid={error ? true : undefined}
         aria-describedby={error ? `${id}-err` : hint ? `${id}-hint` : undefined}
         {...props}
@@ -100,7 +117,7 @@ export function SelectField({
       <div className="relative">
         <select
           id={id}
-          className={cn(control, 'cursor-pointer appearance-none pr-9', className)}
+          className={cn(control, controlSizes.default, 'cursor-pointer appearance-none pr-9', className)}
           aria-invalid={error ? true : undefined}
           aria-describedby={error ? `${id}-err` : hint ? `${id}-hint` : undefined}
           {...props}

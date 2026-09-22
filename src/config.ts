@@ -47,3 +47,17 @@ export const isEngagementEventConfigured = () => !isPlaceholder(CONFIG.engagemen
 
 /** How long the "typing" indicator sits before a bot message lands. */
 export const TYPING_DELAY_MS = 650;
+
+/**
+ * How long the centred intro takes to fade before the chat view replaces it.
+ * Matches `--duration-base`, the design system's step for transitions.
+ */
+export const INTRO_EXIT_MS = 180;
+
+/**
+ * How long the greeting takes to travel from the centre of the column up to the
+ * top of the transcript. Longer than `--duration-slow` (300ms, the top of the
+ * design system's motion scale) because this one move covers most of the
+ * column's height, and at 300ms it reads as a jump rather than a travel.
+ */
+export const INTRO_SLIDE_MS = 460;

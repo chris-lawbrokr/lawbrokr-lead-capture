@@ -10,7 +10,7 @@ export function MessageBubble({ message }: { message: ChatMessage }) {
   const fromBot = message.author === 'bot';
 
   return (
-    <div className={cn('mb-3 flex animate-rise', fromBot ? 'justify-start' : 'justify-end')}>
+    <div className={cn('mb-3 flex animate-fade-in', fromBot ? 'justify-start' : 'justify-end')}>
       <div
         className={cn(
           'max-w-[78%] rounded-lg px-4 py-2.5 text-base',
