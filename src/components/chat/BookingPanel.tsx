@@ -4,7 +4,7 @@ import { CONFIG } from '../../config';
 /** Final step: the scheduler, framed as a card. */
 export function BookingPanel() {
   return (
-    <div className="mb-5 animate-fade-in overflow-hidden rounded-lg border border-border bg-card shadow-sm">
+    <div className="mt-8 mb-5 animate-fade-in overflow-hidden rounded-lg border border-border bg-card shadow-sm">
       <div className="border-b border-border px-5 py-4">
         <h3 className="text-lg font-semibold">Pick a time that works</h3>
         <p className="text-sm text-muted-foreground">20-minute call with our team.</p>

@@ -95,7 +95,7 @@ export function ChatPanel() {
 
   return (
     <main className="flex flex-col bg-card pb-8 lg:sticky lg:top-0 lg:h-screen lg:pb-12">
-      <header className="sticky top-0 z-10 flex flex-col gap-2 bg-card px-4 pt-8 pb-5 sm:px-8 lg:px-14 lg:pt-16">
+      <header className="sticky top-0 z-10 flex flex-col gap-2 bg-card px-4 pt-8 pb-8 sm:px-8 lg:px-14 lg:pt-12 lg:pb-12">
         <div className="flex items-baseline justify-between gap-4">
           <h2 className="text-xl font-semibold">Talk to an AI expert</h2>
           <p className="text-sm tabular-nums text-muted-foreground" aria-live="polite">

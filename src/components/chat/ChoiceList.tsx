@@ -39,7 +39,7 @@ export function ChoiceList({ options, onPick, freeTextOnOther = false }: ChoiceL
   };
 
   return (
-    <div className="mb-5 flex animate-fade-in flex-col gap-2 sm:flex-row sm:flex-wrap">
+    <div className="mt-5 mb-5 flex animate-fade-in flex-col gap-2 sm:flex-row sm:flex-wrap">
       {options.map((option) => (
         <Button
           key={option}

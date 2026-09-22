@@ -22,7 +22,7 @@ export function EmailCaptureForm({ onSubmit }: EmailCaptureFormProps) {
   };
 
   return (
-    <form className="animate-fade-in" onSubmit={handleSubmit}>
+    <form className="mt-8 animate-fade-in" onSubmit={handleSubmit}>
       <TextField
         label="Work email"
         type="email"
