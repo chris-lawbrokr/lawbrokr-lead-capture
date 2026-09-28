@@ -141,9 +141,13 @@ export function useChatFlow() {
       Object.assign(leadRef.current, details);
       const answers = answersRef.current;
 
+      // The form asks for one name; HubSpot keeps first and last separately.
+      const [firstname, ...rest] = details.name.split(/\s+/);
+
       await submitToHubSpot([
         { name: 'email', value: leadRef.current.email ?? '' },
-        { name: 'firstname', value: details.name },
+        { name: 'firstname', value: firstname },
+        { name: 'lastname', value: rest.join(' ') },
         { name: 'phone', value: details.phone },
         { name: 'company', value: details.firm },
         { name: 'firm_website', value: details.site },

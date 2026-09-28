@@ -46,7 +46,7 @@ export async function submitToHubSpot(fields: HubspotField[]): Promise<void> {
 
   try {
     const endpoint = `https://api.hsforms.com/submissions/v3/integration/submit/${CONFIG.hubspotPortalId}/${CONFIG.hubspotFormGuid}`;
-    await fetch(endpoint, {
+    const response = await fetch(endpoint, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -58,6 +58,12 @@ export async function submitToHubSpot(fields: HubspotField[]): Promise<void> {
         },
       }),
     });
+
+    // fetch only rejects on network failure. A misconfigured form — missing
+    // property, bad dropdown value — comes back as a 400 that says which field.
+    if (!response.ok) {
+      console.error('HubSpot rejected the form submission:', response.status, await response.text());
+    }
   } catch (error) {
     console.error('HubSpot form submission failed:', error);
   }

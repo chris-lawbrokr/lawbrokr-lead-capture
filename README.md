@@ -62,7 +62,7 @@ instead of being sent — the flow still runs end to end.
 
 The HubSpot form needs custom properties for `firm_website`, `firm_size`, `role`,
 `practice_area`, `primary_pain_point` and `lead_heat`, alongside the standard `email`,
-`firstname`, `phone` and `company`.
+`firstname`, `lastname`, `phone` and `company`. Create the custom properties and add them to the form in the same sitting: HubSpot ignores a field that is not a property yet, but rejects the whole submission once it is a property that is missing from the form.
 
 ## Slack alerts
 
