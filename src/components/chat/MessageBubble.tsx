@@ -1,16 +1,18 @@
 import { cn } from '../../lib/cn';
 import type { ChatMessage } from '../../types';
+import { AgentAvatar } from './AgentAvatar';
 
 /**
- * One line of the transcript. Lawbrokr speaks on a muted card with a border;
- * the visitor's own words come back in brand purple. Radius-lg, squared off on
- * the corner nearest its speaker.
+ * One line of the transcript. Lawbrokr speaks on a muted card with a border,
+ * beside Jake's photo; the visitor's own words come back in brand purple.
+ * Radius-lg, squared off on the corner nearest its speaker.
  */
 export function MessageBubble({ message }: { message: ChatMessage }) {
   const fromBot = message.author === 'bot';
 
   return (
-    <div className={cn('mb-3 flex animate-fade-in', fromBot ? 'justify-start' : 'justify-end')}>
+    <div className={cn('mb-3 flex animate-fade-in items-start gap-2', fromBot ? 'justify-start' : 'justify-end')}>
+      {fromBot && <AgentAvatar />}
       <div
         className={cn(
           'max-w-[78%] rounded-lg px-4 py-2.5 text-base',

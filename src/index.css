@@ -163,6 +163,13 @@
     opacity: 1;
   }
 
+  /* A modal dialog doesn't stop the page behind it scrolling; on a phone that
+     page is the one the popup covers, and scroll chaining out of the calendar
+     would move it (and the browser chrome) underneath. */
+  :root:has(.popup[open]) {
+    overflow: hidden;
+  }
+
   .sheet::backdrop,
   .popup::backdrop {
     background-color: transparent;

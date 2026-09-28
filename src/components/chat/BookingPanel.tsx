@@ -9,13 +9,13 @@ interface BookingPanelProps {
 }
 
 /**
- * Final step. The details are already in HubSpot by the time this shows, so
- * booking is an offer rather than a gate: the scheduler opens in a popup only
- * when the visitor asks for it, with everything they've told us filled in. The
- * button stays in the transcript, so a closed popup can always be reopened.
+ * Final step. The details are already in HubSpot by the time this shows, so the
+ * scheduler opens in a popup straight away, with everything they've told us
+ * filled in. The button stays in the transcript, so a closed popup can always
+ * be reopened.
  */
 export function BookingPanel({ lead }: BookingPanelProps) {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
 
   return (
     <div className="mt-5 mb-5 animate-fade-in">

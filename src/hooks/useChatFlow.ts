@@ -3,9 +3,9 @@ import { INTRO_EXIT_MS, TYPING_DELAY_MS } from '../config';
 import { EXPLORING_ANSWER, QUESTION_STEPS, TOTAL_STEPS } from '../data/steps';
 import { submitToHubSpot, trackEngagement } from '../lib/hubspot';
 import { prefersReducedMotion } from '../lib/motion';
-import type { Answers, ChatMessage, ContactDetails, Lead, LeadHeat, Stage } from '../types';
+import type { Answers, ChatMessage, ContactDetails, IntroDetails, Lead, LeadHeat, Stage } from '../types';
 
-const GREETING = 'Hi there, I’m one of Lawbrokr’s AI experts. What’s your work email?';
+const GREETING = 'Hi there, I’m Jake, one of Lawbrokr’s AI experts. Let’s start with your Name & Email';
 const CONTACT_PROMPT =
   'Great, that’s really helpful. Just a few details and I’ll get you booked in with our team.';
 
@@ -24,15 +24,9 @@ function promptFor(stage: Stage): string | null {
     case 'contact':
       return CONTACT_PROMPT;
     case 'booking':
-      return bookingPrompt(stage.lead);
+      // The scheduler opens straight away, so there's nothing to introduce.
+      return null;
   }
-}
-
-function bookingPrompt(lead: Lead): string {
-  return (
-    `Thanks${lead.firstName ? `, ${lead.firstName}` : ''}. Your details are with our team and we’ll be in touch. ` +
-    'If you’d like to pick a time now, I’ve already filled in your details for you.'
-  );
 }
 
 /** 1-indexed position of a stage in the progress label. */
@@ -107,22 +101,26 @@ export function useChatFlow() {
   const computeLeadHeat = (): LeadHeat =>
     answersRef.current.primary_pain_point === EXPLORING_ANSWER ? 'cool' : 'hot';
 
-  const submitEmail = useCallback(
-    async (email: string) => {
-      leadRef.current.email = email;
+  const submitIntro = useCallback(
+    async ({ firstName, lastName, email }: IntroDetails) => {
+      Object.assign(leadRef.current, { firstName, lastName, email });
       setPhase('leaving');
 
       // Fade the intro out while the submission is in flight, so the wait costs
       // nothing. Honouring reduced motion here as well as in CSS keeps the
       // transition from becoming a plain delay for anyone who has asked for less.
       await Promise.all([
-        submitToHubSpot([{ name: 'email', value: email }]),
+        submitToHubSpot([
+          { name: 'email', value: email },
+          { name: 'firstname', value: firstName },
+          { name: 'lastname', value: lastName },
+        ]),
         new Promise((resolve) => setTimeout(resolve, prefersReducedMotion() ? 0 : INTRO_EXIT_MS)),
       ]);
 
       // The greeting is already the first line of the transcript, spoken by the
       // stage effect — the intro was only ever showing it in a different frame.
-      say('user', email);
+      say('user', `${firstName} ${lastName} · ${email}`);
       setPhase('chat');
       setStage({ name: 'question', index: 0 });
     },
@@ -145,27 +143,29 @@ export function useChatFlow() {
 
   const submitContact = useCallback(
     async (details: ContactDetails) => {
-      Object.assign(leadRef.current, details);
       const answers = answersRef.current;
+      const lead = Object.assign(leadRef.current, details, {
+        firm: answers.company,
+        size: answers.firm_size,
+      });
 
       await submitToHubSpot([
-        { name: 'email', value: leadRef.current.email ?? '' },
-        { name: 'firstname', value: details.firstName },
-        { name: 'lastname', value: details.lastName },
+        { name: 'email', value: lead.email ?? '' },
+        { name: 'firstname', value: lead.firstName ?? '' },
+        { name: 'lastname', value: lead.lastName ?? '' },
         { name: 'phone', value: details.phone },
-        { name: 'company', value: details.firm },
+        { name: 'company', value: lead.firm ?? '' },
         { name: 'firm_website', value: details.site },
-        { name: 'firm_size', value: details.size },
+        { name: 'firm_size', value: lead.size ?? '' },
         { name: 'role', value: answers.role ?? '' },
         { name: 'practice_area', value: answers.practice_area ?? '' },
         { name: 'primary_pain_point', value: answers.primary_pain_point ?? '' },
         { name: 'lead_heat', value: computeLeadHeat() },
       ]);
 
-      say('user', `${details.firstName} ${details.lastName} · ${details.firm}`);
-      setStage({ name: 'booking', lead: { ...leadRef.current } });
+      setStage({ name: 'booking', lead: { ...lead } });
     },
-    [say],
+    [],
   );
 
   return {
@@ -176,7 +176,7 @@ export function useChatFlow() {
     promptReady,
     step: stepNumber(stage),
     totalSteps: TOTAL_STEPS,
-    submitEmail,
+    submitIntro,
     answerQuestion,
     submitContact,
   };

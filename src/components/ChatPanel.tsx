@@ -1,21 +1,22 @@
-import { lazy, Suspense, useEffect, useLayoutEffect, useRef } from 'react';
-import { INTRO_SLIDE_MS } from '../config';
-import { QUESTION_STEPS } from '../data/steps';
-import { useChatFlow } from '../hooks/useChatFlow';
-import { cn } from '../lib/cn';
-import { prefersReducedMotion } from '../lib/motion';
-import { BookingPanel } from './chat/BookingPanel';
-import { ChoiceList } from './chat/ChoiceList';
-import { EmailCaptureForm } from './chat/EmailCaptureForm';
-import { MessageBubble } from './chat/MessageBubble';
-import { TypingIndicator } from './chat/TypingIndicator';
-import { MobileBrandBar } from './MobileBrandBar';
-import { Progress } from './ui/Progress';
+import { lazy, Suspense, useEffect, useLayoutEffect, useRef } from "react";
+import { INTRO_SLIDE_MS } from "../config";
+import { QUESTION_STEPS } from "../data/steps";
+import { useChatFlow } from "../hooks/useChatFlow";
+import { cn } from "../lib/cn";
+import { prefersReducedMotion } from "../lib/motion";
+import { BookingPanel } from "./chat/BookingPanel";
+import { ChoiceList } from "./chat/ChoiceList";
+import { EmailCaptureForm } from "./chat/EmailCaptureForm";
+import { MessageBubble } from "./chat/MessageBubble";
+import { OtherInput } from "./chat/OtherInput";
+import { TypingIndicator } from "./chat/TypingIndicator";
+import { MobileBrandBar } from "./MobileBrandBar";
+import { Progress } from "./ui/Progress";
 
 // The contact form carries the phone-number library, which on its own nearly
 // doubles the bundle, so it ships as a separate chunk. It is fetched as soon as
 // the panel mounts — off the first paint, and long before anyone reaches it.
-const loadContactForm = () => import('./chat/ContactDetailsForm');
+const loadContactForm = () => import("./chat/ContactDetailsForm");
 const ContactDetailsForm = lazy(() =>
   loadContactForm().then((module) => ({ default: module.ContactDetailsForm })),
 );
@@ -37,7 +38,7 @@ export function ChatPanel() {
     promptReady,
     step,
     totalSteps,
-    submitEmail,
+    submitIntro,
     answerQuestion,
     submitContact,
   } = useChatFlow();
@@ -53,7 +54,7 @@ export function ChatPanel() {
   // Note where the greeting sits while it is still centred, before the layout
   // flips. `leaving` is the beat in between, which is what makes this possible.
   useLayoutEffect(() => {
-    if (phase === 'leaving' && listRef.current) {
+    if (phase === "leaving" && listRef.current) {
       introTopRef.current = listRef.current.getBoundingClientRect().top;
     }
   }, [phase]);
@@ -61,7 +62,7 @@ export function ChatPanel() {
   // FLIP. The list has already jumped to the top of the column by the time this
   // runs, so put it back where it was and let it travel from there.
   useLayoutEffect(() => {
-    if (phase !== 'chat') return;
+    if (phase !== "chat") return;
 
     const list = listRef.current;
     const scroll = scrollRef.current;
@@ -74,19 +75,19 @@ export function ChatPanel() {
     if (Math.abs(delta) < 1) return;
 
     // The offset list would otherwise push the column into a brief scrollbar.
-    scroll.style.overflow = 'hidden';
-    list.style.transition = 'none';
+    scroll.style.overflow = "hidden";
+    list.style.transition = "none";
     list.style.transform = `translateY(${delta}px)`;
 
     const raf = requestAnimationFrame(() => {
       list.style.transition = `transform ${INTRO_SLIDE_MS}ms var(--ease-out)`;
-      list.style.transform = 'translateY(0)';
+      list.style.transform = "translateY(0)";
     });
 
     const clear = () => {
-      list.style.transition = '';
-      list.style.transform = '';
-      scroll.style.overflow = '';
+      list.style.transition = "";
+      list.style.transform = "";
+      scroll.style.overflow = "";
     };
     const timer = setTimeout(clear, INTRO_SLIDE_MS + 60);
 
@@ -100,17 +101,23 @@ export function ChatPanel() {
   // Keep the newest line in view as the transcript grows.
   useEffect(() => {
     const el = scrollRef.current;
-    if (el && phase === 'chat') el.scrollTop = el.scrollHeight;
+    if (el && phase === "chat") el.scrollTop = el.scrollHeight;
   }, [messages, isTyping, promptReady, stage, phase]);
 
-  const intro = phase !== 'chat';
+  const intro = phase !== "chat";
+  const question = stage.name === "question" ? QUESTION_STEPS[stage.index] : undefined;
 
   return (
     <main className="flex flex-col bg-card lg:sticky lg:top-0 lg:h-screen lg:pb-12">
       <header className="sticky top-0 z-10 flex flex-col gap-2 bg-card px-4 pt-4 pb-5 sm:px-8 sm:pt-8 sm:pb-8 lg:px-14 lg:pt-12 lg:pb-12">
         <div className="flex items-baseline justify-between gap-4">
-          <h2 className="text-xl font-semibold">Talk to an AI expert</h2>
-          <p className="text-sm tabular-nums text-muted-foreground" aria-live="polite">
+          <h2 className="text-xl font-semibold">
+            Book with an AI marketing expert
+          </h2>
+          <p
+            className="text-sm tabular-nums text-muted-foreground"
+            aria-live="polite"
+          >
             Step {Math.min(step, totalSteps)} of {totalSteps}
           </p>
         </div>
@@ -128,8 +135,8 @@ export function ChatPanel() {
           // min-h-0 is what lets this shrink inside the flex column so it, and
           // not the page, takes the overflow — without it the panel just grows
           // and carries the header off the top of the screen.
-          'flex min-h-0 flex-1 flex-col overflow-y-auto scrollbar-hidden px-4 sm:px-8 lg:px-14',
-          intro && 'justify-center',
+          "flex min-h-0 flex-1 flex-col overflow-y-auto scrollbar-hidden px-4 sm:px-8 lg:px-14",
+          intro && "justify-center",
         )}
       >
         {/* Breathing room at both ends of the transcript below lg. The bottom is
@@ -147,31 +154,43 @@ export function ChatPanel() {
           {intro && promptReady && (
             <div
               className={cn(
-                'transition-opacity duration-[180ms] ease-out',
-                phase === 'leaving' && 'pointer-events-none opacity-0',
+                "transition-opacity duration-[180ms] ease-out",
+                phase === "leaving" && "pointer-events-none opacity-0",
               )}
             >
-              <EmailCaptureForm onSubmit={submitEmail} />
+              <EmailCaptureForm onSubmit={submitIntro} />
             </div>
           )}
 
-          {!intro && promptReady && stage.name === 'question' && (
+          {!intro && promptReady && stage.name === "question" && question?.kind === "choice" && (
             <ChoiceList
               key={stage.index}
-              options={QUESTION_STEPS[stage.index].options}
-              freeTextOnOther={QUESTION_STEPS[stage.index].freeTextOnOther}
-              multiSelect={QUESTION_STEPS[stage.index].multiSelect}
+              options={question.options}
+              freeTextOnOther={question.freeTextOnOther}
+              multiSelect={question.multiSelect}
               onPick={(value) => answerQuestion(stage.index, value)}
             />
           )}
 
-          {!intro && promptReady && stage.name === 'contact' && (
+          {!intro && promptReady && stage.name === "question" && question?.kind === "text" && (
+            <OtherInput
+              key={stage.index}
+              label={question.label}
+              placeholder={question.placeholder}
+              autoComplete={question.autoComplete}
+              onSubmit={(value) => answerQuestion(stage.index, value)}
+            />
+          )}
+
+          {!intro && promptReady && stage.name === "contact" && (
             <Suspense fallback={null}>
               <ContactDetailsForm onSubmit={submitContact} />
             </Suspense>
           )}
 
-          {!intro && promptReady && stage.name === 'booking' && <BookingPanel lead={stage.lead} />}
+          {!intro && promptReady && stage.name === "booking" && (
+            <BookingPanel lead={stage.lead} />
+          )}
         </div>
       </div>
 
