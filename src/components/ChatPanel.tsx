@@ -171,7 +171,7 @@ export function ChatPanel() {
             </Suspense>
           )}
 
-          {!intro && promptReady && stage.name === 'booking' && <BookingPanel />}
+          {!intro && promptReady && stage.name === 'booking' && <BookingPanel lead={stage.lead} />}
         </div>
       </div>
 

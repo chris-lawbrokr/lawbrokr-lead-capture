@@ -24,8 +24,15 @@ function promptFor(stage: Stage): string | null {
     case 'contact':
       return CONTACT_PROMPT;
     case 'booking':
-      return null;
+      return bookingPrompt(stage.lead);
   }
+}
+
+function bookingPrompt(lead: Lead): string {
+  return (
+    `Thanks${lead.firstName ? `, ${lead.firstName}` : ''}. Your details are with our team and we’ll be in touch. ` +
+    'If you’d like to pick a time now, I’ve already filled in your details for you.'
+  );
 }
 
 /** 1-indexed position of a stage in the progress label. */
@@ -141,13 +148,10 @@ export function useChatFlow() {
       Object.assign(leadRef.current, details);
       const answers = answersRef.current;
 
-      // The form asks for one name; HubSpot keeps first and last separately.
-      const [firstname, ...rest] = details.name.split(/\s+/);
-
       await submitToHubSpot([
         { name: 'email', value: leadRef.current.email ?? '' },
-        { name: 'firstname', value: firstname },
-        { name: 'lastname', value: rest.join(' ') },
+        { name: 'firstname', value: details.firstName },
+        { name: 'lastname', value: details.lastName },
         { name: 'phone', value: details.phone },
         { name: 'company', value: details.firm },
         { name: 'firm_website', value: details.site },
@@ -158,8 +162,8 @@ export function useChatFlow() {
         { name: 'lead_heat', value: computeLeadHeat() },
       ]);
 
-      say('user', `${details.name} · ${details.firm}`);
-      setStage({ name: 'booking' });
+      say('user', `${details.firstName} ${details.lastName} · ${details.firm}`);
+      setStage({ name: 'booking', lead: { ...leadRef.current } });
     },
     [say],
   );

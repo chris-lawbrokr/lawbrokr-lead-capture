@@ -5,8 +5,14 @@ qualifying flow on the right. Built with React 19, TypeScript, Vite and Tailwind
 on the Lawbrokr 2.0 Design System.
 
 The flow is six steps — work email, three qualifying questions, contact details, then
-an embedded HubSpot scheduler. The email is submitted to HubSpot on its own before the
-questions start, so a lead is captured even when someone drops out before booking.
+an optional booking step. The email is submitted to HubSpot on its own before the
+questions start, and the full details go in when the contact form is submitted, so a lead
+is captured whether or not anyone books. "Book a time" then opens the embedded HubSpot
+scheduler with the meeting form's fields — name, email, company and "Size of Firm" —
+pre-filled from the query string, and `forcePropertyForm=false` skips that form entirely,
+so choosing a slot books the call. If a required field is missing, the form shows with the
+rest filled in. The prefill is matched by field name, so when the meeting's form changes
+in HubSpot, update `meetingFormPrefill` in `src/lib/hubspot.ts` to match.
 
 ## Getting started
 
@@ -53,7 +59,7 @@ Everything external is driven by env vars (see `.env.example`) and read in `src/
 | ------------------------------- | ---------------------------------------------------------------- |
 | `VITE_HUBSPOT_PORTAL_ID`        | HubSpot account ID — Settings > Account Setup > Account Defaults |
 | `VITE_HUBSPOT_FORM_GUID`        | GUID of the form receiving submissions                           |
-| `VITE_HUBSPOT_MEETING_LINK`     | Scheduler embedded on the final step                             |
+| `VITE_HUBSPOT_MEETING_LINK`     | Scheduler opened, pre-filled, from the final step                |
 | `VITE_HUBSPOT_ENGAGEMENT_EVENT` | Internal name of the custom behavioural event                    |
 | `VITE_LEAD_STARTED_ENDPOINT`    | Serverless relay that posts the Slack "lead started" alert       |
 

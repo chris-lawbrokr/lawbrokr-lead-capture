@@ -3,7 +3,7 @@ import {
   isEngagementEventConfigured,
   isHubspotConfigured,
 } from '../config';
-import type { HubspotField } from '../types';
+import type { HubspotField, Lead } from '../types';
 
 /*
  * Auto-filling HubSpot data:
@@ -30,6 +30,58 @@ function loadHubspotTrackingIfNeeded(): void {
   script.defer = true;
   script.src = `//js.hs-scripts.com/${CONFIG.hubspotPortalId}.js`;
   document.head.appendChild(script);
+}
+
+/**
+ * The scheduling page's own form fields, pre-filled from what the visitor has
+ * already told us. HubSpot reads first name, last name and email by name
+ * (case-insensitively), and matches every other parameter against a form field's
+ * `name` exactly: a property's internal name, or a custom question's label as
+ * typed. Every parameter is also sent along with the booking, so only fields
+ * the meeting's form actually has belong here. If a field is added to or renamed
+ * on the form in HubSpot, it needs adding or renaming here as well.
+ */
+function meetingFormPrefill(lead: Lead): Record<string, string | undefined> {
+  return {
+    firstName: lead.firstName,
+    lastName: lead.lastName,
+    email: lead.email,
+    company: lead.firm,
+    'Size of Firm': lead.size,
+  };
+}
+
+/**
+ * The scheduler link, set up so booking comes down to picking a time.
+ *
+ * `forcePropertyForm=false` tells the scheduling page to skip its form whenever
+ * every required field arrives pre-filled and valid, so choosing a slot books
+ * the meeting straight away. It is what HubSpot's "Auto-submit form when all
+ * fields are pre-populated" setting does, except that the setting is switched
+ * off whenever guests are allowed and this isn't. It's undocumented, so if
+ * HubSpot drops it, or a required field arrives empty, the form simply shows
+ * with everything else filled in.
+ *
+ * `embed` adds what HubSpot's own embed script would: the compact embedded
+ * layout, plus the tracking cookie and page URL, so the booking is attributed
+ * to the same contact the form submission just created.
+ */
+export function meetingLink(lead: Lead, { embed = false } = {}): string {
+  const url = new URL(CONFIG.hubspotMeetingLink);
+
+  for (const [key, value] of Object.entries(meetingFormPrefill(lead))) {
+    if (value) url.searchParams.set(key, value);
+  }
+  url.searchParams.set('forcePropertyForm', 'false');
+
+  if (embed) {
+    url.searchParams.set('embed', 'true');
+    const utk = getHubspotCookie();
+    if (utk) url.searchParams.set('parentHubspotUtk', utk);
+    url.searchParams.set('parentPageUrl', window.location.origin + window.location.pathname);
+  }
+
+  return url.toString();
 }
 
 /**

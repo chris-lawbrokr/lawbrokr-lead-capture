@@ -11,7 +11,14 @@ interface ContactDetailsFormProps {
   onSubmit: (details: ContactDetails) => Promise<void>;
 }
 
-const EMPTY: ContactDetails = { name: '', phone: '', firm: '', site: '', size: '' };
+const EMPTY: ContactDetails = {
+  firstName: '',
+  lastName: '',
+  phone: '',
+  firm: '',
+  site: '',
+  size: '',
+};
 
 export function ContactDetailsForm({ onSubmit }: ContactDetailsFormProps) {
   const [details, setDetails] = useState<ContactDetails>(EMPTY);
@@ -37,7 +44,8 @@ export function ContactDetailsForm({ onSubmit }: ContactDetailsFormProps) {
 
     setPending(true);
     await onSubmit({
-      name: details.name.trim(),
+      firstName: details.firstName.trim(),
+      lastName: details.lastName.trim(),
       phone,
       firm: details.firm.trim(),
       site: details.site.trim(),
@@ -49,13 +57,22 @@ export function ContactDetailsForm({ onSubmit }: ContactDetailsFormProps) {
     <form className="mt-8 mb-5 animate-fade-in" onSubmit={handleSubmit}>
       <FormGrid className="mb-4">
         <TextField
-          label="Name"
+          label="First name"
           type="text"
-          autoComplete="name"
-          placeholder="Dana Whitfield"
+          autoComplete="given-name"
+          placeholder="Dana"
           required
-          value={details.name}
-          onChange={(event) => set('name')(event.target.value)}
+          value={details.firstName}
+          onChange={(event) => set('firstName')(event.target.value)}
+        />
+        <TextField
+          label="Last name"
+          type="text"
+          autoComplete="family-name"
+          placeholder="Whitfield"
+          required
+          value={details.lastName}
+          onChange={(event) => set('lastName')(event.target.value)}
         />
         <PhoneField
           ref={phoneRef}
@@ -95,13 +112,12 @@ export function ContactDetailsForm({ onSubmit }: ContactDetailsFormProps) {
           placeholder="Select one"
           options={FIRM_SIZES}
           required
-          full
           value={details.size}
           onChange={(event) => set('size')(event.target.value)}
         />
       </FormGrid>
       <Button type="submit" size="lg" loading={pending}>
-        Get on the calendar
+        Submit details
       </Button>
     </form>
   );

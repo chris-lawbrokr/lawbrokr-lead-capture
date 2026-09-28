@@ -147,7 +147,24 @@
     translate: 0 0;
   }
 
-  .sheet::backdrop {
+  /*
+   * Popup — the booking calendar. It takes over the chat column in place rather
+   * than arriving from an edge, so it fades instead of sliding.
+   */
+  .popup {
+    opacity: 0;
+    transition:
+      opacity var(--duration-base) var(--ease-out),
+      display var(--duration-base) allow-discrete,
+      overlay var(--duration-base) allow-discrete;
+  }
+
+  .popup[open] {
+    opacity: 1;
+  }
+
+  .sheet::backdrop,
+  .popup::backdrop {
     background-color: transparent;
     transition:
       background-color var(--duration-base) var(--ease-out),
@@ -155,7 +172,8 @@
       overlay var(--duration-base) allow-discrete;
   }
 
-  .sheet[open]::backdrop {
+  .sheet[open]::backdrop,
+  .popup[open]::backdrop {
     background-color: var(--overlay);
   }
 
@@ -164,7 +182,12 @@
       translate: 100% 0;
     }
 
-    .sheet[open]::backdrop {
+    .popup[open] {
+      opacity: 0;
+    }
+
+    .sheet[open]::backdrop,
+    .popup[open]::backdrop {
       background-color: transparent;
     }
   }

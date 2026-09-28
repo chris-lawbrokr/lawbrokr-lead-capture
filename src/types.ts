@@ -19,7 +19,8 @@ export type Answers = Partial<Record<QuestionStep['id'], string>>;
 
 /** Contact details gathered on the final form. */
 export interface ContactDetails {
-  name: string;
+  firstName: string;
+  lastName: string;
   phone: string;
   firm: string;
   site: string;
@@ -45,7 +46,8 @@ export type Stage =
   | { name: 'email' }
   | { name: 'question'; index: number }
   | { name: 'contact' }
-  | { name: 'booking' };
+  /** Details are in; booking a time is optional and pre-filled from `lead`. */
+  | { name: 'booking'; lead: Lead };
 
 export type LeadHeat = 'hot' | 'cool';
 
