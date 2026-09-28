@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useLayoutEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef } from "react";
 import { INTRO_SLIDE_MS } from "../config";
 import { QUESTION_STEPS } from "../data/steps";
 import { useChatFlow } from "../hooks/useChatFlow";
@@ -6,20 +6,13 @@ import { cn } from "../lib/cn";
 import { prefersReducedMotion } from "../lib/motion";
 import { BookingPanel } from "./chat/BookingPanel";
 import { ChoiceList } from "./chat/ChoiceList";
+import { ContactDetailsForm } from "./chat/ContactDetailsForm";
 import { EmailCaptureForm } from "./chat/EmailCaptureForm";
 import { MessageBubble } from "./chat/MessageBubble";
 import { OtherInput } from "./chat/OtherInput";
 import { TypingIndicator } from "./chat/TypingIndicator";
 import { MobileBrandBar } from "./MobileBrandBar";
 import { Progress } from "./ui/Progress";
-
-// The contact form carries the phone-number library, which on its own nearly
-// doubles the bundle, so it ships as a separate chunk. It is fetched as soon as
-// the panel mounts — off the first paint, and long before anyone reaches it.
-const loadContactForm = () => import("./chat/ContactDetailsForm");
-const ContactDetailsForm = lazy(() =>
-  loadContactForm().then((module) => ({ default: module.ContactDetailsForm })),
-);
 
 /**
  * Right-hand column. The transcript is one continuous list from the first
@@ -46,10 +39,6 @@ export function ChatPanel() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
   const introTopRef = useRef<number | null>(null);
-
-  useEffect(() => {
-    void loadContactForm();
-  }, []);
 
   // Note where the greeting sits while it is still centred, before the layout
   // flips. `leaving` is the beat in between, which is what makes this possible.
@@ -183,9 +172,7 @@ export function ChatPanel() {
           )}
 
           {!intro && promptReady && stage.name === "contact" && (
-            <Suspense fallback={null}>
-              <ContactDetailsForm onSubmit={submitContact} />
-            </Suspense>
+            <ContactDetailsForm onSubmit={submitContact} />
           )}
 
           {!intro && promptReady && stage.name === "booking" && (

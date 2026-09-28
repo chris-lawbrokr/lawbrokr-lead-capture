@@ -153,7 +153,6 @@ export function useChatFlow() {
         { name: 'email', value: lead.email ?? '' },
         { name: 'firstname', value: lead.firstName ?? '' },
         { name: 'lastname', value: lead.lastName ?? '' },
-        { name: 'phone', value: details.phone },
         { name: 'company', value: lead.firm ?? '' },
         { name: 'firm_website', value: details.site },
         { name: 'firm_size', value: lead.size ?? '' },

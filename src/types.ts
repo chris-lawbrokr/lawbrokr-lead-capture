@@ -41,7 +41,6 @@ export interface IntroDetails {
 
 /** Contact details gathered on the final form. */
 export interface ContactDetails {
-  phone: string;
   site: string;
 }
 

@@ -1,7 +1,7 @@
 /*
  * Email format check. HubSpot stores whatever it is sent — it accepted
  * `not-an-email` without complaint — so this is the only thing standing between
- * a typo and an unreachable contact. Phone numbers live in `phone.ts`.
+ * a typo and an unreachable contact.
  */
 
 /** Something@domain.tld: no spaces, one @, and a domain with a real TLD. */
