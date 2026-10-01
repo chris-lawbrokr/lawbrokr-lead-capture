@@ -107,7 +107,3 @@ indicator and the interactive control can never disagree.
 
 Adding or reordering questions is a data change in `src/data/steps.ts` — the progress label
 and the HubSpot payload follow automatically.
-
----
-
-TODO
