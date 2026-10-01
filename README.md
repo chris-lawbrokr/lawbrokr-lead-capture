@@ -104,6 +104,3 @@ src/
 asked for right now. Each stage change schedules its bot line behind a typing delay; the
 "typing" and "ready" states are both derived from which stage has actually spoken, so the
 indicator and the interactive control can never disagree.
-
-Adding or reordering questions is a data change in `src/data/steps.ts` — the progress label
-and the HubSpot payload follow automatically.
