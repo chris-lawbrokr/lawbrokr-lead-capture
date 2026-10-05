@@ -50,8 +50,6 @@ function stepNumber(stage: Stage): number {
  */
 export type Phase = 'intro' | 'leaving' | 'chat';
 
-let nextMessageId = 0;
-
 /**
  * Drives the whole conversation: an append-only transcript plus a single
  * `stage` describing what is being asked for right now.
@@ -71,8 +69,16 @@ export function useChatFlow() {
   const leadRef = useRef<Lead>({});
   const trackedRef = useRef(false);
 
-  const say = useCallback((author: ChatMessage['author'], text: string) => {
-    setMessages((current) => [...current, { id: `m${nextMessageId++}`, author, text }]);
+  // Every stage gets at most one bot line and one user line, so each line's id
+  // is derived from its stage and a repeat is dropped. Effects can re-run
+  // without the transcript resetting — Fast Refresh does it on every save,
+  // StrictMode on mount, a double-click on any answer — and none of them can
+  // stack a duplicate bubble.
+  const say = useCallback((author: ChatMessage['author'], stage: Stage, text: string) => {
+    const id = `${author}:${stageKey(stage)}`;
+    setMessages((current) =>
+      current.some((message) => message.id === id) ? current : [...current, { id, author, text }],
+    );
   }, []);
 
   useEffect(() => {
@@ -87,12 +93,10 @@ export function useChatFlow() {
 
     const key = stageKey(stage);
     const timer = setTimeout(() => {
-      say('bot', text);
+      say('bot', stage, text);
       setSpokenKey(key);
     }, TYPING_DELAY_MS);
 
-    // Clearing on teardown also makes StrictMode's double-mount a no-op:
-    // the first timer never fires, so the line is only ever spoken once.
     return () => clearTimeout(timer);
   }, [stage, say]);
 
@@ -120,7 +124,7 @@ export function useChatFlow() {
 
       // The greeting is already the first line of the transcript, spoken by the
       // stage effect — the intro was only ever showing it in a different frame.
-      say('user', `${firstName} ${lastName} · ${email}`);
+      say('user', { name: 'email' }, `${firstName} ${lastName} · ${email}`);
       setPhase('chat');
       setStage({ name: 'question', index: 0 });
     },
@@ -131,7 +135,7 @@ export function useChatFlow() {
     (index: number, value: string | readonly string[]) => {
       const values = typeof value === 'string' ? [value] : value;
       answersRef.current[QUESTION_STEPS[index].id] = values.join(';');
-      say('user', values.join(', '));
+      say('user', { name: 'question', index }, values.join(', '));
       setStage(
         index + 1 < QUESTION_STEPS.length
           ? { name: 'question', index: index + 1 }
