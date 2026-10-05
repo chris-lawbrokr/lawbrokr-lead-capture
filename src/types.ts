@@ -1,6 +1,6 @@
 interface BaseQuestionStep {
   /** Matches the HubSpot property the answer is written to. */
-  id: 'role' | 'practice_area' | 'company' | 'primary_pain_point' | 'firm_size';
+  id: 'jobtitle' | 'practice_area' | 'company' | 'primary_pain_point' | 'firm_size';
   prompt: string;
 }
 
@@ -72,3 +72,9 @@ export interface HubspotField {
   name: string;
   value: string;
 }
+
+/**
+ * Which submission this is: name and email from the opening step, or the full
+ * details from the contact form.
+ */
+export type SubmissionStage = 'intro' | 'details';

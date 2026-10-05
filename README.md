@@ -5,7 +5,7 @@ qualifying flow on the right. Built with React 19, TypeScript, Vite and Tailwind
 on the Lawbrokr 2.0 Design System.
 
 The flow is six steps — work email, three qualifying questions, contact details, then
-an optional booking step. The email is submitted to HubSpot on its own before the
+an optional booking step. The name and email are submitted to HubSpot on their own before the
 questions start, and the full details go in when the contact form is submitted, so a lead
 is captured whether or not anyone books. "Book a time" then opens the embedded HubSpot
 scheduler with the meeting form's fields — name, email, company and "Size of Firm" —
@@ -62,13 +62,42 @@ Everything external is driven by env vars (see `.env.example`) and read in `src/
 | `VITE_HUBSPOT_MEETING_LINK`     | Scheduler opened, pre-filled, from the final step                |
 | `VITE_HUBSPOT_ENGAGEMENT_EVENT` | Internal name of the custom behavioural event                    |
 | `VITE_LEAD_STARTED_ENDPOINT`    | Serverless relay that posts the Slack "lead started" alert       |
+| `VITE_ZAPIER_WEBHOOK_URL`       | Zapier Catch Hook; when set, replaces the Forms API (see below)  |
 
-Until a real portal ID and form GUID are set, submissions are logged to the console in dev
-instead of being sent — the flow still runs end to end.
+Until a Zapier webhook, or a real portal ID and form GUID, is set, submissions are logged to
+the console in dev instead of being sent — the flow still runs end to end.
 
-The HubSpot form needs custom properties for `firm_website`, `firm_size`, `role`,
+## Sending leads through Zapier
+
+With `VITE_ZAPIER_WEBHOOK_URL` set, both submissions go to that Catch Hook instead of the Forms
+API, and the Zap's HubSpot "Create or Update Contact" step writes the contact. Each request is
+form-encoded, with fields named after their HubSpot properties so the mapping is one to one:
+
+| Field                | Sent on        | Notes                                             |
+| -------------------- | -------------- | ------------------------------------------------- |
+| `stage`              | both           | `intro` for name and email, `details` at the end  |
+| `page_url`           | both           | Page the widget was on                            |
+| `email`              | both           | Match the contact on this                         |
+| `firstname`          | both           |                                                   |
+| `lastname`           | both           |                                                   |
+| `company`            | `details`      |                                                   |
+| `firm_website`       | `details`      |                                                   |
+| `firm_size`          | `details`      |                                                   |
+| `jobtitle`           | `details`      | The visitor's role at the firm                    |
+| `practice_area`      | `details`      | Multi-select, semicolon-separated                 |
+| `primary_pain_point` | `details`      |                                                   |
+| `lead_heat`          | `details`      | `hot` or `cool`                                   |
+
+Empty answers are left out rather than sent blank. The browser can't read Zapier's response,
+so a submission the Zap rejects shows up in the Zap's history, not in the console.
+
+Zapier submissions don't carry the HubSpot tracking cookie, so contacts arrive with an
+"Integration" source rather than the page and campaign the visitor came from, and there is no
+"Form submitted" event for HubSpot workflows to trigger on.
+
+The HubSpot form needs custom properties for `firm_website`, `firm_size`,
 `practice_area`, `primary_pain_point` and `lead_heat`, alongside the standard `email`,
-`firstname`, `lastname` and `company`. Create the custom properties and add them to the form in the same sitting: HubSpot ignores a field that is not a property yet, but rejects the whole submission once it is a property that is missing from the form.
+`firstname`, `lastname`, `company` and `jobtitle`. Create the custom properties and add them to the form in the same sitting: HubSpot ignores a field that is not a property yet, but rejects the whole submission once it is a property that is missing from the form.
 
 ## Slack alerts
 
@@ -92,6 +121,7 @@ src/
   styles/                design-system tokens, vendored verbatim
   data/                  question steps, firm sizes, brand copy
   lib/hubspot.ts         Forms API, tracking cookie, Slack relay
+  lib/zapier.ts          Catch Hook submissions, used instead of the Forms API when set
   hooks/useChatFlow.ts   the conversation state machine
   components/
     BrandPanel.tsx       left column

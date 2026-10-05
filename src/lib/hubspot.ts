@@ -2,8 +2,10 @@ import {
   CONFIG,
   isEngagementEventConfigured,
   isHubspotConfigured,
+  isZapierConfigured,
 } from '../config';
-import type { HubspotField, Lead } from '../types';
+import type { HubspotField, Lead, SubmissionStage } from '../types';
+import { sendToZapier } from './zapier';
 
 /*
  * Auto-filling HubSpot data:
@@ -85,10 +87,14 @@ export function meetingLink(lead: Lead, { embed = false } = {}): string {
 }
 
 /**
- * Posts to the HubSpot Forms API. Deliberately never throws: a config or
- * network problem must not stop someone getting to the calendar.
+ * Sends a submission on to HubSpot. With a Zapier webhook configured it goes
+ * there, and the Zap creates or updates the contact; otherwise it posts to the
+ * Forms API. Deliberately never throws: a config or network problem must not
+ * stop someone getting to the calendar.
  */
-export async function submitToHubSpot(fields: HubspotField[]): Promise<void> {
+export async function submitToHubSpot(stage: SubmissionStage, fields: HubspotField[]): Promise<void> {
+  if (isZapierConfigured()) return sendToZapier(stage, fields);
+
   if (!isHubspotConfigured()) {
     if (import.meta.env.DEV) {
       console.info('[lawbrokr] HubSpot not configured — would have sent:', fields);

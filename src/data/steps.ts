@@ -9,7 +9,7 @@ export const FIRM_SIZES = [
 
 export const QUESTION_STEPS: readonly QuestionStep[] = [
   {
-    id: 'role',
+    id: 'jobtitle',
     kind: 'choice',
     prompt: 'Thanks. What’s your role at the firm?',
     options: [

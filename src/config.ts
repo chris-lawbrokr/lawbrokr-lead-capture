@@ -16,7 +16,7 @@ export const CONFIG = {
 
   /**
    * GUID of the HubSpot form receiving this widget's fields. Needs custom
-   * properties for: firm_website, firm_size, role, practice_area,
+   * properties for: firm_website, firm_size, practice_area,
    * primary_pain_point, lead_heat.
    */
   hubspotFormGuid: env.VITE_HUBSPOT_FORM_GUID || 'YOUR_HUBSPOT_FORM_GUID',
@@ -34,6 +34,12 @@ export const CONFIG = {
 
   /** Serverless relay that posts the "someone just started" Slack alert. */
   leadStartedEndpoint: env.VITE_LEAD_STARTED_ENDPOINT || '/api/lead-started',
+
+  /**
+   * Zapier "Catch Hook" URL. When set, submissions go here instead of the Forms
+   * API, and the Zap's HubSpot "Create or Update Contact" step writes them.
+   */
+  zapierWebhookUrl: env.VITE_ZAPIER_WEBHOOK_URL || '',
 } as const;
 
 const isPlaceholder = (value: string) => !value || value.startsWith('YOUR_');
@@ -44,6 +50,9 @@ export const isHubspotConfigured = () =>
 
 /** True once a real custom behavioural event name is present. */
 export const isEngagementEventConfigured = () => !isPlaceholder(CONFIG.engagementEventName);
+
+/** True once a Zapier webhook URL is present. */
+export const isZapierConfigured = () => !isPlaceholder(CONFIG.zapierWebhookUrl);
 
 /** How long the "typing" indicator sits before a bot message lands. */
 export const TYPING_DELAY_MS = 650;

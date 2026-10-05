@@ -6,6 +6,7 @@ interface ImportMetaEnv {
   readonly VITE_HUBSPOT_MEETING_LINK?: string;
   readonly VITE_HUBSPOT_ENGAGEMENT_EVENT?: string;
   readonly VITE_LEAD_STARTED_ENDPOINT?: string;
+  readonly VITE_ZAPIER_WEBHOOK_URL?: string;
 }
 
 interface ImportMeta {

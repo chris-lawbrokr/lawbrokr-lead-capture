@@ -110,7 +110,7 @@ export function useChatFlow() {
       // nothing. Honouring reduced motion here as well as in CSS keeps the
       // transition from becoming a plain delay for anyone who has asked for less.
       await Promise.all([
-        submitToHubSpot([
+        submitToHubSpot('intro', [
           { name: 'email', value: email },
           { name: 'firstname', value: firstName },
           { name: 'lastname', value: lastName },
@@ -149,14 +149,14 @@ export function useChatFlow() {
         size: answers.firm_size,
       });
 
-      await submitToHubSpot([
+      await submitToHubSpot('details', [
         { name: 'email', value: lead.email ?? '' },
         { name: 'firstname', value: lead.firstName ?? '' },
         { name: 'lastname', value: lead.lastName ?? '' },
         { name: 'company', value: lead.firm ?? '' },
         { name: 'firm_website', value: details.site },
         { name: 'firm_size', value: lead.size ?? '' },
-        { name: 'role', value: answers.role ?? '' },
+        { name: 'jobtitle', value: answers.jobtitle ?? '' },
         { name: 'practice_area', value: answers.practice_area ?? '' },
         { name: 'primary_pain_point', value: answers.primary_pain_point ?? '' },
         { name: 'lead_heat', value: computeLeadHeat() },
