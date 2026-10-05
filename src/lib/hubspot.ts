@@ -87,6 +87,20 @@ export function meetingLink(lead: Lead, { embed = false } = {}): string {
 }
 
 /**
+ * The firm's domain the way HubSpot keys companies — `harborlaw.com`, without
+ * the scheme, `www.` or path — so the Zap can find the company by exact match.
+ * The website field only accepts absolute URLs, but a bad one yields '' rather
+ * than throwing.
+ */
+export function companyDomain(site: string): string {
+  try {
+    return new URL(site).hostname.toLowerCase().replace(/^www\./, '');
+  } catch {
+    return '';
+  }
+}
+
+/**
  * Sends a submission on to HubSpot. With a Zapier webhook configured it goes
  * there, and the Zap creates or updates the contact; otherwise it posts to the
  * Forms API. Deliberately never throws: a config or network problem must not

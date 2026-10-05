@@ -82,6 +82,7 @@ form-encoded, with fields named after their HubSpot properties so the mapping is
 | `lastname`           | both           |                                                   |
 | `company`            | `details`      |                                                   |
 | `firm_website`       | `details`      |                                                   |
+| `firm_domain`        | `details`      | Website reduced to `harborlaw.com`, for matching  |
 | `firm_size`          | `details`      |                                                   |
 | `jobtitle`           | `details`      | The visitor's role at the firm                    |
 | `practice_area`      | `details`      | Multi-select, semicolon-separated                 |

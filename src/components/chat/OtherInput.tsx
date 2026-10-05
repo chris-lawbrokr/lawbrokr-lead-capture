@@ -8,17 +8,23 @@ interface OtherInputProps {
   label?: string;
   placeholder?: string;
   autoComplete?: string;
+  /**
+   * Submitted when the field is left empty, and shown as its placeholder so the
+   * field shows what will be sent. Without it, an answer is required.
+   */
+  fallback?: string;
 }
 
 /**
- * Free-text answer: the fallback shown when someone picks "Other", and the
- * control for questions that are answered by typing.
+ * Free-text answer: the fallback shown when someone picks "Other", which can be
+ * skipped, and the control for questions that are answered by typing.
  */
 export function OtherInput({
   onSubmit,
   label = 'Your answer',
-  placeholder = 'Head of intake',
   autoComplete,
+  fallback,
+  placeholder = fallback,
 }: OtherInputProps) {
   const [value, setValue] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
@@ -29,9 +35,9 @@ export function OtherInput({
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const trimmed = value.trim();
-    if (!trimmed) return;
-    onSubmit(trimmed);
+    const answer = value.trim() || fallback;
+    if (!answer) return;
+    onSubmit(answer);
   };
 
   return (
@@ -42,12 +48,12 @@ export function OtherInput({
         type="text"
         autoComplete={autoComplete}
         placeholder={placeholder}
-        required
+        required={!fallback}
         value={value}
         onChange={(event) => setValue(event.target.value)}
       />
       {/* Sized like the multi-select Continue, so both read as the same step. */}
-      <Button type="submit" disabled={!value.trim()} className="mt-4 min-h-11 w-full sm:min-h-9 sm:w-auto">
+      <Button type="submit" disabled={!value.trim() && !fallback} className="mt-4 min-h-11 w-full sm:min-h-9 sm:w-auto">
         Continue
       </Button>
     </form>

@@ -6,7 +6,7 @@ import { OtherInput } from './OtherInput';
 interface ChoiceListProps {
   options: readonly string[];
   onPick: (value: string | readonly string[]) => void;
-  /** Picking "Other" swaps the options for a free-text input. */
+  /** Picking "Other" swaps the options for a free-text input, which can be left empty. */
   freeTextOnOther?: boolean;
   /** Options toggle instead of advancing; a Continue button submits the set. */
   multiSelect?: boolean;
@@ -25,7 +25,7 @@ const OTHER = 'Other';
  *
  * Multi-select toggles options (aria-pressed) and submits on Continue. If "Other"
  * is among them, the free-text input takes over first and its answer replaces
- * "Other" in the submitted set.
+ * "Other" in the submitted set. Left empty, the answer is just "Other".
  */
 export function ChoiceList({
   options,
@@ -40,6 +40,7 @@ export function ChoiceList({
   if (askingOther) {
     return (
       <OtherInput
+        fallback={OTHER}
         onSubmit={(text) =>
           onPick(multiSelect ? [...selected.filter((option) => option !== OTHER), text] : text)
         }

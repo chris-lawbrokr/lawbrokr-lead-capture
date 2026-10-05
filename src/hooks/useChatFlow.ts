@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { INTRO_EXIT_MS, TYPING_DELAY_MS } from '../config';
-import { EXPLORING_ANSWER, QUESTION_STEPS, TOTAL_STEPS } from '../data/steps';
-import { submitToHubSpot, trackEngagement } from '../lib/hubspot';
+import { EXPLORING_ANSWER, firmSizeForHubspot, QUESTION_STEPS, TOTAL_STEPS } from '../data/steps';
+import { companyDomain, submitToHubSpot, trackEngagement } from '../lib/hubspot';
 import { prefersReducedMotion } from '../lib/motion';
 import type { Answers, ChatMessage, ContactDetails, IntroDetails, Lead, LeadHeat, Stage } from '../types';
 
@@ -155,7 +155,8 @@ export function useChatFlow() {
         { name: 'lastname', value: lead.lastName ?? '' },
         { name: 'company', value: lead.firm ?? '' },
         { name: 'firm_website', value: details.site },
-        { name: 'firm_size', value: lead.size ?? '' },
+        { name: 'firm_domain', value: companyDomain(details.site) },
+        { name: 'firm_size', value: firmSizeForHubspot(lead.size) },
         { name: 'jobtitle', value: answers.jobtitle ?? '' },
         { name: 'practice_area', value: answers.practice_area ?? '' },
         { name: 'primary_pain_point', value: answers.primary_pain_point ?? '' },

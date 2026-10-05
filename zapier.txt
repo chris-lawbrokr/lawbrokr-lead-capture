@@ -1,0 +1,82 @@
+first name 
+last name 
+email 
+
+should create and or update contsct record in hubspot
+
+then rest of details should push to activity section as a note
+
+====================================
+====================================
+====================================
+
+HubSpot field (internal name)
+The following fields should be added to HubSpot
+
+lawbrokr_intake_role
+lawbrokr_intake_firm_size
+lawbrokr_intake_practice_area
+lawbrokr_intake_pain_point
+lawbrokr_intake_lead_heat
+
+role - lawbrokr_intake_role
+firm_size - lawbrokr_firm_size
+practice_area - lawbrokr_practice_area
+primary_pain_point - lawbrokr_pain_point
+lead_heat - lawbrokr_lead_heat
+
+
+1–5 attorneys
+6–15 attorneys
+16–50 attorneys
+50+ attorneys - change to use staff instead of attorneys
+
+Practice areas 
+
+1. Personal injury
+2. Family law
+3. Estates & probate
+4. Criminal defense
+5. Immigration
+6. Employment law
+7. Business & corporate
+8. Real estate
+9. Workers' compensation
+10. Other
+
+
+rename contact role to becoem job title
+
+====================================
+====================================
+====================================
+
+firm_size
+practice_area
+
+email
+chris@lawbrokr.com
+
+firstname
+Chris
+
+lastname
+Test
+
+company
+Test Law Group
+
+website
+https://testlawgroup.example
+
+how_many_employees_work_at_your_law_firm
+6–15 attorneys
+
+what_is_your_firms_practice_area
+Personal injury;Family law
+
+jobtitle
+Managing partner / owner
+
+pain_point
+Our follow up on new leads is inconsistent
