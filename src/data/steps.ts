@@ -42,7 +42,7 @@ export const QUESTION_STEPS: readonly QuestionStep[] = [
   {
     id: 'practice_area',
     kind: 'choice',
-    prompt: 'Good to know. Which practice areas does your firm focus on? Pick all that apply.',
+    prompt: 'Good to know. Which practice areas does your firm focus on? Select all that apply.',
     options: [
       'Personal injury',
       'Family law',
@@ -69,19 +69,21 @@ export const QUESTION_STEPS: readonly QuestionStep[] = [
   {
     id: 'primary_pain_point',
     kind: 'choice',
-    prompt: 'What’s pulling you to look at Lawbrokr right now?',
+    prompt: 'What’s pulling you to look at Lawbrokr right now? Select all that apply.',
     options: [
-      'We’re missing calls and leads without knowing it',
-      'We’re not sure which marketing spend actually converts',
-      'Our follow up on new leads is inconsistent',
+      'We’re missing leads without knowing it',
+      'More granular data & Attribution tracking',
+      'Stronger client experience',
+      'Our follow-up on new leads is inconsistent',
       'Just exploring for now',
     ],
+    multiSelect: true,
   },
   {
     id: 'firm_size',
     kind: 'choice',
     prompt:
-      'We see lots of firms of many sizes have this issue — just to confirm, how many people work at your firm?',
+      'We see lots of firms of many sizes have these issues, just to confirm, how many people work at your firm?',
     options: FIRM_SIZES,
   },
 ] as const;

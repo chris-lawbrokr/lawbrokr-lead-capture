@@ -7,7 +7,7 @@ import type { Answers, ChatMessage, ContactDetails, IntroDetails, Lead, LeadHeat
 
 const GREETING = 'Hi there, I’m Jake, one of Lawbrokr’s AI experts. Let’s start with your Name & Email';
 const CONTACT_PROMPT =
-  'Great, that’s really helpful. Just a few details and I’ll get you booked in with our team.';
+  'Great, that’s really helpful. Let’s get you booked in with our team. Book below.';
 
 /** Stable identity for a stage, used to tell whether its prompt has landed. */
 function stageKey(stage: Stage): string {

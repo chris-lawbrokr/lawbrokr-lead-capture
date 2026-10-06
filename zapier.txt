@@ -1,9 +1,13 @@
-first name 
-last name 
-email 
+
+====================================
+Lawbrokr Lead Capture - Chris (name in zapier)
+====================================
+
+first name
+last name
+email
 
 should create and or update contsct record in hubspot
-
 then rest of details should push to activity section as a note
 
 ====================================
@@ -31,7 +35,7 @@ lead_heat - lawbrokr_lead_heat
 16–50 attorneys
 50+ attorneys - change to use staff instead of attorneys
 
-Practice areas 
+Practice areas
 
 1. Personal injury
 2. Family law
@@ -80,3 +84,7 @@ Managing partner / owner
 
 pain_point
 Our follow up on new leads is inconsistent
+
+====================================
+====================================
+====================================
