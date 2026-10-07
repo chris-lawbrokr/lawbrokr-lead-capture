@@ -14,6 +14,15 @@ so choosing a slot books the call. If a required field is missing, the form show
 rest filled in. The prefill is matched by field name, so when the meeting's form changes
 in HubSpot, update `meetingFormPrefill` in `src/lib/hubspot.ts` to match.
 
+## Web audit at `/audit/`
+
+The project also serves a second page, the free marketing web audit, at `/audit/`. It is a
+separate app on the same stack, built as a second Vite input (`audit/index.html` →
+`src/audit/main.tsx`), with its own stylesheet, components and HubSpot form. It shares this
+app's design-system tokens and the `cn` and `motion` helpers. See
+[`src/audit/README.md`](src/audit/README.md) for the flow, its lead fields, and the fact that
+its scores are placeholder sample data until real sources are wired in.
+
 ## Getting started
 
 ```bash
@@ -63,6 +72,11 @@ Everything external is driven by env vars (see `.env.example`) and read in `src/
 | `VITE_HUBSPOT_ENGAGEMENT_EVENT` | Internal name of the custom behavioural event                    |
 | `VITE_LEAD_STARTED_ENDPOINT`    | Serverless relay that posts the Slack "lead started" alert       |
 | `VITE_ZAPIER_WEBHOOK_URL`       | Zapier Catch Hook; when set, replaces the Forms API (see below)  |
+| `VITE_AUDIT_HUBSPOT_FORM_GUID`  | Web audit only: GUID of the form receiving audit leads           |
+| `VITE_AUDIT_ZAPIER_WEBHOOK_URL` | Web audit only: its Zapier Catch Hook                            |
+
+The audit shares the portal ID and meeting link but never uses this app's form GUID or Zapier
+hook, so its leads can't land in the demo-request form or Zap.
 
 Until a Zapier webhook, or a real portal ID and form GUID, is set, submissions are logged to
 the console in dev instead of being sent — the flow still runs end to end.
@@ -129,6 +143,7 @@ src/
     ChatPanel.tsx        right column — renders transcript + current control
     chat/                bubbles, typing indicator, choices, forms, booking
     ui/                  Button, Field (TextField/SelectField/FormGrid), Progress
+  audit/                 the web audit at /audit/ — see its README
 ```
 
 `useChatFlow` holds an append-only transcript plus a single `stage` describing what is being

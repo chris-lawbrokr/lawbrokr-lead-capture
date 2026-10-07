@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+/* The web audit at /audit/ has its own stylesheet; keep its classes out of this one. */
+@source not "./audit";
+@source not "../references/web-audit.html";
+
 /* The Lawbrokr 2.0 design-system tokens, vendored verbatim under ./styles. */
 @import "./styles/tokens.css";
 @import "./styles/typography.css";

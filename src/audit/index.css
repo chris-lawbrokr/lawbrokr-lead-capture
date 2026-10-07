@@ -1,0 +1,135 @@
+/* Only the audit's own files are scanned for classes, not lead-capture's. */
+@import "tailwindcss" source(".");
+
+/*
+ * The Lawbrokr 2.0 design-system tokens, shared with lead-capture. The audit's
+ * export differs only in --overlay, which nothing here uses.
+ * typography.css goes into the base layer because it also styles html, body
+ * and a: left unlayered, its `a { color }` would beat every utility, and a
+ * button-styled link would render brand ink on a brand-purple fill.
+ */
+@import "../styles/tokens.css";
+@import "../styles/typography.css" layer(base);
+@import "../styles/spacing.css";
+
+/*
+ * Tailwind v4 wiring, exactly as the porting note in the design-system spec
+ * specifies: `@theme inline` maps each design-system role 1:1 onto a Tailwind
+ * utility namespace. Every colour, radius, font and duration below resolves to
+ * a token — no literal values live in this app.
+ */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-active: var(--primary-active);
+  --color-primary-50: var(--primary-50);
+  --color-primary-100: var(--primary-100);
+  --color-primary-200: var(--primary-200);
+  --color-primary-300: var(--primary-300);
+  --color-primary-900: var(--primary-900);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-destructive-subtle: var(--destructive-subtle);
+  --color-destructive-subtle-foreground: var(--destructive-subtle-foreground);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-success-subtle: var(--success-subtle);
+  --color-success-subtle-foreground: var(--success-subtle-foreground);
+  --color-warning-subtle: var(--warning-subtle);
+  --color-warning-subtle-foreground: var(--warning-subtle-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-neutral-100: var(--neutral-100);
+  --color-neutral-200: var(--neutral-200);
+  --color-neutral-500: var(--neutral-500);
+  --color-violet-50: var(--violet-50);
+  --color-violet-100: var(--violet-100);
+  --color-violet-600: var(--violet-600);
+  --color-violet-900: var(--violet-900);
+  --color-chart-1: var(--chart-1);
+  --color-chart-5: var(--chart-5);
+
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-xl: var(--radius-xl);
+
+  /* Page gutter: 16px on a phone easing up to 32px on desktop. */
+  --spacing-gutter: clamp(var(--content-gutter-mobile), 4vw, var(--content-gutter));
+
+  --font-sans: var(--font-sans);
+  --font-display: var(--font-serif);
+
+  --text-xs: var(--text-xs);
+  --text-xs--line-height: var(--leading-xs);
+  --text-sm: var(--text-sm);
+  --text-sm--line-height: var(--leading-sm);
+  --text-base: var(--text-base);
+  --text-base--line-height: var(--leading-base);
+  --text-lg: var(--text-lg);
+  --text-lg--line-height: var(--leading-lg);
+  --text-xl: var(--text-xl);
+  --text-xl--line-height: var(--leading-xl);
+  --text-2xl: var(--text-2xl);
+  --text-2xl--line-height: var(--leading-2xl);
+  --text-3xl: var(--text-3xl);
+  --text-3xl--line-height: var(--leading-3xl);
+  --text-4xl: var(--text-4xl);
+  --text-4xl--line-height: var(--leading-4xl);
+  --text-5xl: var(--text-5xl);
+  --text-5xl--line-height: var(--leading-5xl);
+
+  --tracking-tight: var(--tracking-tight);
+  --tracking-wide: var(--tracking-wide);
+
+  --ease-out: var(--ease-out);
+  --shadow-sm: var(--shadow-sm);
+  --shadow-md: var(--shadow-md);
+
+  --animate-pop: pop var(--duration-slow) var(--ease-out) both;
+}
+
+/* Findings, the quiz's "all set" and the gate card arrive with a short lift. */
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@layer base {
+  /* Design system §1.8 — prefers-reduced-motion disables all motion. */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  /* "Download PDF" is the browser's print-to-PDF; keep the brand fills on paper. */
+  @media print {
+    body {
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+  }
+}
