@@ -99,7 +99,6 @@ export type QuizKey = 'guess' | 'goal' | 'reply' | 'source';
 export interface QuizQuestion {
   key: QuizKey;
   title: string;
-  hint: string;
   options: readonly string[];
 }
 

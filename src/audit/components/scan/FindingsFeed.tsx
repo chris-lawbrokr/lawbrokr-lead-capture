@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import { BENCHMARKS } from '../../data/sample';
 import { prefersReducedMotion } from '../../../lib/motion';
 import type { Discovery } from '../../types';
+import { cn } from '../../../lib/cn';
 import { Avatar } from '../ui/Avatar';
 import { Badge } from '../ui/Badge';
 import { Card } from '../ui/Card';
@@ -12,14 +13,15 @@ import { Spinner } from '../ui/Spinner';
 interface FindingsFeedProps {
   progress: number;
   discoveries: readonly Discovery[];
+  className?: string;
 }
 
 /**
  * "What we're finding": a feed of findings that appear as the scan passes each
- * one's threshold. When the card has a fixed height (the two-column layout) the
- * feed scrolls inside it and follows the newest finding.
+ * one's threshold. The card has a fixed height, so the feed scrolls inside it
+ * and follows the newest finding.
  */
-export function FindingsFeed({ progress, discoveries }: FindingsFeedProps) {
+export function FindingsFeed({ progress, discoveries, className }: FindingsFeedProps) {
   const listRef = useRef<HTMLDivElement>(null);
   const shown = discoveries.filter((discovery) => progress >= discovery.at);
 
@@ -29,7 +31,7 @@ export function FindingsFeed({ progress, discoveries }: FindingsFeedProps) {
   }, [shown.length]);
 
   return (
-    <Card className="flex min-h-[120px] flex-1 flex-col gap-3.5 p-5">
+    <Card className={cn('flex flex-1 flex-col gap-3.5 p-5', className)}>
       <div className="flex items-center justify-between gap-3">
         <Overline>What we’re finding</Overline>
         <span className="text-xs text-muted-foreground tabular-nums">
@@ -40,7 +42,7 @@ export function FindingsFeed({ progress, discoveries }: FindingsFeedProps) {
       <div
         ref={listRef}
         aria-live="polite"
-        className="-mr-1 flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto pr-1"
+        className="-mr-1 flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto overscroll-contain pr-1"
       >
         {shown.length === 0 && (
           <div className="flex items-center gap-2.5 text-sm text-muted-foreground">

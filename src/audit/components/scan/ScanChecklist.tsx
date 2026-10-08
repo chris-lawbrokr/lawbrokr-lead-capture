@@ -1,6 +1,8 @@
+import { useEffect, useId } from 'react';
 import { Check } from 'lucide-react';
 import { CHECKS } from '../../data/checks';
 import { cn } from '../../../lib/cn';
+import { prefersReducedMotion } from '../../../lib/motion';
 import { Card } from '../ui/Card';
 import { IconTile } from '../ui/IconTile';
 import { Spinner } from '../ui/Spinner';
@@ -11,11 +13,31 @@ const SHARE = 100 / CHECKS.length;
 /**
  * The five checks as a list that ticks itself off. The active row is tinted and
  * narrates its current sub-step; finished rows get a check, queued ones stay grey.
- * From the two-column layout up, the rows stretch to fill the card's height.
+ * The card is shorter than the five rows, so the list scrolls, and it follows
+ * the active row down as the scan moves on.
  */
-export function ScanChecklist({ progress }: { progress: number }) {
+export function ScanChecklist({ progress, className }: { progress: number; className?: string }) {
+  const listId = useId();
+  const activeIndex = Math.min(CHECKS.length - 1, Math.floor(progress / SHARE));
+  const finished = progress >= 100;
+
+  // Bring the check being worked on into view by scrolling the list alone,
+  // never the page (which scrollIntoView would also move). Rows measure from
+  // the list, which is what `relative` on it is for. It runs again when the
+  // scan finishes: on a phone the "See my score" button takes height from
+  // this card then, which can push the last row back out of view.
+  useEffect(() => {
+    const list = document.getElementById(listId);
+    const row = list?.children[activeIndex];
+    if (!list || !(row instanceof HTMLElement)) return;
+    const behavior = prefersReducedMotion() ? 'auto' : 'smooth';
+    const bottom = row.offsetTop + row.offsetHeight;
+    if (bottom > list.scrollTop + list.clientHeight) list.scrollTo({ top: bottom - list.clientHeight, behavior });
+    else if (row.offsetTop < list.scrollTop) list.scrollTo({ top: row.offsetTop, behavior });
+  }, [listId, activeIndex, finished]);
+
   return (
-    <Card as="ol" className="flex flex-col overflow-hidden">
+    <Card as="ol" id={listId} className={cn('relative flex flex-col overflow-y-auto overscroll-contain', className)}>
       {CHECKS.map((check, index) => {
         const from = index * SHARE;
         const done = progress >= from + SHARE;

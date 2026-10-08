@@ -51,9 +51,6 @@ export const SCAN_SECONDS = 14;
 /** How often the scan's progress moves. Each tick advances a jittered step. */
 export const SCAN_TICK_MS = 80;
 
-/** The beat between the scan hitting 100% and the score appearing. */
-export const SCAN_SETTLE_MS = 700;
-
 /** How long a quiz answer stays highlighted before the next question replaces it. */
 export const QUIZ_ADVANCE_MS = 350;
 

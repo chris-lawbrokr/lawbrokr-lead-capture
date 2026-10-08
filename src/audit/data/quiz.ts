@@ -8,30 +8,26 @@ export const GUESSES = [
   { label: '80 or more', lo: 80, hi: 100 },
 ] as const;
 
-/** Four quick questions to fill the scan's wait. Every one can be skipped. */
+/** Four quick questions to fill the scan's wait. All of them are optional. */
 export const QUIZ: readonly QuizQuestion[] = [
   {
     key: 'guess',
     title: 'Guess your health score',
-    hint: 'Most firms guess high.',
     options: GUESSES.map((guess) => guess.label),
   },
   {
     key: 'goal',
     title: 'What do you want more of?',
-    hint: 'We’ll put the fixes that get you there first.',
     options: ['New client calls', '5-star reviews', 'Page 1 on Google', 'Mentions in ChatGPT'],
   },
   {
     key: 'reply',
     title: 'How fast do you reply to a new web lead?',
-    hint: 'The first firm to reply usually gets the call.',
     options: ['Under 5 minutes', 'Within an hour', 'Same day', 'Next day or later'],
   },
   {
     key: 'source',
     title: 'Where do most new clients find you?',
-    hint: 'Helps us weigh what matters in your score.',
     options: ['Referrals', 'Google search', 'Paid ads', 'Social media'],
   },
 ];

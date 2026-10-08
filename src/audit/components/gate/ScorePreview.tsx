@@ -16,7 +16,7 @@ export function ScorePreview({ report }: { report: AuditReport }) {
   return (
     <div
       aria-hidden="true"
-      className="pointer-events-none flex flex-col items-center gap-5 blur-[4px] select-none [grid-area:1/1]"
+      className="pointer-events-none flex flex-col items-center gap-5 self-center blur-[4px] select-none [grid-area:1/1]"
     >
       <ScoreRing value={shown} className="size-[190px]">
         <span className="font-display text-[64px] leading-none font-semibold text-primary-900 tabular-nums blur-[5px]">

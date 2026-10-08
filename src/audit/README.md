@@ -16,7 +16,8 @@ The flow is four steps:
    accepted, so `https://www.firm.com/contact` works as well as `firm.com`.
 2. **Scan** — a 14-second presentation. The checklist ticks itself off, findings appear in a
    feed, and a four-question quiz fills the wait: a score guess, a goal, lead-reply speed and
-   client source. Every question can be skipped.
+   client source. Answering is optional. At 100% the scan stops and waits: a "See my score"
+   button moves on to the gate.
 3. **Gate** — the score counts up behind a blur, with a lead form over it. Submitting sends the
    lead to HubSpot (or Zapier) and opens the report.
 4. **Report** — the overall score, "Fix these first" (the quiz goal's category leads, then the

@@ -9,7 +9,7 @@ function App() {
   const flow = useAuditFlow();
 
   return (
-    <div className="flex min-h-screen flex-col bg-background">
+    <div className="flex min-h-dvh flex-col bg-background">
       <AppHeader onRestart={flow.step === 'report' ? flow.restart : undefined} />
 
       {flow.step === 'start' && <StartScreen onStart={flow.start} />}
@@ -22,6 +22,7 @@ function App() {
           answers={flow.answers}
           onAnswer={flow.answer}
           onResetAnswers={flow.resetAnswers}
+          onShowScore={flow.showScore}
         />
       )}
 

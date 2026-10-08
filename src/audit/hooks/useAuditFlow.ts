@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { DEV_PREVIEW, SCAN_SECONDS, SCAN_SETTLE_MS, SCAN_TICK_MS } from '../config';
+import { DEV_PREVIEW, SCAN_SECONDS, SCAN_TICK_MS } from '../config';
 import { SAMPLE_DOMAIN } from '../data/sample';
 import { auditFor } from '../lib/audit';
 import { loadHubspotTracking, submitToHubSpot } from '../lib/hubspot';
@@ -9,8 +9,10 @@ import type { AuditStep, Lead, QuizAnswers } from '../types';
  * Drives the whole audit: start → scan → gate → report.
  *
  * The scan is a timed presentation. Progress climbs in jittered steps so it
- * reads as work being done rather than a clock, and once it reaches 100% there
- * is a short beat before the gate. Quiz answers given while waiting carry
+ * reads as work being done rather than a clock, and at 100% it stops there:
+ * the visitor moves on to the gate themselves with `showScore`, so a quiz
+ * answer or a finding they're reading isn't pulled out from under them. Quiz
+ * answers given while waiting carry
  * through to the report, where they reorder the priorities and check the guess.
  */
 export function useAuditFlow() {
@@ -46,18 +48,14 @@ export function useAuditFlow() {
     return () => clearInterval(timer);
   }, [scanning]);
 
-  useEffect(() => {
-    if (step !== 'scan' || progress < 100) return;
-    const timer = setTimeout(() => setStep('gate'), SCAN_SETTLE_MS);
-    return () => clearTimeout(timer);
-  }, [step, progress]);
-
   const start = useCallback((nextDomain: string) => {
     setDomain(nextDomain);
     setProgress(0);
     setRanAt(new Date());
     setStep('scan');
   }, []);
+
+  const showScore = useCallback(() => setStep('gate'), []);
 
   const answer = useCallback((key: keyof QuizAnswers, value: string) => {
     setAnswers((current) => ({ ...current, [key]: value }));
@@ -101,5 +99,19 @@ export function useAuditFlow() {
     setLead(null);
   }, []);
 
-  return { step, domain, progress, answers, lead, ranAt, report, start, answer, resetAnswers, unlock, restart };
+  return {
+    step,
+    domain,
+    progress,
+    answers,
+    lead,
+    ranAt,
+    report,
+    start,
+    showScore,
+    answer,
+    resetAnswers,
+    unlock,
+    restart,
+  };
 }

@@ -38,8 +38,8 @@ interface ChecksDialogProps {
 }
 
 /**
- * "What we check" on a phone: a card centred over the page, 16px in from each
- * side and tall enough for about three checks, with a 56px bar carrying the title and the close button and the checks
+ * "What we check" once the checks no longer fit in a row on the page: a card
+ * centred over the page, tall enough for about three checks, with a 56px bar carrying the title and the close button and the checks
  * scrolling beneath it. A native <dialog>, so the focus trap, Esc to close and
  * the page going inert come from the platform; a tap on the page around it
  * closes it too.
@@ -67,12 +67,15 @@ export function ChecksDialog({ open, onClose }: ChecksDialogProps) {
       onClose={onClose}
       onClick={closeOnBackdrop}
       aria-labelledby={titleId}
-      // m-auto centres it, and 2rem off the width leaves 16px of page at each
-      // side. 32rem tall shows the bar, three checks and the top of a fourth,
-      // which says there's more to scroll; on a short screen it keeps at least
-      // 40px of page above and below instead. With no tint behind it, the
-      // border and shadow set the white card off from the near-white page.
-      className="checks-dialog m-auto h-[min(32rem,calc(100dvh-5rem))] max-h-none w-[calc(100%-2rem)] max-w-none overflow-hidden rounded-xl border border-border bg-card p-0 text-foreground shadow-md"
+      // m-auto centres it. On a phone it's the width less 16px of page at each
+      // side; from sm up it widens to 42rem with at least 32px either side.
+      // The height shows the bar, three checks and the top of a fourth, which
+      // says there's more to scroll: 32rem on a phone, where each description
+      // takes two lines, and 29.5rem from sm up, where it takes one. On a
+      // short screen it keeps at least 40px of page above and below instead.
+      // With no tint behind it, the border and shadow set the white card off
+      // from the near-white page.
+      className="checks-dialog m-auto h-[min(32rem,calc(100dvh-5rem))] max-h-none w-[calc(100%-2rem)] max-w-none sm:h-[min(29.5rem,calc(100dvh-5rem))] sm:w-[min(42rem,calc(100%-4rem))] overflow-hidden rounded-xl border border-border bg-card p-0 text-foreground shadow-md"
     >
       <div className="flex h-full flex-col">
         <header className="flex h-14 shrink-0 items-center justify-between gap-4 border-b border-border px-gutter">

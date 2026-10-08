@@ -1,4 +1,4 @@
-import { useId, useState } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 import type { SubmitEvent } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { cleanDomain, isValidDomain } from '../../lib/domain';
@@ -13,8 +13,12 @@ import { ChecksDialog, ChecksList } from './ChecksDialog';
  * anything that reduces to a domain, so a pasted `https://www.firm.com/contact`
  * works as well as `firm.com`.
  *
- * On a phone the checks don't follow below. The pitch and the field fill the
- * screen, and "What we check" at its foot opens them full screen instead.
+ * The five checks sit in one row under the form for as long as they fit, at
+ * 180px a cell: 906px with the rules and border between them. Narrower than
+ * that, rather than stacking, they move into a dialog, opened from a "What we
+ * check" button under the form, and the pitch, field and button sit centred as
+ * one block in the screen. `main` is a size container, so that 906px is
+ * measured against the actual column, not the window.
  */
 export function StartScreen({ onStart }: { onStart: (domain: string) => void }) {
   const [url, setUrl] = useState('');
@@ -22,6 +26,21 @@ export function StartScreen({ onStart }: { onStart: (domain: string) => void }) 
   const id = useId();
   const errorId = `${id}-err`;
   const [checksOpen, setChecksOpen] = useState(false);
+  const checksButtonRef = useRef<HTMLButtonElement>(null);
+
+  // The button only shows while the checks don't fit in a row. If the window
+  // widens past that with the dialog open, the row is back on the page, so the
+  // dialog closes rather than sitting over it. Watching the button, not a
+  // width, keeps this in step with the CSS that hides it.
+  useEffect(() => {
+    const button = checksButtonRef.current;
+    if (!checksOpen || !button) return;
+    const observer = new ResizeObserver(() => {
+      if (button.getClientRects().length === 0) setChecksOpen(false);
+    });
+    observer.observe(button);
+    return () => observer.disconnect();
+  }, [checksOpen]);
 
   const handleSubmit = (event: SubmitEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -34,10 +53,11 @@ export function StartScreen({ onStart }: { onStart: (domain: string) => void }) 
   };
 
   return (
-    <main className="flex flex-1 flex-col items-center px-gutter pb-16 max-sm:pb-0">
-      {/* On a phone this fills the window below the 56px header, which is
-          what puts the "What we check" button at its foot. */}
-      <div className="flex w-full flex-col items-center pt-[clamp(48px,10vh,112px)] max-sm:min-h-[calc(100dvh-3.5rem)]">
+    <main className="@container flex flex-1 flex-col items-center px-gutter">
+      {/* Below 906px this fills the window under the 56px header and centres
+          the block in it, with even padding in place of the top offset so the
+          centring is true. */}
+      <div className="flex w-full flex-col items-center pt-[clamp(48px,10vh,112px)] @max-[906px]:min-h-[calc(100dvh-3.5rem)] @max-[906px]:justify-center @max-[906px]:py-10">
         {/* One column with one rhythm: 16px between the overline, heading and
             deck, and a little more before the form so it reads as the next step. */}
         <div className="flex w-full max-w-[720px] flex-col items-center gap-4 text-center">
@@ -90,28 +110,28 @@ export function StartScreen({ onStart }: { onStart: (domain: string) => void }) 
               </span>
             )}
           </form>
-        </div>
 
-        {/* mt-auto parks it at the foot of the screen; pt-8 keeps it clear of
-            the form when the screen is too short for that. */}
-        <div className="mt-auto pt-8 pb-4 sm:hidden">
           <button
+            ref={checksButtonRef}
             type="button"
             aria-haspopup="dialog"
             aria-expanded={checksOpen}
             onClick={() => setChecksOpen(true)}
-            className="min-h-11 cursor-pointer rounded-md px-3 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+            className="min-h-11 cursor-pointer rounded-md px-3 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring @min-[906px]:hidden"
           >
             <Overline>What we check</Overline>
           </button>
         </div>
       </div>
 
-      <section aria-labelledby={`${id}-checks`} className="mt-12 flex w-full max-w-[1040px] flex-col gap-4 max-sm:hidden">
+      <section
+        aria-labelledby={`${id}-checks`}
+        className="mt-12 mb-16 hidden w-full max-w-[1040px] flex-col gap-4 @min-[906px]:flex"
+      >
         <h2 id={`${id}-checks`} className="text-center">
           <Overline>What we check</Overline>
         </h2>
-        <ChecksList className="grid-cols-[repeat(auto-fit,minmax(180px,1fr))]" />
+        <ChecksList className="grid-cols-5" />
       </section>
 
       <ChecksDialog open={checksOpen} onClose={() => setChecksOpen(false)} />
