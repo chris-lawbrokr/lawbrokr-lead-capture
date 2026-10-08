@@ -98,24 +98,25 @@ export function ChatPanel() {
 
   return (
     <main className="flex flex-col bg-card lg:sticky lg:top-0 lg:h-screen lg:pb-12">
-      <header className="sticky top-0 z-10 flex flex-col gap-2 bg-card px-4 pt-4 pb-5 sm:px-8 sm:pt-8 sm:pb-8 lg:px-14 lg:pt-12 lg:pb-12">
-        <div className="flex items-baseline justify-between gap-4">
-          <h2 className="text-xl font-semibold">
-            Book with an AI marketing expert
-          </h2>
-          <p
-            className="text-sm tabular-nums text-muted-foreground"
-            aria-live="polite"
-          >
-            Step {Math.min(step, totalSteps)} of {totalSteps}
-          </p>
-        </div>
+      {/* On a phone the title, bar and step count each take a full-width row.
+          From sm up the step count moves to the right of the title and the bar
+          shortens beneath them. */}
+      <header className="sticky top-0 z-10 grid gap-2 bg-card px-4 pt-4 pb-5 sm:grid-cols-[1fr_auto] sm:items-baseline sm:gap-x-4 sm:px-8 sm:pt-8 sm:pb-8 lg:px-14 lg:pt-12 lg:pb-12">
+        <h2 className="text-xl font-semibold">
+          Book with an AI marketing expert
+        </h2>
         <Progress
           value={Math.min(step, totalSteps)}
           max={totalSteps}
           label="Progress through the questions"
-          className="max-w-40"
+          className="sm:col-span-2 sm:row-start-2 sm:max-w-40"
         />
+        <p
+          className="text-sm tabular-nums text-muted-foreground sm:col-start-2 sm:row-start-1"
+          aria-live="polite"
+        >
+          Step {Math.min(step, totalSteps)} of {totalSteps}
+        </p>
       </header>
 
       <div

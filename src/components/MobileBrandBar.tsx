@@ -31,7 +31,9 @@ export function MobileBrandBar() {
         onClick={() => setOpen(true)}
         // Keep the 44px touch target but let it overhang, so the row is only
         // as tall as the logo and the gap above is measured from what you see.
-        className="-my-2.5"
+        // The right overhang puts the icon itself, not the target, on the
+        // gutter, matching the logo on the left.
+        className="-my-2.5 -mr-3"
       >
         <Menu aria-hidden="true" className="size-5" />
       </Button>

@@ -26,17 +26,20 @@ export function BrandSheet({ open, onClose }: BrandSheetProps) {
     if (!open && el.open) el.close();
   }, [open]);
 
+  // At 400px wide or less the sheet fills the screen, so its corners only round
+  // once there's page showing beside it.
   return (
     <dialog
       ref={ref}
       onClose={onClose}
       aria-label="About Lawbrokr"
-      className="sheet m-0 ml-auto h-dvh max-h-none w-full max-w-100 overscroll-contain rounded-l-xl bg-primary p-0 text-primary-foreground"
+      className="sheet m-0 ml-auto h-dvh max-h-none w-full max-w-100 overscroll-contain bg-primary p-0 text-primary-foreground min-[401px]:rounded-l-xl"
     >
       <div className="flex h-full flex-col">
         {/* my-auto rather than justify-center: it centres the content when it
-            fits but still lets it scroll from the top when it doesn't. */}
-        <div className="flex min-h-0 flex-1 flex-col overflow-y-auto px-4 py-10 sm:px-8">
+            fits but still lets it scroll from the top when it doesn't. The
+            padding steps down on a phone so more of it fits on screen. */}
+        <div className="flex min-h-0 flex-1 flex-col overflow-y-auto px-4 py-6 sm:px-8 sm:py-10">
           <div className="my-auto">
             <BrandContent showLogo={false} compact />
           </div>
@@ -45,11 +48,14 @@ export function BrandSheet({ open, onClose }: BrandSheetProps) {
         <footer className="flex items-center justify-between px-4 pt-4 pb-4 sm:px-8 sm:pb-8">
           <BrandLogo />
 
+          {/* Overhangs its row and the gutter like the menu button it
+              replaces, so the row is only as tall as the logo and the X sits
+              exactly where that was. */}
           <button
             type="button"
             onClick={onClose}
             aria-label="Close"
-            className="inline-flex size-11 items-center justify-center rounded-md text-primary-foreground transition-colors duration-[120ms] ease-out hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+            className="-my-2.5 -mr-3 inline-flex size-11 items-center justify-center rounded-md text-primary-foreground transition-colors duration-[120ms] ease-out hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
           >
             <X aria-hidden="true" className="size-5" />
           </button>
