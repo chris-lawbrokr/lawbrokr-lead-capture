@@ -89,8 +89,8 @@ export function meetingLink(lead: Lead, { embed = false } = {}): string {
 /**
  * The firm's domain the way HubSpot keys companies — `harborlaw.com`, without
  * the scheme, `www.` or path — so the Zap can find the company by exact match.
- * The website field only accepts absolute URLs, but a bad one yields '' rather
- * than throwing.
+ * The website field always hands over an absolute URL, but a bad one yields ''
+ * rather than throwing.
  */
 export function companyDomain(site: string): string {
   try {
