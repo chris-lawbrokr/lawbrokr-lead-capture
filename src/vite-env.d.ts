@@ -7,6 +7,8 @@ interface ImportMetaEnv {
   readonly VITE_HUBSPOT_ENGAGEMENT_EVENT?: string;
   readonly VITE_LEAD_STARTED_ENDPOINT?: string;
   readonly VITE_ZAPIER_WEBHOOK_URL?: string;
+  /** `true` to send real submissions from `pnpm dev`; see `CONFIG.dryRun`. */
+  readonly VITE_SEND_IN_DEV?: string;
   /** The web audit's own form and Zap; see `src/audit/config.ts`. */
   readonly VITE_AUDIT_HUBSPOT_FORM_GUID?: string;
   readonly VITE_AUDIT_ZAPIER_WEBHOOK_URL?: string;

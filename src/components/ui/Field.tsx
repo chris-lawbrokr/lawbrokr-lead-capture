@@ -16,9 +16,13 @@ const control =
   'focus-visible:outline-none focus-visible:border-ring focus-visible:shadow-[0_0_0_3px_var(--primary-200)] ' +
   'aria-invalid:border-destructive disabled:bg-muted disabled:text-muted-foreground disabled:cursor-not-allowed';
 
-/* Design system: Input sizes sm 32 / default 36 / lg 40. */
+/*
+ * Design system: Input sizes sm 32 / default 36 / lg 40. On a touch screen the
+ * default steps its text up to 16px: iOS zooms the page into any field set
+ * smaller than that when it's focused, and stays zoomed after.
+ */
 const controlSizes = {
-  default: 'h-9 text-sm',
+  default: 'h-9 text-sm pointer-coarse:text-base',
   lg: 'h-10 text-base',
 } as const;
 

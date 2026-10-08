@@ -40,6 +40,14 @@ export const CONFIG = {
    * API, and the Zap's HubSpot "Create or Update Contact" step writes them.
    */
   zapierWebhookUrl: env.VITE_ZAPIER_WEBHOOK_URL || '',
+
+  /**
+   * Under `pnpm dev` nothing leaves the browser: submissions, the Slack alert
+   * and HubSpot tracking are logged to the console instead, so the flow can be
+   * clicked through without creating contacts. `VITE_SEND_IN_DEV=true` sends
+   * for real from dev too. Production builds always send.
+   */
+  dryRun: env.DEV && env.VITE_SEND_IN_DEV !== 'true',
 } as const;
 
 const isPlaceholder = (value: string) => !value || value.startsWith('YOUR_');
@@ -53,6 +61,12 @@ export const isEngagementEventConfigured = () => !isPlaceholder(CONFIG.engagemen
 
 /** True once a Zapier webhook URL is present. */
 export const isZapierConfigured = () => !isPlaceholder(CONFIG.zapierWebhookUrl);
+
+/**
+ * How long a dry-run submission takes, roughly a real request's round trip, so
+ * the submit button's loading state still shows in dev.
+ */
+export const DRY_RUN_DELAY_MS = 600;
 
 /** How long the "typing" indicator sits before a bot message lands. */
 export const TYPING_DELAY_MS = 650;

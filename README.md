@@ -33,6 +33,11 @@ pnpm dev
 
 `pnpm build` type-checks and builds; `pnpm lint` runs Oxlint; `pnpm preview` serves the build.
 
+Under `pnpm dev` the intake form is a dry run: submissions, the Slack alert and HubSpot tracking
+are logged to the browser console instead of sent, so the design can be tested without creating
+contacts. Set `VITE_SEND_IN_DEV=true` in `.env.local` to send for real. `pnpm preview` and
+production builds always send.
+
 ## Design system
 
 The UI is built on the **Lawbrokr 2.0 Design System** (`lawbrokr-design/design-system`). Three token

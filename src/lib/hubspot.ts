@@ -1,5 +1,6 @@
 import {
   CONFIG,
+  DRY_RUN_DELAY_MS,
   isEngagementEventConfigured,
   isHubspotConfigured,
   isZapierConfigured,
@@ -107,6 +108,12 @@ export function companyDomain(site: string): string {
  * stop someone getting to the calendar.
  */
 export async function submitToHubSpot(stage: SubmissionStage, fields: HubspotField[]): Promise<void> {
+  if (CONFIG.dryRun) {
+    console.info(`[lawbrokr] Dry run — not sending the ${stage} submission:`, fields);
+    await new Promise((resolve) => setTimeout(resolve, DRY_RUN_DELAY_MS));
+    return;
+  }
+
   if (isZapierConfigured()) return sendToZapier(stage, fields);
 
   if (!isHubspotConfigured()) {
@@ -171,6 +178,11 @@ async function notifySlackLeadStarted(): Promise<void> {
  * visit as a HubSpot behavioural event for reporting and segmentation.
  */
 export function trackEngagement(): void {
+  if (CONFIG.dryRun) {
+    console.info('[lawbrokr] Dry run — not sending the Slack alert or HubSpot tracking.');
+    return;
+  }
+
   void notifySlackLeadStarted();
 
   if (!isHubspotConfigured()) return;

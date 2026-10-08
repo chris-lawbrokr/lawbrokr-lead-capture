@@ -12,8 +12,8 @@ function App() {
      * Both are lg-only: below that the brand column is gone and the chat panel
      * is the whole page, so there is no seam to place and no gutter to fill.
      */
-    <div className="relative min-h-screen bg-card lg:before:absolute lg:before:inset-y-0 lg:before:left-0 lg:before:w-1/2 lg:before:bg-primary lg:before:content-['']">
-      <div className="relative mx-auto grid min-h-screen max-w-[2200px] grid-cols-1 lg:grid-cols-2">
+    <div className="relative min-h-dvh bg-card lg:before:absolute lg:before:inset-y-0 lg:before:left-0 lg:before:w-1/2 lg:before:bg-primary lg:before:content-['']">
+      <div className="relative mx-auto grid min-h-dvh max-w-[2200px] grid-cols-1 lg:grid-cols-2">
         <BrandPanel />
         <ChatPanel />
       </div>

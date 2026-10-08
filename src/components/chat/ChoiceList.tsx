@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Check } from 'lucide-react';
+import { cn } from '../../lib/cn';
 import { Button } from '../ui/Button';
 import { OtherInput } from './OtherInput';
 
@@ -76,9 +77,19 @@ export function ChoiceList({
     onPick(selected);
   };
 
+  // A list too tall for the chat area scrolls inside itself rather than pushing
+  // the question off the top. Its cap is the chat area's height (100cqh) less
+  // room for the question's bubble, the gaps around the list and, when there is
+  // one, Continue, so they all stay in view together. The -m-1 p-1 keeps the
+  // buttons' focus rings from being clipped by the scroll edge.
   return (
     <div className="mt-5 mb-5 animate-fade-in">
-      <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap">
+      <div
+        className={cn(
+          '-m-1 flex flex-col gap-2 overflow-y-auto overscroll-contain p-1 sm:flex-row sm:flex-wrap',
+          multiSelect ? 'max-h-[max(10rem,calc(100cqh-13.5rem))]' : 'max-h-[max(10rem,calc(100cqh-10rem))]',
+        )}
+      >
         {options.map((option) => {
           const isSelected = multiSelect && selected.includes(option);
           return (

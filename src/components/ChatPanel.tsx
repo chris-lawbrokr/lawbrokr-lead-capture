@@ -96,8 +96,11 @@ export function ChatPanel() {
   const intro = phase !== "chat";
   const question = stage.name === "question" ? QUESTION_STEPS[stage.index] : undefined;
 
+  // The panel is exactly the screen's height at every size, so the header and
+  // footer stay put and only the transcript between them scrolls. dvh rather
+  // than vh so a phone's browser toolbars can't push the footer off-screen.
   return (
-    <main className="flex flex-col bg-card lg:sticky lg:top-0 lg:h-screen lg:pb-12">
+    <main className="flex h-dvh flex-col bg-card lg:sticky lg:top-0 lg:pb-12">
       {/* On a phone the title, bar and step count each take a full-width row.
           From sm up the step count moves to the right of the title and the bar
           shortens beneath them. */}
@@ -124,8 +127,9 @@ export function ChatPanel() {
         className={cn(
           // min-h-0 is what lets this shrink inside the flex column so it, and
           // not the page, takes the overflow — without it the panel just grows
-          // and carries the header off the top of the screen.
-          "flex min-h-0 flex-1 flex-col overflow-y-auto scrollbar-hidden px-4 sm:px-8 lg:px-14",
+          // and carries the header off the top of the screen. It's also a size
+          // container, so a long answer list can cap itself at what fits here.
+          "flex min-h-0 flex-1 flex-col overflow-y-auto overscroll-contain scrollbar-hidden px-4 [container-type:size] sm:px-8 lg:px-14",
           intro && "justify-center",
         )}
       >
