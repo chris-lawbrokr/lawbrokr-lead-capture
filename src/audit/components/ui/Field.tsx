@@ -1,4 +1,4 @@
-import { useId } from 'react';
+import { useId, useLayoutEffect, useRef, useState } from 'react';
 import type { ComponentPropsWithRef, ReactNode } from 'react';
 import { Check, ChevronDown } from 'lucide-react';
 import { cn } from '../../../lib/cn';
@@ -23,6 +23,12 @@ const controlSizes = {
 } as const;
 
 type ControlSize = keyof typeof controlSizes;
+
+/* An Input's prefix matches the control's text size, so the two read as one. */
+const prefixSizes: Record<ControlSize, string> = {
+  default: 'text-sm',
+  lg: 'text-base',
+};
 
 /** The ids a control's hint and error are rendered under, for aria-describedby. */
 const hintId = (id: string) => `${id}-hint`;
@@ -76,11 +82,28 @@ interface InputProps extends Omit<ComponentPropsWithRef<'input'>, 'size' | 'pref
 
 /** The bare control, for layouts where the label and message sit elsewhere. */
 export function Input({ size = 'default', prefix, className, style, ...props }: InputProps) {
+  const prefixRef = useRef<HTMLSpanElement>(null);
+  const [prefixWidth, setPrefixWidth] = useState<number>();
+
+  // The prefix is measured rather than estimated at ~8px a character, which
+  // left a wide gap after "https://" (mostly narrow glyphs). It's re-measured
+  // when the web font arrives and changes its width.
+  useLayoutEffect(() => {
+    const el = prefixRef.current;
+    if (!el) return;
+    const measure = () => setPrefixWidth(el.getBoundingClientRect().width);
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [prefix]);
+
   const input = (
     <input
       className={cn(control, controlSizes[size], className)}
-      // The design system's prefix rule: 12px inset, ~8px a character, 6px gap.
-      style={prefix ? { ...style, paddingLeft: 12 + prefix.length * 8 + 6 } : style}
+      // 12px inset, then the value starts right where the prefix ends, so
+      // "https://" and the typed domain read as one address.
+      style={prefix ? { ...style, paddingLeft: 12 + (prefixWidth ?? prefix.length * 8) } : style}
       {...props}
     />
   );
@@ -88,7 +111,13 @@ export function Input({ size = 'default', prefix, className, style, ...props }: 
 
   return (
     <div className="relative flex w-full items-center">
-      <span aria-hidden="true" className="pointer-events-none absolute left-3 text-sm text-muted-foreground">
+      {/* The placeholder's colour, so with the field empty the prefix and the
+          example look like one string. */}
+      <span
+        ref={prefixRef}
+        aria-hidden="true"
+        className={cn('pointer-events-none absolute left-3 text-neutral-500', prefixSizes[size])}
+      >
         {prefix}
       </span>
       {input}

@@ -113,6 +113,43 @@
   }
 }
 
+/*
+ * The checks dialog on a phone, a card centred over the page. A native <dialog>
+ * gives the focus trap, Esc and the inert page for free; this adds a fade in
+ * and out rather than a slide. `allow-discrete` keeps it on screen long enough
+ * to fade out, since display and overlay are otherwise discrete properties.
+ */
+@layer components {
+  .checks-dialog {
+    opacity: 0;
+    transition:
+      opacity var(--duration-base) var(--ease-out),
+      display var(--duration-base) allow-discrete,
+      overlay var(--duration-base) allow-discrete;
+  }
+
+  .checks-dialog[open] {
+    opacity: 1;
+  }
+
+  /* No tint behind it: the page stays as it is around the card. The backdrop
+     is still there, unseen, to take the tap that closes it. */
+  .checks-dialog::backdrop {
+    background-color: transparent;
+  }
+
+  @starting-style {
+    .checks-dialog[open] {
+      opacity: 0;
+    }
+  }
+
+  /* A modal dialog doesn't stop the page behind it scrolling. */
+  :root:has(.checks-dialog[open]) {
+    overflow: hidden;
+  }
+}
+
 @layer base {
   /* Keeps anything scrolled into view, a focused control especially, clear of
      the sticky 56px header rather than tucked underneath it. */
