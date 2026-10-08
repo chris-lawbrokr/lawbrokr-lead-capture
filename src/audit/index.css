@@ -114,6 +114,12 @@
 }
 
 @layer base {
+  /* Keeps anything scrolled into view, a focused control especially, clear of
+     the sticky 56px header rather than tucked underneath it. */
+  html {
+    scroll-padding-top: --spacing(14);
+  }
+
   /* Design system §1.8 — prefers-reduced-motion disables all motion. */
   @media (prefers-reduced-motion: reduce) {
     *,

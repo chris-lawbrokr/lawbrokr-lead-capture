@@ -44,15 +44,13 @@ export function StartScreen({ onStart }: { onStart: (domain: string) => void }) 
       </div>
 
       {/* The browser's own URL check would reject a bare `firm.com`, so
-          validation is ours alone (noValidate). */}
+          validation is ours alone (noValidate). There's no visible label, so
+          the field is named for screen readers with aria-label instead. */}
       <form noValidate onSubmit={handleSubmit} className="mt-10 flex w-full max-w-[600px] flex-col gap-2">
-        <label htmlFor={id} className="text-sm font-medium text-primary-900">
-          Firm URL
-        </label>
         <div className="flex flex-wrap gap-2">
           <div className="min-w-0 flex-[1_1_300px]">
             <Input
-              id={id}
+              aria-label="Firm URL"
               size="lg"
               prefix="https://"
               type="text"
@@ -82,7 +80,6 @@ export function StartScreen({ onStart }: { onStart: (domain: string) => void }) 
             {error}
           </span>
         )}
-        <span className="text-[13px] text-muted-foreground">Free. Nothing to install, and we never touch your site.</span>
       </form>
 
       <section aria-labelledby={`${id}-checks`} className="mt-[72px] flex w-full max-w-[1040px] flex-col gap-4">
