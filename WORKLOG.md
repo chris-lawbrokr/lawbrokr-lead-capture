@@ -7,3 +7,10 @@
 - Zapier customer and company configuration
 - Asset/route paths cleaned up
 - Web audit page created
+
+## 2026-10-09 (Fri) — Recap of Oct 8
+
+- Email intake formatting
+- Mobile UI pass
+- Web audit designs and main audit page input design
+- Lead capture UI
