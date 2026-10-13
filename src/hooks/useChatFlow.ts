@@ -186,3 +186,5 @@ export function useChatFlow() {
     submitContact,
   };
 }
+
+export type ChatFlow = ReturnType<typeof useChatFlow>;

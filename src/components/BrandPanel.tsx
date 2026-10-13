@@ -110,11 +110,47 @@ export function BrandLogo() {
  *
  * The padding matches the chat panel's from lg up, so the logo lines up with
  * its title and the stat sits on its bottom margin.
+ *
+ * At the booking step the column narrows to make room for the scheduler, and
+ * the pitch gives way to who the call is with.
  */
-export function BrandPanel() {
+export function BrandPanel({ booking = false }: { booking?: boolean }) {
   return (
     <aside className="hidden flex-col bg-primary px-14 py-12 text-primary-foreground lg:flex">
-      <BrandContent />
+      {booking ? <BookingContent /> : <BrandContent />}
     </aside>
+  );
+}
+
+/**
+ * The narrow column's content at the booking step, pinned top, middle and bottom
+ * like the pitch it replaces. The pitch has done its job by now, so the middle
+ * introduces the person they're about to book with. The tagline has no room
+ * beside the logo at this width, so it moves to the foot of the column.
+ */
+function BookingContent() {
+  return (
+    <div className="flex flex-1 animate-fade-in flex-col justify-between gap-10">
+      <BrandLogo />
+
+      <div>
+        <img
+          src="/brand/jake.webp"
+          alt=""
+          width={56}
+          height={56}
+          className="size-14 rounded-full object-cover"
+        />
+        <h1 className="mt-6 font-display text-4xl font-semibold tracking-tight">
+          Last step: pick a time.
+        </h1>
+        <p className="mt-4 text-base text-primary-foreground/80">
+          A 20-minute call with Jake, one of our Conversion Intelligence
+          experts.
+        </p>
+      </div>
+
+      <p className="text-sm text-primary-foreground/80">{TAGLINE}</p>
+    </div>
   );
 }

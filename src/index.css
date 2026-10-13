@@ -151,31 +151,7 @@
     translate: 0 0;
   }
 
-  /*
-   * Popup — the booking calendar. It takes over the chat column in place rather
-   * than arriving from an edge, so it fades instead of sliding.
-   */
-  .popup {
-    opacity: 0;
-    transition:
-      opacity var(--duration-base) var(--ease-out),
-      display var(--duration-base) allow-discrete,
-      overlay var(--duration-base) allow-discrete;
-  }
-
-  .popup[open] {
-    opacity: 1;
-  }
-
-  /* A modal dialog doesn't stop the page behind it scrolling; on a phone that
-     page is the one the popup covers, and scroll chaining out of the calendar
-     would move it (and the browser chrome) underneath. */
-  :root:has(.popup[open]) {
-    overflow: hidden;
-  }
-
-  .sheet::backdrop,
-  .popup::backdrop {
+  .sheet::backdrop {
     background-color: transparent;
     transition:
       background-color var(--duration-base) var(--ease-out),
@@ -183,8 +159,7 @@
       overlay var(--duration-base) allow-discrete;
   }
 
-  .sheet[open]::backdrop,
-  .popup[open]::backdrop {
+  .sheet[open]::backdrop {
     background-color: var(--overlay);
   }
 
@@ -193,12 +168,7 @@
       translate: 100% 0;
     }
 
-    .popup[open] {
-      opacity: 0;
-    }
-
-    .sheet[open]::backdrop,
-    .popup[open]::backdrop {
+    .sheet[open]::backdrop {
       background-color: transparent;
     }
   }

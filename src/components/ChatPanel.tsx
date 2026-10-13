@@ -1,7 +1,7 @@
 import { useEffect, useLayoutEffect, useRef } from "react";
 import { INTRO_SLIDE_MS } from "../config";
 import { QUESTION_STEPS } from "../data/steps";
-import { useChatFlow } from "../hooks/useChatFlow";
+import type { ChatFlow } from "../hooks/useChatFlow";
 import { cn } from "../lib/cn";
 import { prefersReducedMotion } from "../lib/motion";
 import { BookingPanel } from "./chat/BookingPanel";
@@ -21,8 +21,12 @@ import { Progress } from "./ui/Progress";
  * column switches to top-aligned and the same bubble travels up into place; it
  * is never unmounted, so it slides rather than cross-fading with a copy of
  * itself.
+ *
+ * At the booking step the scheduler replaces the transcript under the header.
+ * The flow is owned by App, which narrows the brand column at the same moment
+ * so the scheduler gets the width it needs.
  */
-export function ChatPanel() {
+export function ChatPanel({ flow }: { flow: ChatFlow }) {
   const {
     messages,
     phase,
@@ -34,7 +38,7 @@ export function ChatPanel() {
     submitIntro,
     answerQuestion,
     submitContact,
-  } = useChatFlow();
+  } = flow;
 
   const scrollRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
@@ -108,7 +112,9 @@ export function ChatPanel() {
           little on wide screens without leaving the lg layout cramped. */}
       <header className="sticky top-0 z-10 grid gap-2 bg-card px-4 pt-4 pb-5 sm:grid-cols-[1fr_auto] sm:items-baseline sm:gap-x-4 sm:px-8 sm:pt-8 sm:pb-8 lg:px-14 lg:pt-12 lg:pb-12 xl:px-20">
         <h2 className="text-xl font-semibold">
-          Book with a Conversion Intelligence expert
+          {stage.name === "booking"
+            ? "Pick a time that works"
+            : "Book with a Conversion Intelligence expert"}
         </h2>
         <Progress
           value={Math.min(step, totalSteps)}
@@ -124,73 +130,73 @@ export function ChatPanel() {
         </p>
       </header>
 
-      <div
-        ref={scrollRef}
-        className={cn(
-          // min-h-0 is what lets this shrink inside the flex column so it, and
-          // not the page, takes the overflow — without it the panel just grows
-          // and carries the header off the top of the screen. It's also a size
-          // container, so a long answer list can cap itself at what fits here.
-          "flex min-h-0 flex-1 flex-col overflow-y-auto overscroll-contain scrollbar-hidden px-4 [container-type:size] sm:px-8 lg:px-14 xl:px-20",
-          intro && "justify-center",
-        )}
-      >
-        {/* Breathing room at both ends of the transcript below lg. The bottom is
-            shorter because the sticky footer carries part of that gap as its
-            own white padding; with the last form's mb-5 the two ends match. */}
-        <div ref={listRef} className="pt-6 pb-2 sm:pt-8 sm:pb-5 lg:py-0">
-          <div aria-live="polite">
-            {messages.map((message) => (
-              <MessageBubble key={message.id} message={message} />
-            ))}
-          </div>
+      {stage.name === "booking" ? (
+        <BookingPanel lead={stage.lead} />
+      ) : (
+        <div
+          ref={scrollRef}
+          className={cn(
+            // min-h-0 is what lets this shrink inside the flex column so it, and
+            // not the page, takes the overflow — without it the panel just grows
+            // and carries the header off the top of the screen. It's also a size
+            // container, so a long answer list can cap itself at what fits here.
+            "flex min-h-0 flex-1 flex-col overflow-y-auto overscroll-contain scrollbar-hidden px-4 [container-type:size] sm:px-8 lg:px-14 xl:px-20",
+            intro && "justify-center",
+          )}
+        >
+          {/* Breathing room at both ends of the transcript below lg. The bottom is
+              shorter because the sticky footer carries part of that gap as its
+              own white padding; with the last form's mb-5 the two ends match. */}
+          <div ref={listRef} className="pt-6 pb-2 sm:pt-8 sm:pb-5 lg:py-0">
+            <div aria-live="polite">
+              {messages.map((message) => (
+                <MessageBubble key={message.id} message={message} />
+              ))}
+            </div>
 
-          {isTyping && <TypingIndicator bare={intro} />}
+            {isTyping && <TypingIndicator bare={intro} />}
 
-          {/* The controls sit in from the avatar, so they share the bubbles'
-              left edge: pl-11 is the avatar's size-8 plus the bubble's gap-3. */}
-          <div className="pl-11">
-            {intro && promptReady && (
-              <div
-                className={cn(
-                  "transition-opacity duration-[180ms] ease-out",
-                  phase === "leaving" && "pointer-events-none opacity-0",
-                )}
-              >
-                <EmailCaptureForm onSubmit={submitIntro} />
-              </div>
-            )}
+            {/* The controls sit in from the avatar, so they share the bubbles'
+                left edge: pl-11 is the avatar's size-8 plus the bubble's gap-3. */}
+            <div className="pl-11">
+              {intro && promptReady && (
+                <div
+                  className={cn(
+                    "transition-opacity duration-[180ms] ease-out",
+                    phase === "leaving" && "pointer-events-none opacity-0",
+                  )}
+                >
+                  <EmailCaptureForm onSubmit={submitIntro} />
+                </div>
+              )}
 
-            {!intro && promptReady && stage.name === "question" && question?.kind === "choice" && (
-              <ChoiceList
-                key={stage.index}
-                options={question.options}
-                freeTextOnOther={question.freeTextOnOther}
-                multiSelect={question.multiSelect}
-                onPick={(value) => answerQuestion(stage.index, value)}
-              />
-            )}
+              {!intro && promptReady && stage.name === "question" && question?.kind === "choice" && (
+                <ChoiceList
+                  key={stage.index}
+                  options={question.options}
+                  freeTextOnOther={question.freeTextOnOther}
+                  multiSelect={question.multiSelect}
+                  onPick={(value) => answerQuestion(stage.index, value)}
+                />
+              )}
 
-            {!intro && promptReady && stage.name === "question" && question?.kind === "text" && (
-              <OtherInput
-                key={stage.index}
-                label={question.label}
-                placeholder={question.placeholder}
-                autoComplete={question.autoComplete}
-                onSubmit={(value) => answerQuestion(stage.index, value)}
-              />
-            )}
+              {!intro && promptReady && stage.name === "question" && question?.kind === "text" && (
+                <OtherInput
+                  key={stage.index}
+                  label={question.label}
+                  placeholder={question.placeholder}
+                  autoComplete={question.autoComplete}
+                  onSubmit={(value) => answerQuestion(stage.index, value)}
+                />
+              )}
 
-            {!intro && promptReady && stage.name === "contact" && (
-              <ContactDetailsForm onSubmit={submitContact} />
-            )}
-
-            {!intro && promptReady && stage.name === "booking" && (
-              <BookingPanel lead={stage.lead} />
-            )}
+              {!intro && promptReady && stage.name === "contact" && (
+                <ContactDetailsForm onSubmit={submitContact} />
+              )}
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       <MobileBrandBar />
     </main>
