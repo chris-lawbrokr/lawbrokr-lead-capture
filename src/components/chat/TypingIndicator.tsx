@@ -19,7 +19,7 @@ export function TypingIndicator({ bare = false }: TypingIndicatorProps) {
   const dot = cn('animate-bounce-dot rounded-full bg-primary', bare ? 'size-2' : 'size-1.5');
 
   return (
-    <div className={cn('flex animate-fade-in', bare ? 'justify-center' : 'mb-3 items-start justify-start gap-2')}>
+    <div className={cn('flex animate-fade-in', bare ? 'justify-center' : 'mb-3 items-start justify-start gap-3')}>
       {!bare && <AgentAvatar />}
       <div
         role="status"

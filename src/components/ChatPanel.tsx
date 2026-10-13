@@ -103,8 +103,10 @@ export function ChatPanel() {
     <main className="flex h-dvh flex-col bg-card lg:sticky lg:top-0 lg:pb-12">
       {/* On a phone the title, bar and step count each take a full-width row.
           From sm up the step count moves to the right of the title and the bar
-          runs the full width beneath them both. */}
-      <header className="sticky top-0 z-10 grid gap-2 bg-card px-4 pt-4 pb-5 sm:grid-cols-[1fr_auto] sm:items-baseline sm:gap-x-4 sm:px-8 sm:pt-8 sm:pb-8 lg:px-14 lg:pt-12 lg:pb-12">
+          runs the full width beneath them both. From xl up the header and the
+          transcript take the same deeper side padding, so the column narrows a
+          little on wide screens without leaving the lg layout cramped. */}
+      <header className="sticky top-0 z-10 grid gap-2 bg-card px-4 pt-4 pb-5 sm:grid-cols-[1fr_auto] sm:items-baseline sm:gap-x-4 sm:px-8 sm:pt-8 sm:pb-8 lg:px-14 lg:pt-12 lg:pb-12 xl:px-20">
         <h2 className="text-xl font-semibold">
           Book with a Conversion Intelligence expert
         </h2>
@@ -129,7 +131,7 @@ export function ChatPanel() {
           // not the page, takes the overflow — without it the panel just grows
           // and carries the header off the top of the screen. It's also a size
           // container, so a long answer list can cap itself at what fits here.
-          "flex min-h-0 flex-1 flex-col overflow-y-auto overscroll-contain scrollbar-hidden px-4 [container-type:size] sm:px-8 lg:px-14",
+          "flex min-h-0 flex-1 flex-col overflow-y-auto overscroll-contain scrollbar-hidden px-4 [container-type:size] sm:px-8 lg:px-14 xl:px-20",
           intro && "justify-center",
         )}
       >
@@ -145,44 +147,48 @@ export function ChatPanel() {
 
           {isTyping && <TypingIndicator bare={intro} />}
 
-          {intro && promptReady && (
-            <div
-              className={cn(
-                "transition-opacity duration-[180ms] ease-out",
-                phase === "leaving" && "pointer-events-none opacity-0",
-              )}
-            >
-              <EmailCaptureForm onSubmit={submitIntro} />
-            </div>
-          )}
+          {/* The controls sit in from the avatar, so they share the bubbles'
+              left edge: pl-11 is the avatar's size-8 plus the bubble's gap-3. */}
+          <div className="pl-11">
+            {intro && promptReady && (
+              <div
+                className={cn(
+                  "transition-opacity duration-[180ms] ease-out",
+                  phase === "leaving" && "pointer-events-none opacity-0",
+                )}
+              >
+                <EmailCaptureForm onSubmit={submitIntro} />
+              </div>
+            )}
 
-          {!intro && promptReady && stage.name === "question" && question?.kind === "choice" && (
-            <ChoiceList
-              key={stage.index}
-              options={question.options}
-              freeTextOnOther={question.freeTextOnOther}
-              multiSelect={question.multiSelect}
-              onPick={(value) => answerQuestion(stage.index, value)}
-            />
-          )}
+            {!intro && promptReady && stage.name === "question" && question?.kind === "choice" && (
+              <ChoiceList
+                key={stage.index}
+                options={question.options}
+                freeTextOnOther={question.freeTextOnOther}
+                multiSelect={question.multiSelect}
+                onPick={(value) => answerQuestion(stage.index, value)}
+              />
+            )}
 
-          {!intro && promptReady && stage.name === "question" && question?.kind === "text" && (
-            <OtherInput
-              key={stage.index}
-              label={question.label}
-              placeholder={question.placeholder}
-              autoComplete={question.autoComplete}
-              onSubmit={(value) => answerQuestion(stage.index, value)}
-            />
-          )}
+            {!intro && promptReady && stage.name === "question" && question?.kind === "text" && (
+              <OtherInput
+                key={stage.index}
+                label={question.label}
+                placeholder={question.placeholder}
+                autoComplete={question.autoComplete}
+                onSubmit={(value) => answerQuestion(stage.index, value)}
+              />
+            )}
 
-          {!intro && promptReady && stage.name === "contact" && (
-            <ContactDetailsForm onSubmit={submitContact} />
-          )}
+            {!intro && promptReady && stage.name === "contact" && (
+              <ContactDetailsForm onSubmit={submitContact} />
+            )}
 
-          {!intro && promptReady && stage.name === "booking" && (
-            <BookingPanel lead={stage.lead} />
-          )}
+            {!intro && promptReady && stage.name === "booking" && (
+              <BookingPanel lead={stage.lead} />
+            )}
+          </div>
         </div>
       </div>
 
