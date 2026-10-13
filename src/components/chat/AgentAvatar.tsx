@@ -1,17 +1,16 @@
 /**
- * Jake's photo, beside each of his lines. Decorative: the words carry the
- * meaning, so it's hidden from assistive tech. Sits on the bubble's squared-off
- * corner, which is why it aligns to the top.
+ * The Lawbrokr mark in a brand-purple disc, beside each of the assistant's
+ * lines. Decorative: the words carry the meaning, so it's hidden from assistive
+ * tech. Sits on the bubble's squared-off corner, which is why it aligns to the
+ * top.
  */
 export function AgentAvatar() {
   return (
-    <img
-      src="/brand/jake.webp"
-      alt=""
+    <span
       aria-hidden="true"
-      width={32}
-      height={32}
-      className="size-8 shrink-0 rounded-full object-cover"
-    />
+      className="inline-flex size-8 shrink-0 items-center justify-center rounded-full bg-primary"
+    >
+      <img src="/brand/lb-icon-white.svg" alt="" className="h-4 w-auto" />
+    </span>
   );
 }

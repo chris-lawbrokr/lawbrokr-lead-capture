@@ -103,16 +103,16 @@ export function ChatPanel() {
     <main className="flex h-dvh flex-col bg-card lg:sticky lg:top-0 lg:pb-12">
       {/* On a phone the title, bar and step count each take a full-width row.
           From sm up the step count moves to the right of the title and the bar
-          shortens beneath them. */}
+          runs the full width beneath them both. */}
       <header className="sticky top-0 z-10 grid gap-2 bg-card px-4 pt-4 pb-5 sm:grid-cols-[1fr_auto] sm:items-baseline sm:gap-x-4 sm:px-8 sm:pt-8 sm:pb-8 lg:px-14 lg:pt-12 lg:pb-12">
         <h2 className="text-xl font-semibold">
-          Book with an AI marketing expert
+          Book with a Conversion Intelligence expert
         </h2>
         <Progress
           value={Math.min(step, totalSteps)}
           max={totalSteps}
           label="Progress through the questions"
-          className="sm:col-span-2 sm:row-start-2 sm:max-w-40"
+          className="sm:col-span-2 sm:row-start-2"
         />
         <p
           className="text-sm tabular-nums text-muted-foreground sm:col-start-2 sm:row-start-1"

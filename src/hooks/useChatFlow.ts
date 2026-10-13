@@ -5,7 +5,8 @@ import { companyDomain, submitToHubSpot, trackEngagement } from '../lib/hubspot'
 import { prefersReducedMotion } from '../lib/motion';
 import type { Answers, ChatMessage, ContactDetails, IntroDetails, Lead, LeadHeat, Stage } from '../types';
 
-const GREETING = 'Hi there, I’m Jake, one of Lawbrokr’s AI experts. Let’s start with your Name & Email';
+const GREETING =
+  'Hi there, I’m Lawbrokr’s booking assistant. A few quick questions, then you’ll pick a time with one of our experts. Let’s start with your name and email.';
 const CONTACT_PROMPT =
   'Great, that’s really helpful. Let’s get you booked in with our team. Book below.';
 

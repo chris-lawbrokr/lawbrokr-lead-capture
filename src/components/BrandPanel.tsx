@@ -1,4 +1,4 @@
-import { PILLARS, PROOF } from "../data/brand";
+import { PROOF, TAGLINE } from "../data/brand";
 import { cn } from "../lib/cn";
 
 /**
@@ -6,12 +6,15 @@ import { cn } from "../lib/cn";
  * two places — the left column from lg up, and the sheet behind the menu button
  * below that — so it owns its own rhythm and nothing else.
  *
- * One rhythm holds it together: `space-y-10` sets an identical 40px between the
- * five blocks below, and the only tighter gaps are inside a pair that reads as
- * one thing — a heading and its deck, a stat and its caption, the pillar rows.
+ * In the column it is three groups pinned to the top, middle and bottom: the
+ * logo with the tagline beside it, the headline and its deck, and the stat with
+ * its caption. `justify-between` spreads them over the full height, and the gap
+ * is only the floor for when the screen is too short to spread them at all.
  *
  * The sheet passes `showLogo={false}` because it carries the logo in its footer,
- * and `compact` to step the type and rhythm down a size for a phone.
+ * and `compact` to stack the groups at their natural height and step the type
+ * down a size for a phone. With no logo to sit beside, the tagline closes the
+ * stack instead.
  */
 export function BrandContent({
   showLogo = true,
@@ -21,46 +24,42 @@ export function BrandContent({
   compact?: boolean;
 }) {
   return (
-    <div className={compact ? "space-y-8" : "space-y-10"}>
-      {showLogo && <BrandLogo />}
+    <div
+      className={cn(
+        "flex flex-col justify-between",
+        compact ? "gap-8" : "flex-1 gap-10",
+      )}
+    >
+      {showLogo && (
+        // The logo's baseline is its bottom edge, so the tagline sits on it.
+        <div className="flex items-baseline gap-5">
+          <BrandLogo />
+          <p className="text-sm text-primary-foreground/80">{TAGLINE}</p>
+        </div>
+      )}
 
       <div>
         <h1
           className={cn(
-            "max-w-[18ch] font-display font-semibold tracking-tight",
-            compact ? "text-4xl" : "text-5xl",
+            "max-w-xl font-display font-semibold tracking-tight",
+            compact ? "text-4xl" : "text-5xl xl:text-6xl",
           )}
         >
           Speak with a Conversion Intelligence expert.
         </h1>
         <p
           className={cn(
-            "max-w-[40ch] text-primary-foreground/80",
-            compact ? "mt-3 text-sm" : "mt-4 text-base",
+            "max-w-[26rem] text-primary-foreground/80",
+            compact ? "mt-3 text-sm" : "mt-6 text-lg xl:text-xl",
           )}
         >
-          Tell us a bit about your firm. We&rsquo;ll ask a few quick questions,
-          then get you on the calendar with our team.
+          See how a digital front door captures every inquiry, day or night.
         </p>
       </div>
 
-      <dl className={compact ? "space-y-4" : "space-y-5"}>
-        {PILLARS.map((pillar) => (
-          <div
-            key={pillar.name}
-            className="flex flex-col gap-1 sm:flex-row sm:gap-4"
-          >
-            <dt className="text-sm font-medium sm:w-[17ch] sm:shrink-0">
-              {pillar.name}
-            </dt>
-            <dd className="text-sm text-primary-foreground/80">
-              {pillar.description}
-            </dd>
-          </div>
-        ))}
-      </dl>
-
-      <div>
+      {/* The caption sits on the stat's baseline, and drops beneath it when
+          the two won't fit on one line. */}
+      <div className="flex flex-wrap items-baseline gap-x-4 gap-y-1">
         <p
           className={cn(
             "font-display font-semibold tracking-tight tabular-nums",
@@ -69,14 +68,19 @@ export function BrandContent({
         >
           {PROOF.stat}
         </p>
-        <p className="mt-2 max-w-[34ch] text-sm text-primary-foreground/80">
+        <p
+          className={cn(
+            "text-primary-foreground/80",
+            compact ? "text-sm" : "text-base",
+          )}
+        >
           {PROOF.copy}
         </p>
       </div>
 
-      <p className="text-xs text-primary-foreground/70">
-        Conversion intelligence for law
-      </p>
+      {!showLogo && (
+        <p className="text-xs text-primary-foreground/70">{TAGLINE}</p>
+      )}
     </div>
   );
 }
@@ -103,10 +107,13 @@ export function BrandLogo() {
  *
  * Brand purple is one of the two dark surfaces the design system allows, so
  * everything on it is white. No rules, no tints — spacing carries the structure.
+ *
+ * The padding matches the chat panel's from lg up, so the logo lines up with
+ * its title and the stat sits on its bottom margin.
  */
 export function BrandPanel() {
   return (
-    <aside className="hidden flex-col justify-center bg-primary px-4 py-10 text-primary-foreground sm:px-8 lg:flex lg:px-14 lg:py-16">
+    <aside className="hidden flex-col bg-primary px-14 py-12 text-primary-foreground lg:flex">
       <BrandContent />
     </aside>
   );

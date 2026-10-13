@@ -23,7 +23,7 @@ export function TypingIndicator({ bare = false }: TypingIndicatorProps) {
       {!bare && <AgentAvatar />}
       <div
         role="status"
-        aria-label="Jake is typing"
+        aria-label="The assistant is typing"
         className={cn(
           'inline-flex items-center',
           bare ? 'gap-1.5' : 'gap-1 rounded-lg rounded-tl-none border border-border bg-muted px-4 py-4',

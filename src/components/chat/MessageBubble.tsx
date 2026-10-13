@@ -4,7 +4,7 @@ import { AgentAvatar } from './AgentAvatar';
 
 /**
  * One line of the transcript. Lawbrokr speaks on a muted card with a border,
- * beside Jake's photo; the visitor's own words come back in brand purple.
+ * beside the Lawbrokr mark; the visitor's own words come back in brand purple.
  * Radius-lg, squared off on the corner nearest its speaker.
  */
 export function MessageBubble({ message }: { message: ChatMessage }) {
