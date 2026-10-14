@@ -145,7 +145,7 @@ function BookingContent() {
           Last step: pick a time.
         </h1>
         <p className="mt-4 text-base text-primary-foreground/80">
-          A 20-minute call with Jake, one of our Conversion Intelligence
+          A 30-minute call with Jake, one of our Conversion Intelligence
           experts.
         </p>
       </div>
