@@ -92,21 +92,21 @@ With `VITE_ZAPIER_WEBHOOK_URL` set, both submissions go to that Catch Hook inste
 API, and the Zap's HubSpot "Create or Update Contact" step writes the contact. Each request is
 form-encoded, with fields named after their HubSpot properties so the mapping is one to one:
 
-| Field                | Sent on        | Notes                                             |
-| -------------------- | -------------- | ------------------------------------------------- |
-| `stage`              | both           | `intro` for name and email, `details` at the end  |
-| `page_url`           | both           | Page the widget was on                            |
-| `email`              | both           | Match the contact on this                         |
-| `firstname`          | both           |                                                   |
-| `lastname`           | both           |                                                   |
-| `company`            | `details`      |                                                   |
-| `firm_website`       | `details`      |                                                   |
-| `firm_domain`        | `details`      | Website reduced to `harborlaw.com`, for matching  |
-| `firm_size`          | `details`      |                                                   |
-| `jobtitle`           | `details`      | The visitor's role at the firm                    |
-| `practice_area`      | `details`      | Multi-select, semicolon-separated                 |
-| `primary_pain_point` | `details`      |                                                   |
-| `lead_heat`          | `details`      | `hot` or `cool`                                   |
+| Field                | Sent on   | Notes                                            |
+| -------------------- | --------- | ------------------------------------------------ |
+| `stage`              | both      | `intro` for name and email, `details` at the end |
+| `page_url`           | both      | Page the widget was on                           |
+| `email`              | both      | Match the contact on this                        |
+| `firstname`          | both      |                                                  |
+| `lastname`           | both      |                                                  |
+| `company`            | `details` |                                                  |
+| `firm_website`       | `details` |                                                  |
+| `firm_domain`        | `details` | Website reduced to `harborlaw.com`, for matching |
+| `firm_size`          | `details` |                                                  |
+| `jobtitle`           | `details` | The visitor's role at the firm                   |
+| `practice_area`      | `details` | Multi-select, semicolon-separated                |
+| `primary_pain_point` | `details` |                                                  |
+| `lead_heat`          | `details` | `hot` or `cool`                                  |
 
 Empty answers are left out rather than sent blank. The browser can't read Zapier's response,
 so a submission the Zap rejects shows up in the Zap's history, not in the console.
@@ -131,30 +131,3 @@ Three moments fire a signal:
 
 Two and three are the same form, so a single "Form submitted" workflow catches both; the
 payload tells the rep which stage the visitor reached.
-
-## Structure
-
-```
-src/
-  config.ts              env-driven configuration
-  types.ts               shared domain types
-  styles/                design-system tokens, vendored verbatim
-  data/                  question steps, firm sizes, brand copy
-  lib/hubspot.ts         Forms API, tracking cookie, Slack relay
-  lib/zapier.ts          Catch Hook submissions, used instead of the Forms API when set
-  hooks/useChatFlow.ts   the conversation state machine
-  components/
-    BrandPanel.tsx       left column
-    ChatPanel.tsx        right column — renders transcript + current control
-    chat/                bubbles, typing indicator, choices, forms, booking
-    ui/                  Button, Field (TextField/SelectField/FormGrid), Progress
-  audit/                 the web audit at /audit/ — see its README
-```
-
-`useChatFlow` holds an append-only transcript plus a single `stage` describing what is being
-asked for right now. Each stage change schedules its bot line behind a typing delay; the
-"typing" and "ready" states are both derived from which stage has actually spoken, so the
-indicator and the interactive control can never disagree.
-
-Adding or reordering questions is a data change in `src/data/steps.ts` — the progress label
-and the HubSpot payload follow automatically.
